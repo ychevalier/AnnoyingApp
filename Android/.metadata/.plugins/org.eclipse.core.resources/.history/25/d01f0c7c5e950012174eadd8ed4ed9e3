@@ -1,0 +1,17 @@
+package edu.hci.notiftest;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import android.app.Application;
+
+public class TestApplication extends Application {
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		
+	}
+
+}

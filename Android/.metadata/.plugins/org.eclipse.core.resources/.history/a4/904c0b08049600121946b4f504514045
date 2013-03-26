@@ -1,0 +1,19 @@
+package edu.hci.notiftest;
+
+import android.app.AlarmManager;
+import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Intent;
+
+public class TestApplication extends Application {
+	
+	public Intent mBackgroundService;
+	public AlarmManager mAlarmManager;
+	public PendingIntent mPendingIntent;
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+	}
+
+}

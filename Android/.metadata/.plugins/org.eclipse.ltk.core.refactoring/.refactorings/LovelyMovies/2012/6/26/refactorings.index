@@ -1,0 +1,51 @@
+1340738372734	Delete element
+1340738376965	Delete element
+1340738380243	Delete element
+1340739749657	Rename package 'com.example.lovelyxml'
+1340739766454	Rename package 'com.example.lovelyxml.adapters'
+1340739785039	Rename package 'com.example.lovelyxml.io'
+1340739799822	Rename package 'com.example.lovelyxml.listeners'
+1340739811185	Rename package 'com.example.lovelyxml.model'
+1340739822253	Rename package 'com.example.lovelyxml.provider'
+1340739831943	Rename package 'com.example.lovelyxml.tools'
+1340739845959	Rename package 'com.example.lovelyxml.ui'
+1340739862604	Rename package 'com.example.lovelyxml.ui.fragments'
+1340739975786	Rename package 'com.android.lovelyxml.tools'
+1340741812599	Rename type 'MoviesContentProvider'
+1340742876142	Delete element
+1340743489446	Rename package 'com.android.lovelyxml'
+1340743503068	Rename package 'com.android.lovelyxml.adapters'
+1340743513611	Rename package 'com.android.lovelyxml.io'
+1340743526377	Rename package 'com.android.lovelyxml.listeners'
+1340743538270	Rename package 'com.android.lovelyxml.provider'
+1340743549313	Rename package 'com.android.lovelyxml.ui'
+1340743560750	Rename package 'com.android.lovelyxml.ui.fragments'
+1340743570878	Rename package 'com.android.lovelyxml.utils'
+1340743597466	Rename type 'LovelyXMLApplication'
+1340743751203	Rename type 'MoviesContract'
+1340743760671	Rename type 'MoviesDatabase'
+1340743769122	Rename type 'MoviesProvider'
+1340743816977	Rename type 'MovieListActivity'
+1340743826535	Rename type 'MovieEditActivity'
+1340743835925	Rename type 'MovieDetailActivity'
+1340743848344	Rename type 'MovieDetailFragment'
+1340743854978	Rename type 'MovieEditFragment'
+1340743861977	Rename type 'MovieListFragment'
+1340743896651	Rename resource 'main.xml'
+1340743912859	Rename resource 'main_fragment.xml'
+1340743932167	Rename resource 'movie_alone_fragment.xml'
+1340743949068	Rename resource 'movie_alone.xml'
+1340744029055	Rename resource 'movie_in_list.xml'
+1340744072417	Rename resource 'fragment_movies_edit.xml'
+1340744095274	Rename resource 'movie_edit.xml'
+1340744112686	Rename resource 'fragment_movies_list.xml'
+1340744144350	Rename resource 'movie_edit_fragment.xml'
+1340744176440	Rename resource 'activity_movies_edit.xml'
+1340744208589	Rename resource 'activity_movies_list.xml'
+1340744221920	Rename resource 'activity2_movies_edit.xml'
+1340744233774	Rename resource 'activity2_movies_list.xml'
+1340828090819	Delete element
+1341052134369	Move compilation unit
+1341052140899	Delete element
+1341052356685	Delete element
+1341057753829	Delete element

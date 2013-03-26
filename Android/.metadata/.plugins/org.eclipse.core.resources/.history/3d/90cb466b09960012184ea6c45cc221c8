@@ -1,0 +1,22 @@
+package edu.hci.annoyingapp;
+
+import android.app.AlarmManager;
+import android.app.Application;
+import android.app.PendingIntent;
+
+public class AnnoyingApplication extends Application {
+	
+	public static AlarmManager mAlarmManager;
+	public static PendingIntent mPendingIntent;
+	
+	public static boolean mIsDialogRunning;
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+
+		mAlarmManager = null;
+		mPendingIntent = null;
+	}
+
+}

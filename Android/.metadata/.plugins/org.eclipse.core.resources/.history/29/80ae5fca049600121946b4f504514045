@@ -1,0 +1,85 @@
+package edu.hci.notiftest;
+
+import java.util.Calendar;
+
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class MainActivity extends Activity implements OnClickListener {
+
+	// In seconds.
+	private static final int DIALOG_TIME = 20;
+	
+	private boolean mLaunchService;
+
+	private Button mStartBt;
+	private Button mStopBt;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		mLaunchService = false;
+
+		mStartBt = (Button) findViewById(R.id.activity_start_button);
+		mStartBt.setOnClickListener(this);
+
+		mStopBt = (Button) findViewById(R.id.activity_stop_button);
+		mStopBt.setOnClickListener(this);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	@Override
+	protected void onStop() {
+		
+		if(mLaunchService) {
+			Calendar cal = Calendar.getInstance();
+			SystemClock.sleep(5000);
+			Intent background = new Intent(this, MyIntentService.class);
+
+			// A service can be stop by the system, so we need to schedule it...
+			TestApplication.mPendingIntent = PendingIntent.getService(this, 0,
+					background, 0);
+			TestApplication.mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			// Start every DIALOG_TIME seconds.
+			TestApplication.mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+					DIALOG_TIME * 1000, TestApplication.mPendingIntent);
+		}
+		
+		super.onStop();
+	}
+
+	@Override
+	public void onClick(View v) {
+		if (v.getId() == mStartBt.getId()) {
+			mLaunchService = true;
+		} else if (v.getId() == mStopBt.getId()) {
+			TestApplication.mAlarmManager.cancel(TestApplication.mPendingIntent);
+			TestApplication.mAlarmManager = null;
+			TestApplication.mPendingIntent = null;
+		}
+	}
+	
+	private boolean stopService() {
+		
+	}
+
+}

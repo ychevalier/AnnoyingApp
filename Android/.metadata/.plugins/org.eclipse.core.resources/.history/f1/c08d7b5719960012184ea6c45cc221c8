@@ -1,0 +1,24 @@
+package edu.hci.annoyingapp.model;
+
+public class data {
+	
+	private long mStartTime;
+	
+	private long mStopTime;
+	
+	private List<Long> mFailedTime;
+	
+	public data() {
+		mFailedTime = new LinkedList<Long>();
+	}
+	
+	public long getStartTime() {
+		return mStartTime;
+	}
+	
+	public long getStopTime() {
+		return mStopTime;
+	}
+	
+
+}
