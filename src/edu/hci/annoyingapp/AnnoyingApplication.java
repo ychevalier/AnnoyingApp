@@ -6,7 +6,7 @@ import java.util.List;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
-import edu.hci.annoyingapp.model.Data;
+import edu.hci.annoyingapp.model.Stat;
 
 public class AnnoyingApplication extends Application {
 	
@@ -18,7 +18,7 @@ public class AnnoyingApplication extends Application {
 	public static PendingIntent mPendingIntent;
 	
 	private static boolean mIsDialogRunning;
-	private static List<Data> mDataList;
+	private static List<Stat> mDataList;
 	
 	@Override
 	public void onCreate() {
@@ -29,19 +29,27 @@ public class AnnoyingApplication extends Application {
 		
 		mIsDialogRunning = false;
 		
-		mDataList = new LinkedList<Data>();
+		mDataList = new LinkedList<Stat>();
 	}
 	
 	public static void startDialog() {
 		mIsDialogRunning = true;
 	}
 	
-	public static void stopDialog(Data d) {
+	public static void stopDialog(Stat d) {
 		mIsDialogRunning = false;
 		mDataList.add(d);
 	}
 	
 	public static boolean isDialogStarted() {
 		return mIsDialogRunning;
+	}
+	
+	public static Stat[] getStats() {
+		Stat[] ret = new Stat[mDataList.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = mDataList.get(i);
+		}
+		return ret;
 	}
 }

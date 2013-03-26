@@ -26,26 +26,36 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int activity_annoying_content_text=0x7f070002;
-        public static final int activity_annoying_no_button=0x7f070004;
-        public static final int activity_annoying_yes_button=0x7f070003;
-        public static final int activity_settings_start_button=0x7f070000;
-        public static final int activity_settings_stop_button=0x7f070001;
+        public static final int activity_annoying_content_text=0x7f070001;
+        public static final int activity_annoying_no_button=0x7f070003;
+        public static final int activity_annoying_yes_button=0x7f070002;
+        public static final int content_activity_main=0x7f070000;
+        public static final int fragment_settings_set_interval=0x7f070004;
+        public static final int fragment_settings_start_button=0x7f070005;
+        public static final int fragment_settings_stop_button=0x7f070006;
+        public static final int fragment_settings_view_stats=0x7f070007;
+        public static final int row_data_duration=0x7f070009;
+        public static final int row_data_failure=0x7f07000a;
+        public static final int row_data_time=0x7f070008;
     }
     public static final class layout {
-        public static final int activity_annoying_blank=0x7f030000;
-        public static final int activity_settings=0x7f030001;
+        public static final int activity_annoying=0x7f030000;
+        public static final int activity_main=0x7f030001;
         public static final int dialog_annoying=0x7f030002;
+        public static final int fragment_settings=0x7f030003;
+        public static final int row_stat=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
         /**  Dialog Activity 
          */
         public static final int dialog_text=0x7f050001;
+        public static final int set_interval=0x7f050004;
         /**  Settings Activity 
          */
         public static final int start_button=0x7f050002;
         public static final int stop_button=0x7f050003;
+        public static final int view_stats=0x7f050005;
     }
     public static final class style {
         /** 

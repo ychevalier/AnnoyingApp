@@ -3,7 +3,7 @@ package edu.hci.annoyingapp.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Data {
+public class Stat {
 	
 	// Each time is in millis;
 	
@@ -13,7 +13,7 @@ public class Data {
 	
 	private List<Long> mFailedTime;
 	
-	public Data() {
+	public Stat() {
 		mFailedTime = new LinkedList<Long>();
 	}
 	

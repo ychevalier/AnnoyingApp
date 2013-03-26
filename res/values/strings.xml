@@ -9,5 +9,7 @@
     <!-- Settings Activity -->
     <string name="start_button">Start</string>
     <string name="stop_button">Stop</string>
-
+    <string name="set_interval">Set Interval</string>
+	<string name="view_stats">View Statistics</string>
+	
 </resources>
