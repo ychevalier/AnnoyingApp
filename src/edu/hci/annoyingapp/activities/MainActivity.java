@@ -31,6 +31,7 @@ public class MainActivity extends FragmentActivity implements OnSettingChoiceLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main);
 		
 		FragmentManager fm = getSupportFragmentManager();
@@ -129,5 +130,4 @@ public class MainActivity extends FragmentActivity implements OnSettingChoiceLis
 			super.onBackPressed();
 		}
 	}
-
 }

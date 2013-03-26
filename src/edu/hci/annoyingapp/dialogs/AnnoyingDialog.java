@@ -69,4 +69,6 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 			}
 		}
 	}
+	
+	
 }

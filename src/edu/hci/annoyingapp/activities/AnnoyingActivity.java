@@ -12,11 +12,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
-public class AnnoyingActivity extends FragmentActivity implements AnnoyingListener {
+public class AnnoyingActivity extends FragmentActivity implements
+		AnnoyingListener {
 
 	private static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
-	
+
 	private Stat mCurrentData;
 
 	@Override
@@ -37,12 +38,12 @@ public class AnnoyingActivity extends FragmentActivity implements AnnoyingListen
 		super.onStart();
 
 		mCurrentData = new Stat();
-		
+
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.setStartTime(cal.getTimeInMillis());
-		
+
 		showDialog();
-		
+
 		AnnoyingApplication.startDialog();
 	}
 
@@ -52,20 +53,21 @@ public class AnnoyingActivity extends FragmentActivity implements AnnoyingListen
 
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.setStartTime(cal.getTimeInMillis());
-		
+
 		AnnoyingApplication.stopDialog(mCurrentData);
 	}
-	
+
 	private void showDialog() {
 
-	    FragmentManager fm = getSupportFragmentManager();
-		AnnoyingDialog ad = (AnnoyingDialog) fm.findFragmentByTag(AnnoyingDialog.TAG);
-	    if (ad == null) {
-	    	ad = AnnoyingDialog.newInstance();
-	    	ad.setAnnoyingListener(this);
-	    	ad.setCancelable(false);
-	    	ad.show(fm.beginTransaction(), AnnoyingDialog.TAG);
-	    }
+		FragmentManager fm = getSupportFragmentManager();
+		AnnoyingDialog ad = (AnnoyingDialog) fm
+				.findFragmentByTag(AnnoyingDialog.TAG);
+		if (ad == null) {
+			ad = AnnoyingDialog.newInstance();
+			ad.setAnnoyingListener(this);
+			ad.setCancelable(false);
+			ad.show(fm.beginTransaction(), AnnoyingDialog.TAG);
+		}
 	}
 
 	@Override
@@ -78,4 +80,5 @@ public class AnnoyingActivity extends FragmentActivity implements AnnoyingListen
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.addFailure(cal.getTimeInMillis());
 	}
+
 }
