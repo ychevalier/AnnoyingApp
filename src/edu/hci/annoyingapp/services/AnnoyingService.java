@@ -39,14 +39,14 @@ public class AnnoyingService extends IntentService {
 				Log.d(TAG, "Launching dialog!");
 			}
 			
-			Intent intent1 = new Intent(this, AnnoyingActivity.class);
+			Intent i = new Intent(this, AnnoyingActivity.class);
 			
 			// This is highly deprectated...
 			//intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 			
 			// This works only after api 11...
-			intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			startActivity(intent1);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);// | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(i);
 		} else {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Screen is off or locked...");

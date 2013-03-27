@@ -12,4 +12,8 @@
     <string name="set_interval">Set Interval</string>
 	<string name="view_stats">View Statistics</string>
 	
+	<string name="config_1">Yes/No</string>
+	<string name="config_2">No/Yes</string>
+	<string name="has_quit_properly">Good</string>
+	<string name="has_not_quit_properly">Bad</string>
 </resources>

@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
+import edu.hci.annoyingapp.activities.AnnoyingActivity;
 import edu.hci.annoyingapp.model.Stat;
 
 public class AnnoyingApplication extends Application {
@@ -16,6 +17,16 @@ public class AnnoyingApplication extends Application {
 	// of SettingsActivity can access the alarm...
 	public static AlarmManager mAlarmManager;
 	public static PendingIntent mPendingIntent;
+	
+	public static final String PREFS_NAME = "AnnoyingPrefs";
+	
+	public static final String IS_SERVICE_RUNNING = "IsServiceRunning";
+	public static final String CONFIG_TYPE = "ConfigType";
+	public static final String INTERVAL = "Interval";
+	
+	public static final boolean DEFAULT_IS_RUNNING = false;
+	public static final int DEFAULT_INTERVAL = 20;
+	public static final int DEFAULT_CONFIG = AnnoyingActivity.CONFIG_1;
 	
 	private static boolean mIsDialogRunning;
 	private static List<Stat> mDataList;

@@ -1,25 +1,47 @@
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <Button
         android:id="@+id/fragment_settings_set_interval"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/set_interval" />
-    
-     <Button
+
+    <RadioGroup
+        android:id="@+id/fragment_settings_config"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/fragment_settings_config_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/config_1" />
+
+        <RadioButton
+            android:id="@+id/fragment_settings_config_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/config_2" />
+    </RadioGroup>
+
+    <Button
         android:id="@+id/fragment_settings_start_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/start_button" />
-    
-     <Button
+
+    <Button
         android:id="@+id/fragment_settings_stop_button"
         android:layout_width="match_parent"
         android:layout_height="0dp"

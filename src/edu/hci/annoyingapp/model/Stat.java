@@ -13,6 +13,10 @@ public class Stat {
 	
 	private List<Long> mFailedTime;
 	
+	private int mConfig;
+	
+	private boolean mHasQuitProperly;
+	
 	public Stat() {
 		mFailedTime = new LinkedList<Long>();
 	}
@@ -29,6 +33,14 @@ public class Stat {
 		return mFailedTime.size();
 	}
 	
+	public int getConfig() {
+		return mConfig;
+	}
+	
+	public boolean getHasQuitProperly() {
+		return mHasQuitProperly;
+	}
+	
 	public void setStartTime(long start) {
 		mStartTime = start;
 	}
@@ -39,5 +51,13 @@ public class Stat {
 	
 	public void addFailure(long time) {
 		mFailedTime.add(Long.valueOf(time));
+	}
+	
+	public void setConfig(int config) {
+		mConfig = config;
+	}
+	
+	public void setHasQuitProperly(boolean hasQuit) {
+		mHasQuitProperly = hasQuit;
 	}
 }

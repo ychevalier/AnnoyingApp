@@ -7,9 +7,11 @@ import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog.AnnoyingListener;
 import edu.hci.annoyingapp.model.Stat;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Window;
 
 public class AnnoyingActivity extends FragmentActivity implements
@@ -18,7 +20,12 @@ public class AnnoyingActivity extends FragmentActivity implements
 	private static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
+	public static final int CONFIG_1 = 1;
+	public static final int CONFIG_2 = 2;
+
 	private Stat mCurrentData;
+	
+	private boolean mHasStoppedProperly;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +45,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 		super.onStart();
 
 		mCurrentData = new Stat();
-
+		mHasStoppedProperly = false;
+		
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.setStartTime(cal.getTimeInMillis());
 
@@ -52,9 +60,20 @@ public class AnnoyingActivity extends FragmentActivity implements
 		super.onStop();
 
 		Calendar cal = Calendar.getInstance();
-		mCurrentData.setStartTime(cal.getTimeInMillis());
-
-		AnnoyingApplication.stopDialog(mCurrentData);
+		mCurrentData.setStopTime(cal.getTimeInMillis());
+		if(!mHasStoppedProperly) {
+			
+			mCurrentData.setHasQuitProperly(false);
+			// Temporary hack for when user clicks on home button...
+			if(DEBUG_MODE) {
+				Log.d(TAG, "Anything could have happened!!!");
+			}
+			AnnoyingApplication.stopDialog(mCurrentData);
+			finish();
+		} else {
+			mCurrentData.setHasQuitProperly(true);
+			AnnoyingApplication.stopDialog(mCurrentData);
+		}
 	}
 
 	private void showDialog() {
@@ -63,7 +82,16 @@ public class AnnoyingActivity extends FragmentActivity implements
 		AnnoyingDialog ad = (AnnoyingDialog) fm
 				.findFragmentByTag(AnnoyingDialog.TAG);
 		if (ad == null) {
-			ad = AnnoyingDialog.newInstance();
+
+			SharedPreferences settings = getSharedPreferences(
+					AnnoyingApplication.PREFS_NAME, 0);
+			mCurrentData.setConfig(settings.getInt(
+					AnnoyingApplication.CONFIG_TYPE,
+					AnnoyingApplication.DEFAULT_CONFIG));
+
+			Bundle args = new Bundle();
+			args.putInt(AnnoyingDialog.CONFIG_TYPE, mCurrentData.getConfig());
+			ad = AnnoyingDialog.newInstance(args);
 			ad.setAnnoyingListener(this);
 			ad.setCancelable(false);
 			ad.show(fm.beginTransaction(), AnnoyingDialog.TAG);
@@ -72,6 +100,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 	@Override
 	public void onPositiveButtonClicked() {
+		mHasStoppedProperly = true;
 		finish();
 	}
 
@@ -80,5 +109,4 @@ public class AnnoyingActivity extends FragmentActivity implements
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.addFailure(cal.getTimeInMillis());
 	}
-
 }
