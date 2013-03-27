@@ -7,7 +7,11 @@ import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog.AnnoyingListener;
 import edu.hci.annoyingapp.model.Stat;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -61,17 +65,48 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		Calendar cal = Calendar.getInstance();
 		mCurrentData.setStopTime(cal.getTimeInMillis());
+		
+		ContentValues dialog = new ContentValues();
+		dialog.put(Dialogs.DIALOG_START, mCurrentData.getStartTime());
+		dialog.put(Dialogs.DIALOG_UID, AnnoyingApplication.UID);
+		dialog.put(Dialogs.DIALOG_CONDITION, mCurrentData.getConfig());
+
+		Uri uri = getContentResolver().insert(Dialogs.CONTENT_URI, dialog);
+		String seg = uri.getLastPathSegment();
+		Integer id = Integer.valueOf(seg);
+		
+		for(Long fail : mCurrentData.getFailures()) {
+			ContentValues interaction = new ContentValues();
+			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_NO);
+			interaction.put(Interactions.INTERACTION_DATETIME, fail);
+			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
+			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
+		}
+		
+		if(DEBUG_MODE) {
+			Log.d(TAG, "This is my URI : " + uri.toString());
+		}
+		
 		if(!mHasStoppedProperly) {
 			
 			mCurrentData.setHasQuitProperly(false);
-			// Temporary hack for when user clicks on home button...
-			if(DEBUG_MODE) {
-				Log.d(TAG, "Anything could have happened!!!");
-			}
+			
+			ContentValues interaction = new ContentValues();
+			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_OTHER);
+			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
+			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
+			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
+			
 			AnnoyingApplication.stopDialog(mCurrentData);
 			finish();
 		} else {
 			mCurrentData.setHasQuitProperly(true);
+			
+			ContentValues interaction = new ContentValues();
+			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_OTHER);
+			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
+			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
+			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
 			AnnoyingApplication.stopDialog(mCurrentData);
 		}
 	}

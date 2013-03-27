@@ -28,6 +28,12 @@ public class AnnoyingApplication extends Application {
 	public static final int DEFAULT_INTERVAL = 20;
 	public static final int DEFAULT_CONFIG = AnnoyingActivity.CONFIG_1;
 	
+	public static final int BUTTON_YES = 0;
+	public static final int BUTTON_NO = 1;
+	public static final int BUTTON_OTHER = 2;
+	
+	public static final int UID = 42;
+	
 	private static boolean mIsDialogRunning;
 	private static List<Stat> mDataList;
 	

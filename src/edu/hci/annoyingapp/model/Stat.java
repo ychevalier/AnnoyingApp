@@ -41,6 +41,10 @@ public class Stat {
 		return mHasQuitProperly;
 	}
 	
+	public List<Long> getFailures() {
+		return mFailedTime;
+	}
+	
 	public void setStartTime(long start) {
 		mStartTime = start;
 	}
