@@ -24,9 +24,6 @@ public class AnnoyingActivity extends FragmentActivity implements
 	private static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
-	public static final int CONFIG_1 = 1;
-	public static final int CONFIG_2 = 2;
-
 	private Stat mCurrentData;
 	
 	private boolean mHasStoppedProperly;
@@ -97,17 +94,20 @@ public class AnnoyingActivity extends FragmentActivity implements
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
 			
-			AnnoyingApplication.stopDialog(mCurrentData);
+			//AnnoyingApplication.stopDialog(mCurrentData);
+			AnnoyingApplication.stopDialog();
 			finish();
 		} else {
 			mCurrentData.setHasQuitProperly(true);
 			
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_OTHER);
+			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_YES);
 			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
-			AnnoyingApplication.stopDialog(mCurrentData);
+			
+			//AnnoyingApplication.stopDialog(mCurrentData);
+			AnnoyingApplication.stopDialog();
 		}
 	}
 

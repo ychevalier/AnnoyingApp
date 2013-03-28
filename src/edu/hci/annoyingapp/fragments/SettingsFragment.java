@@ -12,7 +12,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.activities.AnnoyingActivity;
 
 public class SettingsFragment extends Fragment implements OnClickListener,
 		OnCheckedChangeListener {
@@ -99,10 +98,10 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 				.findViewById(R.id.fragment_settings_config);
 		
 		switch (mConfig) {
-		case AnnoyingActivity.CONFIG_1:
+		case AnnoyingApplication.CONFIG_YES_NO:
 			config.check(R.id.fragment_settings_config_1);
 			break;
-		case AnnoyingActivity.CONFIG_2:
+		case AnnoyingApplication.CONFIG_NO_YES:
 			config.check(R.id.fragment_settings_config_2);
 			break;
 		}
@@ -155,14 +154,14 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 		switch (checkedId) {
 		case R.id.fragment_settings_config_1:
 			if (getActivity() != null) {
-				mConfig = AnnoyingActivity.CONFIG_1;
-				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingActivity.CONFIG_1);
+				mConfig = AnnoyingApplication.CONFIG_YES_NO;
+				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_YES_NO);
 			}
 			break;
 		case R.id.fragment_settings_config_2:
 			if (getActivity() != null) {
-				mConfig = AnnoyingActivity.CONFIG_2;
-				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingActivity.CONFIG_2);
+				mConfig = AnnoyingApplication.CONFIG_NO_YES;
+				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_NO_YES);
 			}
 			break;
 		}

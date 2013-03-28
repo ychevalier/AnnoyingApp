@@ -3,6 +3,7 @@ package edu.hci.annoyingapp.provider;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
 import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
 
 import android.content.ContentProvider;
@@ -23,10 +24,12 @@ public class AnnoyingAppProvider extends ContentProvider {
 	private static final int DIALOGS = 10;
 	private static final int DIALOGS_ID = 11;
 	private static final int DIALOGS_ID_INTERACTIONS = 12;
+	private static final int DIALOGS_SPECIAL = 13;
 
 	private static final int INTERACTIONS = 20;
 	private static final int INTERACTIONS_ID = 21;
 
+	static final String SPECIAL = "special";
 	static final String UNDERSCORE = "_";
 	static final String SLASH = "/";
 	static final String STAR = "*";
@@ -40,6 +43,10 @@ public class AnnoyingAppProvider extends ContentProvider {
 		final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 		final String authority = AnnoyingAppContract.CONTENT_AUTHORITY;
 
+		// Order matters!
+		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
+				+ SPECIAL, DIALOGS_SPECIAL);
+		
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS, DIALOGS);
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
 				+ STAR, DIALOGS_ID);
@@ -69,8 +76,10 @@ public class AnnoyingAppProvider extends ContentProvider {
 			return AnnoyingAppContract.Interactions.CONTENT_TYPE;
 		case INTERACTIONS_ID:
 			return AnnoyingAppContract.Interactions.CONTENT_ITEM_TYPE;
+		case DIALOGS_SPECIAL:
+			return AnnoyingAppContract.Dialogs.CONTENT_TYPE;
 		default:
-			throw new UnsupportedOperationException("Unknown uri: " + uri);
+			throw new UnsupportedOperationException("Unknown uri: " + uri );
 		}
 	}
 
@@ -106,7 +115,7 @@ public class AnnoyingAppProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,
 			String[] selectionArgs) {
-		
+
 		String seg = uri.getLastPathSegment();
 		Integer id = Integer.valueOf(seg);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -155,7 +164,8 @@ public class AnnoyingAppProvider extends ContentProvider {
 		case INTERACTIONS:
 		case INTERACTIONS_ID:
 			try {
-				return db.delete(Tables.INTERACTIONS, Interactions._ID + "=" + id, null);
+				return db.delete(Tables.INTERACTIONS, Interactions._ID + "="
+						+ id, null);
 			} catch (Exception e) {
 				return db.delete(Tables.INTERACTIONS, selection, selectionArgs);
 			}
@@ -169,6 +179,9 @@ public class AnnoyingAppProvider extends ContentProvider {
 	public Cursor query(Uri uri, String[] projection, String selection,
 			String[] selectionArgs, String sortOrder) {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		
+		String groupBy = null;
+		String having = null;
 		
 		int uriType = sUriMatcher.match(uri);
 		switch (uriType) {
@@ -192,12 +205,25 @@ public class AnnoyingAppProvider extends ContentProvider {
 			queryBuilder.appendWhere(Interactions.INTERACTION_ID + "="
 					+ uri.getLastPathSegment());
 			break;
+		case DIALOGS_SPECIAL:
+			queryBuilder.setTables(Tables.INTERACTIONS + ',' + Tables.DIALOGS);
+
+			// TODO : Bad bad bad to overwrite the arguments....
+			
+			projection = SpecialQuery.PROJECTION;
+			selection = Tables.DIALOGS +'.'+ Dialogs._ID +  '=' +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DIALOG_ID;
+			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
+			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + AnnoyingApplication.BUTTON_YES 
+					+ " OR " + Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + AnnoyingApplication.BUTTON_OTHER;
+			sortOrder = Tables.DIALOGS +'.'+ Dialogs.DIALOG_START;
+			//queryBuilder.buildQuery(SpecialQuery.PROJECTION, null, null, null, sort, null);//sel, groupBy, having, sort, null);
+			break;
 		default:
-			throw new IllegalArgumentException("Unknown URI");
+			throw new IllegalArgumentException("Unknown URI : " + uri);
 		}
 
 		Cursor cursor = queryBuilder.query(dbHelper.getReadableDatabase(),
-				projection, selection, selectionArgs, null, null, sortOrder);
+				projection, selection, selectionArgs, groupBy, having, sortOrder);
 		cursor.setNotificationUri(getContext().getContentResolver(), uri);
 		return cursor;
 	}

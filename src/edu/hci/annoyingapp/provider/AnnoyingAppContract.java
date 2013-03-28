@@ -1,5 +1,6 @@
 package edu.hci.annoyingapp.provider;
 
+import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -12,6 +13,7 @@ public class AnnoyingAppContract {
 
 	public static final String PATH_DIALOGS = "dialogs";
 	public static final String PATH_INTERACTIONS = "interactions";
+	
 
 	interface DialogsColumns {
 		// TODO : what about _ID?
@@ -44,6 +46,28 @@ public class AnnoyingAppContract {
 		public static Uri buildInteractionDirUri(String dialogId) {
 			return CONTENT_URI.buildUpon().appendPath(dialogId)
 					.appendPath(PATH_INTERACTIONS).build();
+		}
+		
+		// Get all dialogs in a special layout
+		public static Uri buildDialogsSpecialUri() {
+			return CONTENT_URI.buildUpon().appendPath(AnnoyingAppProvider.SPECIAL).build();
+		}
+		
+		public interface SpecialQuery {
+			
+			String[] PROJECTION = {Tables.DIALOGS +'.'+ Dialogs._ID, 
+					Tables.DIALOGS +'.'+ Dialogs.DIALOG_CONDITION, 
+					Tables.DIALOGS +'.'+ Dialogs.DIALOG_START,
+					Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DATETIME,
+					Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON,
+					"Count(*)"};
+
+			int _ID = 0;
+			int CONDITION = 1;
+			int START = 2;
+			int STOP = 3;
+			int BUTTON = 4;
+			int NB_FAILURES = 5;
 		}
 	}
 

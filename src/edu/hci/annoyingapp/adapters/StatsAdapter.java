@@ -1,23 +1,24 @@
 package edu.hci.annoyingapp.adapters;
 
 import java.util.Calendar;
-import android.app.Activity;
+
 import android.content.Context;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.activities.AnnoyingActivity;
-import edu.hci.annoyingapp.model.Stat;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
 
-public class StatsAdapter extends ArrayAdapter<Stat> {
-
+public class StatsAdapter extends CursorAdapter {
+	
 	public static final String TAG = StatsAdapter.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
-
+	
 	static class StatHolder {
 		TextView time;
 		TextView duration;
@@ -26,43 +27,43 @@ public class StatsAdapter extends ArrayAdapter<Stat> {
 		TextView hasquit;
 	}
 
-	Context mContext;
-	int mLayoutId;
-	Stat[] mStats;
-
-	public StatsAdapter(Context context, int layoutId, Stat[] stats) {
-		super(context, layoutId, stats);
-		mContext = context;
-		mLayoutId = layoutId;
-		mStats = stats;
+	public StatsAdapter(Context context) {
+		super(context, null, 0);
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = convertView;
-		StatHolder holder = null;
+	public long getItemId(int position) {
+		return ((Cursor) getItem(position)).getLong(mCursor
+				.getColumnIndex(Dialogs._ID));
+	}
 
-		if (row == null) {
-			LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-			row = inflater.inflate(mLayoutId, parent, false);
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-			holder = new StatHolder();
-			holder.time = (TextView) row.findViewById(R.id.row_data_time);
-			holder.duration = (TextView) row
-					.findViewById(R.id.row_data_duration);
-			holder.failure = (TextView) row.findViewById(R.id.row_data_failure);
-			holder.config = (TextView) row.findViewById(R.id.row_data_config);
-			holder.hasquit = (TextView) row
-					.findViewById(R.id.row_data_has_quit);
-			row.setTag(holder);
-		} else {
-			holder = (StatHolder) row.getTag();
-		}
+		LayoutInflater inflater = (LayoutInflater) context
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = inflater.inflate(R.layout.row_stat, parent, false);
 
-		Stat data = mStats[position];
+		StatHolder holder = new StatHolder();
+		holder.time = (TextView) v.findViewById(R.id.row_data_time);
+		holder.duration = (TextView)v
+				.findViewById(R.id.row_data_duration);
+		holder.failure = (TextView) v.findViewById(R.id.row_data_failure);
+		holder.config = (TextView) v.findViewById(R.id.row_data_config);
+		holder.hasquit = (TextView)v
+				.findViewById(R.id.row_data_has_quit);
+		v.setTag(holder);
 
+		return v;
+	}
+
+	@Override
+	public void bindView(View view, Context context, Cursor cursor) {
+
+		StatHolder holder = (StatHolder) view.getTag();
+		
 		final Calendar cal = Calendar.getInstance();
-		cal.setTimeInMillis(data.getStartTime());
+		cal.setTimeInMillis(cursor.getLong(SpecialQuery.START));
 
 		StringBuilder sB = new StringBuilder();
 		sB.append(cal.get(Calendar.HOUR_OF_DAY));
@@ -72,26 +73,31 @@ public class StatsAdapter extends ArrayAdapter<Stat> {
 		sB.append(cal.get(Calendar.SECOND));
 
 		holder.time.setText(sB.toString());
-		holder.duration.setText(String.valueOf(data.getStopTime()
-				- data.getStartTime()));
-		holder.failure.setText(String.valueOf(data.getNbFailures()));
+		holder.duration.setText(String.valueOf(cursor.getLong(SpecialQuery.STOP)
+				- cursor.getLong(SpecialQuery.START)));
+		
+		holder.failure.setText(String.valueOf(cursor.getInt(SpecialQuery.NB_FAILURES)));
 
-		switch (data.getConfig()) {
-		case AnnoyingActivity.CONFIG_1:
-			holder.config.setText(getContext().getResources().getString(
+		switch (cursor.getInt(SpecialQuery.CONDITION)) {
+		case AnnoyingApplication.CONFIG_YES_NO:
+			holder.config.setText(context.getResources().getString(
 					R.string.config_1));
 			break;
-		case AnnoyingActivity.CONFIG_2:
-			holder.config.setText(getContext().getResources().getString(
+		case AnnoyingApplication.CONFIG_NO_YES:
+			holder.config.setText(context.getResources().getString(
 					R.string.config_2));
 			break;
 		}
 
-		holder.hasquit.setText(data.getHasQuitProperly() ? getContext()
+		
+		boolean hasQuitProperly = false;;
+		if(cursor.getInt(SpecialQuery.BUTTON) == AnnoyingApplication.BUTTON_YES) {
+			hasQuitProperly = true;
+		}
+		holder.hasquit.setText(hasQuitProperly ? context
 				.getResources().getString(R.string.has_quit_properly)
-				: getContext().getResources().getString(
-						R.string.has_not_quit_properly));
-
-		return row;
+				: context.getResources().getString(R.string.has_not_quit_properly));
+				
 	}
+
 }
