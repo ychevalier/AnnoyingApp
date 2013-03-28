@@ -47,13 +47,13 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 
 		switch (mType) {
 		case AnnoyingApplication.CONFIG_YES_NO:
-			v = inflater.inflate(R.layout.dialog_annoying, container, false);
+			v = inflater.inflate(R.layout.dialog_annoying_yes_no, container, false);
 			// Watch for button clicks.
 			yes = (Button) v.findViewById(R.id.activity_annoying_yes_button);
 			no = (Button) v.findViewById(R.id.activity_annoying_no_button);
 			break;
 		case AnnoyingApplication.CONFIG_NO_YES:
-			v = inflater.inflate(R.layout.dialog_annoying_2, container, false);
+			v = inflater.inflate(R.layout.dialog_annoying_no_yes, container, false);
 			// Watch for button clicks.
 			yes = (Button) v.findViewById(R.id.activity_annoying_yes_button_2);
 			no = (Button) v.findViewById(R.id.activity_annoying_no_button_2);

@@ -90,10 +90,11 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 				.findViewById(R.id.fragment_settings_view_stats);
 		stats.setOnClickListener(this);
 
+		/*
 		Button time = (Button) view
 				.findViewById(R.id.fragment_settings_set_interval);
 		time.setOnClickListener(this);
-
+		 */
 		RadioGroup config = (RadioGroup) view
 				.findViewById(R.id.fragment_settings_config);
 		

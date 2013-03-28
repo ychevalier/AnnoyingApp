@@ -81,11 +81,11 @@ public class StatsAdapter extends CursorAdapter {
 		switch (cursor.getInt(SpecialQuery.CONDITION)) {
 		case AnnoyingApplication.CONFIG_YES_NO:
 			holder.config.setText(context.getResources().getString(
-					R.string.config_1));
+					R.string.config_yes_no));
 			break;
 		case AnnoyingApplication.CONFIG_NO_YES:
 			holder.config.setText(context.getResources().getString(
-					R.string.config_2));
+					R.string.config_no_yes));
 			break;
 		}
 

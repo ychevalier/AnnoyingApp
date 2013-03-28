@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
+    <TextView
         android:id="@+id/fragment_settings_set_interval"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/set_interval" />
+        android:gravity="center"
+        android:text="Interval between Dialogs is 20 seconds" />
 
     <RadioGroup
         android:id="@+id/fragment_settings_config"
@@ -24,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/config_1" />
+            android:text="@string/config_yes_no" />
 
         <RadioButton
             android:id="@+id/fragment_settings_config_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="@string/config_2" />
+            android:text="@string/config_no_yes" />
     </RadioGroup>
 
     <Button
