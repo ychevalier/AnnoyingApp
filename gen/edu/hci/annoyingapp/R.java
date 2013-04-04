@@ -68,6 +68,7 @@ public final class R {
          */
         public static final int start_button=0x7f050002;
         public static final int stop_button=0x7f050003;
+        public static final int time=0x7f05000a;
         public static final int view_stats=0x7f050005;
     }
     public static final class style {

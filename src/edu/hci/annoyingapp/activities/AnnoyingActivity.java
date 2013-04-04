@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Window;
 
 public class AnnoyingActivity extends FragmentActivity implements
@@ -78,10 +77,6 @@ public class AnnoyingActivity extends FragmentActivity implements
 			interaction.put(Interactions.INTERACTION_DATETIME, fail);
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
-		}
-		
-		if(DEBUG_MODE) {
-			Log.d(TAG, "This is my URI : " + uri.toString());
 		}
 		
 		if(!mHasStoppedProperly) {

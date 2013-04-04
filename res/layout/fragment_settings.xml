@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Interval between Dialogs is 20 seconds" />
+        android:text="@string/time" />
 
     <RadioGroup
         android:id="@+id/fragment_settings_config"

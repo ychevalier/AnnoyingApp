@@ -141,7 +141,7 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 			if (getActivity() != null) {
 				mInterval = AnnoyingApplication.DEFAULT_INTERVAL;
 				// TODO
-				((OnSettingChoiceListener) getActivity()).onSetTime(AnnoyingApplication.DEFAULT_INTERVAL);
+				((OnSettingChoiceListener) getActivity()).onSetTime(mInterval);
 			}
 		} else if (v.getId() == R.id.fragment_settings_view_stats) {
 			if (getActivity() != null) {

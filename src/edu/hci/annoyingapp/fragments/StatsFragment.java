@@ -2,6 +2,7 @@ package edu.hci.annoyingapp.fragments;
 
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.adapters.StatsAdapter;
+import edu.hci.annoyingapp.io.DataSender;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class StatsFragment extends ListFragment implements LoaderCallbacks<Curso
 			mAdapter = new StatsAdapter(getActivity());
 			setListAdapter(mAdapter);
 		}
+		
+		new DataSender(getActivity()).execute();
 	}
 	
 	@Override

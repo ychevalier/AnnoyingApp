@@ -1,5 +1,6 @@
 package edu.hci.annoyingapp;
 
+import edu.hci.annoyingapp.io.DataSender;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -7,6 +8,8 @@ import android.app.PendingIntent;
 public class AnnoyingApplication extends Application {
 	
 	public static final boolean DEBUG_MODE = true;
+	
+	public static final String WS_Server = "http://www.cs.bham.ac.uk/research/projects/hci/dialog_habits/WS.php";
 	
 	// Little trick so that every instance 
 	// of SettingsActivity can access the alarm...

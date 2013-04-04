@@ -16,4 +16,5 @@
 	<string name="config_no_yes">No/Yes</string>
 	<string name="has_quit_properly">Good</string>
 	<string name="has_not_quit_properly">Bad</string>
+	<string name="time">Interval between Dialogs is 20 seconds</string>
 </resources>
