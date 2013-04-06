@@ -99,11 +99,14 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 				.findViewById(R.id.fragment_settings_config);
 		
 		switch (mConfig) {
-		case AnnoyingApplication.CONFIG_YES_NO:
+		case AnnoyingApplication.CONFIG_DEFAULT:
 			config.check(R.id.fragment_settings_config_1);
 			break;
-		case AnnoyingApplication.CONFIG_NO_YES:
+		case AnnoyingApplication.CONFIG_ALT:
 			config.check(R.id.fragment_settings_config_2);
+			break;
+		case AnnoyingApplication.CONFIG_OTHER:
+			config.check(R.id.fragment_settings_config_3);
 			break;
 		}
 		config.setOnCheckedChangeListener(this);
@@ -155,14 +158,20 @@ public class SettingsFragment extends Fragment implements OnClickListener,
 		switch (checkedId) {
 		case R.id.fragment_settings_config_1:
 			if (getActivity() != null) {
-				mConfig = AnnoyingApplication.CONFIG_YES_NO;
-				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_YES_NO);
+				mConfig = AnnoyingApplication.CONFIG_DEFAULT;
+				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_DEFAULT);
 			}
 			break;
 		case R.id.fragment_settings_config_2:
 			if (getActivity() != null) {
-				mConfig = AnnoyingApplication.CONFIG_NO_YES;
-				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_NO_YES);
+				mConfig = AnnoyingApplication.CONFIG_ALT;
+				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_ALT);
+			}
+			break;
+		case R.id.fragment_settings_config_3:
+			if (getActivity() != null) {
+				mConfig = AnnoyingApplication.CONFIG_OTHER;
+				((OnSettingChoiceListener) getActivity()).onConfigChanged(AnnoyingApplication.CONFIG_OTHER);
 			}
 			break;
 		}

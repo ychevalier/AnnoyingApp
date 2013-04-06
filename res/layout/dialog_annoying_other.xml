@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/activity_annoying_content_text_2"
+        android:id="@+id/activity_annoying_content_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -12,24 +12,23 @@
         android:text="@string/dialog_text" />
 
     <LinearLayout
+        android:layout_below="@id/activity_annoying_content_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/activity_annoying_content_text_2"
+        android:padding="12dp"
         android:orientation="horizontal" >
-        
+
         <Button
-            android:id="@+id/activity_annoying_no_button_2"
+            android:id="@+id/activity_annoying_left_button"
             android:layout_width="0dp"
             android:layout_height="@dimen/dialog_button_size"
-            android:layout_weight="1"
-            android:text="@android:string/no" />
-        
+            android:layout_weight="1"/>
+
         <Button
-            android:id="@+id/activity_annoying_yes_button_2"
+            android:id="@+id/activity_annoying_right_button"
             android:layout_width="0dp"
             android:layout_height="@dimen/dialog_button_size"
-            android:layout_weight="1"
-            android:text="@android:string/yes" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </RelativeLayout>

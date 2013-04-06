@@ -33,7 +33,7 @@ public class StatsFragment extends ListFragment implements LoaderCallbacks<Curso
 			setListAdapter(mAdapter);
 		}
 		
-		new DataSender(getActivity()).execute();
+		//new DataSender(getActivity()).execute();
 	}
 	
 	@Override

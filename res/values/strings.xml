@@ -5,6 +5,7 @@
     
     <!-- Dialog Activity -->
     <string name="dialog_text">I am just here to get you mad!</string>
+    <string name="dialog_title">This is my annoying Dialog</string>
     
     <!-- Settings Activity -->
     <string name="start_button">Start</string>
@@ -12,8 +13,10 @@
     <string name="set_interval">Set Interval</string>
 	<string name="view_stats">View Statistics</string>
 	
-	<string name="config_yes_no">Yes/No</string>
-	<string name="config_no_yes">No/Yes</string>
+	<string name="config_default">Default</string>
+	<string name="config_alt">Alternative</string>
+	<string name="config_other">Other</string>
+	
 	<string name="has_quit_properly">Good</string>
 	<string name="has_not_quit_properly">Bad</string>
 	<string name="time">Interval between Dialogs is 20 seconds</string>

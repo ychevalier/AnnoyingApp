@@ -25,14 +25,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/config_yes_no" />
+            android:text="@string/config_default" />
 
         <RadioButton
             android:id="@+id/fragment_settings_config_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
-            android:text="@string/config_no_yes" />
+            android:text="@string/config_alt" />
+        
+        <RadioButton
+            android:id="@+id/fragment_settings_config_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:text="@string/config_other" />
     </RadioGroup>
 
     <Button

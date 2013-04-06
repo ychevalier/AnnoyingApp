@@ -79,13 +79,17 @@ public class StatsAdapter extends CursorAdapter {
 		holder.failure.setText(String.valueOf(cursor.getInt(SpecialQuery.NB_FAILURES)));
 
 		switch (cursor.getInt(SpecialQuery.CONDITION)) {
-		case AnnoyingApplication.CONFIG_YES_NO:
+		case AnnoyingApplication.CONFIG_DEFAULT:
 			holder.config.setText(context.getResources().getString(
-					R.string.config_yes_no));
+					R.string.config_default));
 			break;
-		case AnnoyingApplication.CONFIG_NO_YES:
+		case AnnoyingApplication.CONFIG_ALT:
 			holder.config.setText(context.getResources().getString(
-					R.string.config_no_yes));
+					R.string.config_alt));
+			break;
+		case AnnoyingApplication.CONFIG_OTHER:
+			holder.config.setText(context.getResources().getString(
+					R.string.config_other));
 			break;
 		}
 

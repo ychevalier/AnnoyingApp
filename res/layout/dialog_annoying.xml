@@ -12,24 +12,22 @@
         android:text="@string/dialog_text" />
 
     <LinearLayout
+        android:layout_below="@id/activity_annoying_content_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/activity_annoying_content_text"
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/activity_annoying_yes_button"
+            android:id="@+id/activity_annoying_left_button"
             android:layout_width="0dp"
             android:layout_height="@dimen/dialog_button_size"
-            android:layout_weight="1"
-            android:text="@android:string/yes" />
+            android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/activity_annoying_no_button"
+            android:id="@+id/activity_annoying_right_button"
             android:layout_width="0dp"
             android:layout_height="@dimen/dialog_button_size"
-            android:layout_weight="1"
-            android:text="@android:string/no" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
 </RelativeLayout>

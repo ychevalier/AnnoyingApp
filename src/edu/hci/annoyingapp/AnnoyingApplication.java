@@ -29,12 +29,14 @@ public class AnnoyingApplication extends Application {
 	public static final int BUTTON_NO = 1;
 	public static final int BUTTON_OTHER = 2;
 	
-	public static final int CONFIG_YES_NO = 1;
-	public static final int CONFIG_NO_YES = 2;
+	// Yes/No before honeycomb and No/Yes later
+	public static final int CONFIG_DEFAULT = 1;
+	public static final int CONFIG_ALT = 2;
+	public static final int CONFIG_OTHER = 3;
 	
 	public static final boolean DEFAULT_IS_RUNNING = false;
 	public static final int DEFAULT_INTERVAL = 20;
-	public static final int DEFAULT_CONFIG = CONFIG_YES_NO;
+	public static final int DEFAULT_CONFIG = CONFIG_DEFAULT;
 	
 	public static final int UID = 42;
 	
