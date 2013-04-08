@@ -1,23 +1,20 @@
 package edu.hci.annoyingapp.activities;
 
-import java.util.Calendar;
-
-import edu.hci.annoyingapp.AnnoyingApplication;
-import edu.hci.annoyingapp.fragments.SettingsFragment;
-import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
-import edu.hci.annoyingapp.fragments.StatsFragment;
-import edu.hci.annoyingapp.services.AnnoyingService;
-import edu.hci.annoyingapp.R;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+
+import com.google.android.gcm.GCMRegistrar;
+
+import edu.hci.annoyingapp.AnnoyingApplication;
+import edu.hci.annoyingapp.R;
+import edu.hci.annoyingapp.fragments.SettingsFragment;
+import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
+import edu.hci.annoyingapp.fragments.StatsFragment;
+import edu.hci.annoyingapp.utils.Common;
 
 public class MainActivity extends FragmentActivity implements
 		OnSettingChoiceListener {
@@ -26,7 +23,8 @@ public class MainActivity extends FragmentActivity implements
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
 	private int mConfig;
-	private int mInterval;
+	private int mBigInterval;
+	private int mLittleInterval;
 	private boolean mIsRunning;
 
 	@Override
@@ -41,18 +39,21 @@ public class MainActivity extends FragmentActivity implements
 		if (setFragment == null) {
 
 			SharedPreferences settings = getSharedPreferences(
-					AnnoyingApplication.PREFS_NAME, 0);
-			mConfig = settings.getInt(AnnoyingApplication.CONFIG_TYPE,
-					AnnoyingApplication.DEFAULT_CONFIG);
-			mInterval = settings.getInt(AnnoyingApplication.INTERVAL,
-					AnnoyingApplication.DEFAULT_INTERVAL);
+					Common.PREFS_NAME, 0);
+			mConfig = settings.getInt(Common.CONFIG_TYPE,
+					Common.DEFAULT_CONFIG);
+			mBigInterval = settings.getInt(Common.BIG_INTERVAL,
+					Common.DEFAULT_BIG_INTERVAL);
+			mLittleInterval = settings.getInt(Common.LITTLE_INTERVAL,
+					Common.DEFAULT_LITTLE_INTERVAL);
 			mIsRunning = settings.getBoolean(
-					AnnoyingApplication.IS_SERVICE_RUNNING,
-					AnnoyingApplication.DEFAULT_IS_RUNNING);
+					Common.IS_SERVICE_RUNNING,
+					Common.DEFAULT_IS_RUNNING);
 
 			Bundle args = new Bundle();
 			args.putInt(SettingsFragment.CONFIG_TYPE, mConfig);
-			args.putInt(SettingsFragment.INTERVAL, mInterval);
+			args.putInt(SettingsFragment.BIG_INTERVAL, mBigInterval);
+			args.putInt(SettingsFragment.LITTLE_INTERVAL, mLittleInterval);
 			args.putBoolean(SettingsFragment.IS_RUNNING, mIsRunning);
 
 			setFragment = SettingsFragment.newInstance(args);
@@ -60,14 +61,25 @@ public class MainActivity extends FragmentActivity implements
 					.add(R.id.content_activity_main, setFragment,
 							SettingsFragment.TAG).commit();
 		}
+		
+		GCMRegistrar.checkDevice(this);
+		GCMRegistrar.checkManifest(this);
+		final String regId = GCMRegistrar.getRegistrationId(this);
+		if (regId.equals("")) {
+		  GCMRegistrar.register(this, Common.GCM_SENDER_ID);
+		} else {
+			if(DEBUG_MODE) {
+				Log.v(TAG, "Already registered");
+			}
+		}
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-
+		
 		if(mIsRunning) {
-			stopService();
+			AnnoyingApplication.stopService();
 		}
 	}
 
@@ -76,46 +88,24 @@ public class MainActivity extends FragmentActivity implements
 
 		super.onStop();
 
-		SharedPreferences settings = getSharedPreferences(AnnoyingApplication.PREFS_NAME, 0);
+		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(AnnoyingApplication.CONFIG_TYPE, mConfig);
-		editor.putInt(AnnoyingApplication.INTERVAL, mInterval);
-		editor.putBoolean(AnnoyingApplication.IS_SERVICE_RUNNING, mIsRunning);
+		editor.putInt(Common.CONFIG_TYPE, mConfig);
+		editor.putInt(Common.BIG_INTERVAL, mBigInterval);
+		editor.putInt(Common.LITTLE_INTERVAL, mLittleInterval);
+		editor.putBoolean(Common.IS_SERVICE_RUNNING, mIsRunning);
 		editor.commit();
 
 		if (mIsRunning) {
-			Calendar cal = Calendar.getInstance();
-			Intent background = new Intent(this, AnnoyingService.class);
-
-			// A service can be stop by the system, so we need to schedule it...
-			AnnoyingApplication.mPendingIntent = PendingIntent.getService(this,
-					0, background, 0);
-			AnnoyingApplication.mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-			// Start every DIALOG_TIME seconds.
-			AnnoyingApplication.mAlarmManager.setRepeating(
-					AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-					mInterval * 1000, AnnoyingApplication.mPendingIntent);
-
+			
+			AnnoyingApplication.startService(this, Common.DEFAULT_BIG_INTERVAL);
 			// Little trick so that activity is not on background when dialog
 			// shows up.
 			finish();
 		}
 
 	}
-
-	private boolean stopService() {
-		if (AnnoyingApplication.mAlarmManager != null
-				&& AnnoyingApplication.mPendingIntent != null) {
-			AnnoyingApplication.mAlarmManager
-					.cancel(AnnoyingApplication.mPendingIntent);
-			AnnoyingApplication.mAlarmManager = null;
-			AnnoyingApplication.mPendingIntent = null;
-
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 
 	@Override
 	public void onServiceStart() {
@@ -124,7 +114,7 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onServiceStop() {
-		stopService();
+		//AnnoyingApplication.stopService();
 		mIsRunning = false;
 	}
 
@@ -147,11 +137,6 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onSetTime(int interval) {
-		mInterval = interval;
-	}
-
-	@Override
 	public void onBackPressed() {
 
 		FragmentManager fm = getSupportFragmentManager();
@@ -167,5 +152,15 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onConfigChanged(int config) {
 		mConfig = config;
+	}
+
+	@Override
+	public void onSetBigInterval(int bigInterval) {
+		mBigInterval = bigInterval;
+	}
+
+	@Override
+	public void onSetLittleInterval(int littleInterval) {
+		mLittleInterval = littleInterval;
 	}
 }

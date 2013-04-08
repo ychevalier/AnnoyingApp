@@ -13,6 +13,7 @@ import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
+import edu.hci.annoyingapp.utils.Common;
 
 public class StatsAdapter extends CursorAdapter {
 	
@@ -79,15 +80,15 @@ public class StatsAdapter extends CursorAdapter {
 		holder.failure.setText(String.valueOf(cursor.getInt(SpecialQuery.NB_FAILURES)));
 
 		switch (cursor.getInt(SpecialQuery.CONDITION)) {
-		case AnnoyingApplication.CONFIG_DEFAULT:
+		case Common.CONFIG_DEFAULT:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_default));
 			break;
-		case AnnoyingApplication.CONFIG_ALT:
+		case Common.CONFIG_ALT:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_alt));
 			break;
-		case AnnoyingApplication.CONFIG_OTHER:
+		case Common.CONFIG_OTHER:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_other));
 			break;
@@ -95,7 +96,7 @@ public class StatsAdapter extends CursorAdapter {
 
 		
 		boolean hasQuitProperly = false;;
-		if(cursor.getInt(SpecialQuery.BUTTON) == AnnoyingApplication.BUTTON_YES) {
+		if(cursor.getInt(SpecialQuery.BUTTON) == Common.BUTTON_YES) {
 			hasQuitProperly = true;
 		}
 		holder.hasquit.setText(hasQuitProperly ? context

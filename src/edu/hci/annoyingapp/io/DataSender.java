@@ -15,11 +15,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.model.XMLNode;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
+import edu.hci.annoyingapp.utils.Common;
 
 public class DataSender extends AsyncTask<Void, Void, Void> {
 
@@ -63,7 +63,7 @@ public class DataSender extends AsyncTask<Void, Void, Void> {
 	}
 
 	protected Void doInBackground(Void... args) {
-		// postData(FAKE_CONTENT);
+		postData(FAKE_CONTENT);
 
 		XMLNode root = new XMLNode(TAG_DIALOGS);
 		Cursor dialogs = mContext.getContentResolver().query(
@@ -77,8 +77,7 @@ public class DataSender extends AsyncTask<Void, Void, Void> {
 					.getInt(dialogs.getColumnIndex(Dialogs.DIALOG_CONDITION))));
 			root.addAttribute(ATT_START, String.valueOf(dialogs.getLong(dialogs
 					.getColumnIndex(Dialogs.DIALOG_START))));
-			root.addAttribute(ATT_UID, String.valueOf(dialogs.getInt(dialogs
-					.getColumnIndex(Dialogs.DIALOG_UID))));
+			root.addAttribute(ATT_UID, String.valueOf(Common.UID));
 
 			Cursor interactions = mContext
 					.getContentResolver()
@@ -92,6 +91,7 @@ public class DataSender extends AsyncTask<Void, Void, Void> {
 				XMLNode interaction = new XMLNode(TAG_INTERACTION);
 				dialog.addChild(interaction);
 
+				/*
 				interaction
 						.addAttribute(
 								ATT_BUTTON,
@@ -102,18 +102,20 @@ public class DataSender extends AsyncTask<Void, Void, Void> {
 								ATT_DATETIME,
 								String.valueOf(interactions.getLong(interactions
 										.getColumnIndex(Interactions.INTERACTION_DATETIME))));
+										*/
 			}
 		}
-
-		//postData(root.toString());
+	
+		postData(root.toString());
 		if(DEBUG_MODE) {
 			Log.d(TAG, root.toString());
 		}
+		
 		return null;
 	}
 
 	private void postData(String content) {
-		HttpPost httpPost = new HttpPost(AnnoyingApplication.WS_Server);
+		HttpPost httpPost = new HttpPost(Common.WS_Server);
 		httpPost.addHeader("Content-Type", "application/xml");
 
 		StringEntity entity;

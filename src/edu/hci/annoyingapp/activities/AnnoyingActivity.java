@@ -9,6 +9,7 @@ import edu.hci.annoyingapp.dialogs.AnnoyingDialog.AnnoyingListener;
 import edu.hci.annoyingapp.model.Stat;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
+import edu.hci.annoyingapp.utils.Common;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -33,11 +34,6 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_annoying);
-
-		// To Use if you want the phone to vibrate!
-		// Vibrator myVib = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
-		// myVib.vibrate(1000);
-
 	}
 
 	@Override
@@ -64,7 +60,6 @@ public class AnnoyingActivity extends FragmentActivity implements
 		
 		ContentValues dialog = new ContentValues();
 		dialog.put(Dialogs.DIALOG_START, mCurrentData.getStartTime());
-		dialog.put(Dialogs.DIALOG_UID, AnnoyingApplication.UID);
 		dialog.put(Dialogs.DIALOG_CONDITION, mCurrentData.getConfig());
 
 		Uri uri = getContentResolver().insert(Dialogs.CONTENT_URI, dialog);
@@ -73,7 +68,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		
 		for(Long fail : mCurrentData.getFailures()) {
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_NO);
+			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_NO);
 			interaction.put(Interactions.INTERACTION_DATETIME, fail);
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
@@ -84,7 +79,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 			mCurrentData.setHasQuitProperly(false);
 			
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_OTHER);
+			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_OTHER);
 			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
@@ -96,7 +91,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 			mCurrentData.setHasQuitProperly(true);
 			
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, AnnoyingApplication.BUTTON_YES);
+			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_YES);
 			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
@@ -104,6 +99,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 			//AnnoyingApplication.stopDialog(mCurrentData);
 			AnnoyingApplication.stopDialog();
 		}
+		
+		AnnoyingApplication.startService(this, Common.DEFAULT_BIG_INTERVAL);
 	}
 
 	private void showDialog() {
@@ -114,10 +111,10 @@ public class AnnoyingActivity extends FragmentActivity implements
 		if (ad == null) {
 
 			SharedPreferences settings = getSharedPreferences(
-					AnnoyingApplication.PREFS_NAME, 0);
+					Common.PREFS_NAME, 0);
 			mCurrentData.setConfig(settings.getInt(
-					AnnoyingApplication.CONFIG_TYPE,
-					AnnoyingApplication.DEFAULT_CONFIG));
+					Common.CONFIG_TYPE,
+					Common.DEFAULT_CONFIG));
 
 			Bundle args = new Bundle();
 			args.putInt(AnnoyingDialog.CONFIG_TYPE, mCurrentData.getConfig());

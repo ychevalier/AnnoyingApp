@@ -30,10 +30,10 @@ public final class R {
     }
     public static final class id {
         public static final int activity_annoying_content_text=0x7f070001;
-        public static final int activity_annoying_left_button=0x7f070002;
-        public static final int activity_annoying_right_button=0x7f070003;
+        public static final int activity_annoying_left_button=0x7f070003;
+        public static final int activity_annoying_right_button=0x7f070004;
         public static final int content_activity_main=0x7f070000;
-        public static final int divider=0x7f070004;
+        public static final int divider=0x7f070002;
         public static final int fragment_settings_config=0x7f070006;
         public static final int fragment_settings_config_1=0x7f070007;
         public static final int fragment_settings_config_2=0x7f070008;
@@ -51,11 +51,9 @@ public final class R {
     public static final class layout {
         public static final int activity_annoying=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int dialog_annoying=0x7f030002;
-        public static final int dialog_annoying_holo=0x7f030003;
-        public static final int dialog_annoying_other=0x7f030004;
-        public static final int fragment_settings=0x7f030005;
-        public static final int row_stat=0x7f030006;
+        public static final int dialog_annoying_holo=0x7f030002;
+        public static final int fragment_settings=0x7f030003;
+        public static final int row_stat=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

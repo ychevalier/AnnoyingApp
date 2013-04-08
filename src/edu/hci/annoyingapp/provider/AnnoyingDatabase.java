@@ -35,8 +35,7 @@ public class AnnoyingDatabase extends SQLiteOpenHelper {
 		db.execSQL("CREATE TABLE " + Tables.DIALOGS + " ("
 				+ DialogsColumns.DIALOG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ DialogsColumns.DIALOG_START + " LONG,"
-				+ DialogsColumns.DIALOG_CONDITION + " INTEGER,"
-				+ DialogsColumns.DIALOG_UID + " INTEGER" + ")");
+				+ DialogsColumns.DIALOG_CONDITION + " INTEGER)");
 		
 		db.execSQL("CREATE TABLE " + Tables.INTERACTIONS + " ("
 				+ InteractionsColumns.INTERACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"

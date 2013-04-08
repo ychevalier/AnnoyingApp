@@ -1,11 +1,5 @@
 package edu.hci.annoyingapp.provider;
 
-import edu.hci.annoyingapp.AnnoyingApplication;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
-import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -14,6 +8,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import edu.hci.annoyingapp.AnnoyingApplication;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
+import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
+import edu.hci.annoyingapp.utils.Common;
 
 public class AnnoyingAppProvider extends ContentProvider {
 
@@ -213,8 +213,8 @@ public class AnnoyingAppProvider extends ContentProvider {
 			projection = SpecialQuery.PROJECTION;
 			selection = Tables.DIALOGS +'.'+ Dialogs._ID +  '=' +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DIALOG_ID;
 			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
-			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + AnnoyingApplication.BUTTON_YES 
-					+ " OR " + Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + AnnoyingApplication.BUTTON_OTHER;
+			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_YES 
+					+ " OR " + Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_OTHER;
 			sortOrder = Tables.DIALOGS +'.'+ Dialogs.DIALOG_START;
 			//queryBuilder.buildQuery(SpecialQuery.PROJECTION, null, null, null, sort, null);//sel, groupBy, having, sort, null);
 			break;

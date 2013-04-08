@@ -18,7 +18,6 @@ public class AnnoyingAppContract {
 	interface DialogsColumns {
 		// TODO : what about _ID?
 		String DIALOG_ID = "_id";
-		String DIALOG_UID = "uid";
 		String DIALOG_START = "start";
 		String DIALOG_CONDITION = "condition";
 	}
