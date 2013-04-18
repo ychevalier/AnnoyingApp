@@ -16,10 +16,12 @@ public class AnnoyingAppContract {
 	
 
 	interface DialogsColumns {
-		// TODO : what about _ID?
 		String DIALOG_ID = "_id";
 		String DIALOG_START = "start";
 		String DIALOG_CONDITION = "condition";
+		String DIALOG_POSITIVE_TEXT = "positive_text";
+		String DIALOG_NEGATIVE_TEXT = "negative_text";
+		String DIALOG_TEXT = "text";
 	}
 
 	interface InteractionsColumns {

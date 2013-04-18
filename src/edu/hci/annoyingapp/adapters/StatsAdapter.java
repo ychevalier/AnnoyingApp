@@ -80,15 +80,15 @@ public class StatsAdapter extends CursorAdapter {
 		holder.failure.setText(String.valueOf(cursor.getInt(SpecialQuery.NB_FAILURES)));
 
 		switch (cursor.getInt(SpecialQuery.CONDITION)) {
-		case Common.CONFIG_DEFAULT:
+		case Common.CONDITION_DEFAULT:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_default));
 			break;
-		case Common.CONFIG_ALT:
+		case Common.CONDITION_ALT:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_alt));
 			break;
-		case Common.CONFIG_OTHER:
+		case Common.CONDITION_OTHER:
 			holder.config.setText(context.getResources().getString(
 					R.string.config_other));
 			break;
@@ -96,7 +96,7 @@ public class StatsAdapter extends CursorAdapter {
 
 		
 		boolean hasQuitProperly = false;;
-		if(cursor.getInt(SpecialQuery.BUTTON) == Common.BUTTON_YES) {
+		if(cursor.getInt(SpecialQuery.BUTTON) == Common.BUTTON_POSITIVE) {
 			hasQuitProperly = true;
 		}
 		holder.hasquit.setText(hasQuitProperly ? context

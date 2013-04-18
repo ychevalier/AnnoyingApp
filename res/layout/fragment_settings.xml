@@ -5,56 +5,25 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/fragment_settings_set_interval"
+        android:id="@+id/fragment_settings_run"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center" />
 
-    <RadioGroup
-        android:id="@+id/fragment_settings_config"
-        android:layout_width="match_parent"
-        android:layout_margin="12dp"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/fragment_settings_config_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/config_default" />
-
-        <RadioButton
-            android:id="@+id/fragment_settings_config_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/config_alt" />
-        
-        <RadioButton
-            android:id="@+id/fragment_settings_config_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:text="@string/config_other" />
-    </RadioGroup>
-
-    <Button
-        android:id="@+id/fragment_settings_start_button"
+     <TextView
+        android:id="@+id/fragment_settings_interval"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/start_button" />
-
-    <Button
-        android:id="@+id/fragment_settings_stop_button"
+        android:gravity="center" />
+     
+      <TextView
+        android:id="@+id/fragment_settings_condition"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="@string/stop_button" />
+        android:gravity="center" />
 
     <Button
         android:id="@+id/fragment_settings_view_stats"
@@ -62,5 +31,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/view_stats" />
+    
+    <Button
+        android:id="@+id/fragment_settings_unregister"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/unregister" />
 
 </LinearLayout>

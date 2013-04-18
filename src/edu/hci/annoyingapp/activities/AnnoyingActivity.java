@@ -6,7 +6,7 @@ import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog.AnnoyingListener;
-import edu.hci.annoyingapp.model.Stat;
+import edu.hci.annoyingapp.model.DialogInteraction;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
 import edu.hci.annoyingapp.utils.Common;
@@ -24,8 +24,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 	private static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
-	private Stat mCurrentData;
-	
+	private DialogInteraction mCurrentDialog;
+
 	private boolean mHasStoppedProperly;
 
 	@Override
@@ -40,11 +40,25 @@ public class AnnoyingActivity extends FragmentActivity implements
 	protected void onStart() {
 		super.onStart();
 
-		mCurrentData = new Stat();
+		mCurrentDialog = new DialogInteraction();
 		mHasStoppedProperly = false;
-		
+
 		Calendar cal = Calendar.getInstance();
-		mCurrentData.setStartTime(cal.getTimeInMillis());
+		mCurrentDialog.setStartTime(cal.getTimeInMillis());
+
+		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+
+		mCurrentDialog.setCondition(settings.getInt(Common.PREF_CONDITION,
+				Common.DEFAULT_CONDITION));
+
+		mCurrentDialog.setDialogText(settings.getString(
+				Common.PREF_DIALOG_TEXT, Common.DEFAULT_DIALOG));
+
+		mCurrentDialog.setPositiveText(settings.getString(
+				Common.PREF_POSITIVE_BUTTON, Common.DEFAULT_POSITIVE));
+
+		mCurrentDialog.setNegativeText(settings.getString(
+				Common.PREF_NEGATIVE_BUTTON, Common.DEFAULT_NEGATIVE));
 
 		showDialog();
 
@@ -56,51 +70,64 @@ public class AnnoyingActivity extends FragmentActivity implements
 		super.onStop();
 
 		Calendar cal = Calendar.getInstance();
-		mCurrentData.setStopTime(cal.getTimeInMillis());
-		
+		mCurrentDialog.setStopTime(cal.getTimeInMillis());
+
 		ContentValues dialog = new ContentValues();
-		dialog.put(Dialogs.DIALOG_START, mCurrentData.getStartTime());
-		dialog.put(Dialogs.DIALOG_CONDITION, mCurrentData.getConfig());
+		dialog.put(Dialogs.DIALOG_START, mCurrentDialog.getStartTime());
+		dialog.put(Dialogs.DIALOG_CONDITION, mCurrentDialog.getCondition());
+		dialog.put(Dialogs.DIALOG_POSITIVE_TEXT,
+				mCurrentDialog.getPositiveText());
+		dialog.put(Dialogs.DIALOG_NEGATIVE_TEXT,
+				mCurrentDialog.getNegativeText());
+		dialog.put(Dialogs.DIALOG_TEXT, mCurrentDialog.getDialogText());
 
 		Uri uri = getContentResolver().insert(Dialogs.CONTENT_URI, dialog);
 		String seg = uri.getLastPathSegment();
 		Integer id = Integer.valueOf(seg);
-		
-		for(Long fail : mCurrentData.getFailures()) {
+
+		for (Long fail : mCurrentDialog.getFailures()) {
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_NO);
+			interaction.put(Interactions.INTERACTION_BUTTON,
+					Common.BUTTON_NEGATIVE);
 			interaction.put(Interactions.INTERACTION_DATETIME, fail);
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
 		}
-		
-		if(!mHasStoppedProperly) {
-			
-			mCurrentData.setHasQuitProperly(false);
-			
+
+		if (!mHasStoppedProperly) {
+
+			mCurrentDialog.setHasQuitProperly(false);
+
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_OTHER);
-			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
+			interaction.put(Interactions.INTERACTION_BUTTON,
+					Common.BUTTON_OTHER);
+			interaction.put(Interactions.INTERACTION_DATETIME,
+					mCurrentDialog.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
-			
-			//AnnoyingApplication.stopDialog(mCurrentData);
+
+			// AnnoyingApplication.stopDialog(mCurrentData);
 			AnnoyingApplication.stopDialog();
 			finish();
 		} else {
-			mCurrentData.setHasQuitProperly(true);
-			
+			mCurrentDialog.setHasQuitProperly(true);
+
 			ContentValues interaction = new ContentValues();
-			interaction.put(Interactions.INTERACTION_BUTTON, Common.BUTTON_YES);
-			interaction.put(Interactions.INTERACTION_DATETIME, mCurrentData.getStopTime());
+			interaction.put(Interactions.INTERACTION_BUTTON,
+					Common.BUTTON_POSITIVE);
+			interaction.put(Interactions.INTERACTION_DATETIME,
+					mCurrentDialog.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
-			
-			//AnnoyingApplication.stopDialog(mCurrentData);
+
+			// AnnoyingApplication.stopDialog(mCurrentData);
 			AnnoyingApplication.stopDialog();
 		}
-		
-		AnnoyingApplication.startService(this, Common.DEFAULT_BIG_INTERVAL);
+
+		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+		if(settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, Common.DEFAULT_IS_RUNNING)) {
+			AnnoyingApplication.startService(this, Common.DEFAULT_BIG_INTERVAL);
+		}
 	}
 
 	private void showDialog() {
@@ -109,15 +136,14 @@ public class AnnoyingActivity extends FragmentActivity implements
 		AnnoyingDialog ad = (AnnoyingDialog) fm
 				.findFragmentByTag(AnnoyingDialog.TAG);
 		if (ad == null) {
-
-			SharedPreferences settings = getSharedPreferences(
-					Common.PREFS_NAME, 0);
-			mCurrentData.setConfig(settings.getInt(
-					Common.CONFIG_TYPE,
-					Common.DEFAULT_CONFIG));
-
 			Bundle args = new Bundle();
-			args.putInt(AnnoyingDialog.CONFIG_TYPE, mCurrentData.getConfig());
+			args.putInt(AnnoyingDialog.CONDITION, mCurrentDialog.getCondition());
+			args.putString(AnnoyingDialog.POSITIVE_TEXT,
+					mCurrentDialog.getPositiveText());
+			args.putString(AnnoyingDialog.NEGATIVE_TEXT,
+					mCurrentDialog.getNegativeText());
+			args.putString(AnnoyingDialog.DIALOG_TEXT,
+					mCurrentDialog.getDialogText());
 			ad = AnnoyingDialog.newInstance(args);
 			ad.setAnnoyingListener(this);
 			ad.setCancelable(false);
@@ -134,6 +160,6 @@ public class AnnoyingActivity extends FragmentActivity implements
 	@Override
 	public void onNegativeButtonClicked() {
 		Calendar cal = Calendar.getInstance();
-		mCurrentData.addFailure(cal.getTimeInMillis());
+		mCurrentDialog.addFailure(cal.getTimeInMillis());
 	}
 }

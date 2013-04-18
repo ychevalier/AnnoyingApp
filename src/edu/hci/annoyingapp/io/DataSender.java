@@ -18,7 +18,6 @@ import android.util.Log;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.model.XMLNode;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
 import edu.hci.annoyingapp.utils.Common;
 
 public class DataSender extends AsyncTask<Void, Void, Void> {
@@ -77,7 +76,7 @@ public class DataSender extends AsyncTask<Void, Void, Void> {
 					.getInt(dialogs.getColumnIndex(Dialogs.DIALOG_CONDITION))));
 			root.addAttribute(ATT_START, String.valueOf(dialogs.getLong(dialogs
 					.getColumnIndex(Dialogs.DIALOG_START))));
-			root.addAttribute(ATT_UID, String.valueOf(Common.UID));
+			//root.addAttribute(ATT_UID, String.valueOf(Common.UID));
 
 			Cursor interactions = mContext
 					.getContentResolver()

@@ -213,7 +213,7 @@ public class AnnoyingAppProvider extends ContentProvider {
 			projection = SpecialQuery.PROJECTION;
 			selection = Tables.DIALOGS +'.'+ Dialogs._ID +  '=' +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DIALOG_ID;
 			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
-			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_YES 
+			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_POSITIVE 
 					+ " OR " + Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_OTHER;
 			sortOrder = Tables.DIALOGS +'.'+ Dialogs.DIALOG_START;
 			//queryBuilder.buildQuery(SpecialQuery.PROJECTION, null, null, null, sort, null);//sel, groupBy, having, sort, null);

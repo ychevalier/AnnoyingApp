@@ -1,19 +1,22 @@
 package edu.hci.annoyingapp.activities;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-
-import com.google.android.gcm.GCMRegistrar;
-
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.fragments.SettingsFragment;
 import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
 import edu.hci.annoyingapp.fragments.StatsFragment;
+import edu.hci.annoyingapp.io.GlobalRegistration;
+import edu.hci.annoyingapp.protocol.Receivers;
 import edu.hci.annoyingapp.utils.Common;
 
 public class MainActivity extends FragmentActivity implements
@@ -21,11 +24,8 @@ public class MainActivity extends FragmentActivity implements
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
-
-	private int mConfig;
-	private int mBigInterval;
-	private int mLittleInterval;
-	private boolean mIsRunning;
+	
+	private ProgressDialog mDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +33,27 @@ public class MainActivity extends FragmentActivity implements
 
 		setContentView(R.layout.activity_main);
 
+		SharedPreferences settings = getSharedPreferences(
+				Common.PREFS_NAME, 0);
+		int condition = settings.getInt(Common.PREF_CONDITION,
+				Common.DEFAULT_CONDITION);
+		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
+				Common.DEFAULT_BIG_INTERVAL);
+		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL,
+				Common.DEFAULT_LITTLE_INTERVAL);
+		boolean isRunning = settings.getBoolean(
+				Common.PREF_IS_SERVICE_RUNNING,
+				Common.DEFAULT_IS_RUNNING);
+		
 		FragmentManager fm = getSupportFragmentManager();
 		SettingsFragment setFragment = (SettingsFragment) fm
 				.findFragmentByTag(SettingsFragment.TAG);
 		if (setFragment == null) {
-
-			SharedPreferences settings = getSharedPreferences(
-					Common.PREFS_NAME, 0);
-			mConfig = settings.getInt(Common.CONFIG_TYPE,
-					Common.DEFAULT_CONFIG);
-			mBigInterval = settings.getInt(Common.BIG_INTERVAL,
-					Common.DEFAULT_BIG_INTERVAL);
-			mLittleInterval = settings.getInt(Common.LITTLE_INTERVAL,
-					Common.DEFAULT_LITTLE_INTERVAL);
-			mIsRunning = settings.getBoolean(
-					Common.IS_SERVICE_RUNNING,
-					Common.DEFAULT_IS_RUNNING);
-
 			Bundle args = new Bundle();
-			args.putInt(SettingsFragment.CONFIG_TYPE, mConfig);
-			args.putInt(SettingsFragment.BIG_INTERVAL, mBigInterval);
-			args.putInt(SettingsFragment.LITTLE_INTERVAL, mLittleInterval);
-			args.putBoolean(SettingsFragment.IS_RUNNING, mIsRunning);
+			args.putInt(SettingsFragment.CONDITION, condition);
+			args.putInt(SettingsFragment.BIG_INTERVAL, bigInterval);
+			args.putInt(SettingsFragment.LITTLE_INTERVAL, littleInterval);
+			args.putBoolean(SettingsFragment.IS_RUNNING, isRunning);
 
 			setFragment = SettingsFragment.newInstance(args);
 			fm.beginTransaction()
@@ -62,60 +61,22 @@ public class MainActivity extends FragmentActivity implements
 							SettingsFragment.TAG).commit();
 		}
 		
-		GCMRegistrar.checkDevice(this);
-		GCMRegistrar.checkManifest(this);
-		final String regId = GCMRegistrar.getRegistrationId(this);
-		if (regId.equals("")) {
-		  GCMRegistrar.register(this, Common.GCM_SENDER_ID);
-		} else {
-			if(DEBUG_MODE) {
-				Log.v(TAG, "Already registered");
-			}
-		}
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		
-		if(mIsRunning) {
-			AnnoyingApplication.stopService();
-		}
+		registerReceiver(mHandleUnregistrationReceiver,new IntentFilter(Receivers.UNREGISTERED));
 	}
 
 	@Override
 	protected void onStop() {
 
 		super.onStop();
-
-		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putInt(Common.CONFIG_TYPE, mConfig);
-		editor.putInt(Common.BIG_INTERVAL, mBigInterval);
-		editor.putInt(Common.LITTLE_INTERVAL, mLittleInterval);
-		editor.putBoolean(Common.IS_SERVICE_RUNNING, mIsRunning);
-		editor.commit();
-
-		if (mIsRunning) {
-			
-			AnnoyingApplication.startService(this, Common.DEFAULT_BIG_INTERVAL);
-			// Little trick so that activity is not on background when dialog
-			// shows up.
-			finish();
-		}
-
+		// Little trick so that activity is not on background when dialog
+		// shows up.
+		finish();
 	}
 	
-
 	@Override
-	public void onServiceStart() {
-		mIsRunning = true;
-	}
-
-	@Override
-	public void onServiceStop() {
-		//AnnoyingApplication.stopService();
-		mIsRunning = false;
+	protected void onDestroy() {
+		unregisterReceiver(mHandleUnregistrationReceiver);
+		super.onDestroy();
 	}
 
 	@Override
@@ -150,17 +111,27 @@ public class MainActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onConfigChanged(int config) {
-		mConfig = config;
+	public void onUnregister() {
+		GlobalRegistration.unregister(getApplicationContext());
+		mDialog = ProgressDialog.show(this, "",
+				"Disconnecting. Please wait...", true);
 	}
-
-	@Override
-	public void onSetBigInterval(int bigInterval) {
-		mBigInterval = bigInterval;
-	}
-
-	@Override
-	public void onSetLittleInterval(int littleInterval) {
-		mLittleInterval = littleInterval;
-	}
+	
+	private final BroadcastReceiver mHandleUnregistrationReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			SharedPreferences settings = context.getSharedPreferences(
+					Common.PREFS_NAME, 0);
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, false);
+			editor.commit();
+			
+			AnnoyingApplication.stopService();
+			
+			Intent i = new Intent(MainActivity.this, LoginActivity.class);
+			startActivity(i);
+			finish();
+			mDialog.dismiss();
+		}
+	};
 }

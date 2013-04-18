@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.activities.AnnoyingActivity;
@@ -17,8 +18,11 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
-	public static final String CONFIG_TYPE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.configtype";
-
+	public static final String CONDITION = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.condition";
+	public static final String POSITIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.positive_text";
+	public static final String NEGATIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.negative_text";
+	public static final String DIALOG_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_text";	
+	
 	public interface AnnoyingListener {
 		public void onPositiveButtonClicked();
 
@@ -27,10 +31,13 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 
 	private AnnoyingListener mListener;
 
-	private int mType;
+	private int mCondition;
+	private String mPositiveText;
+	private String mNegativeText;
+	private String mDialogText;
 
-	private Button mPositive;
-	private Button mNegative;
+	private Button mPositiveBt;
+	private Button mNegativeBt;
 
 	public static AnnoyingDialog newInstance(Bundle extras) {
 		AnnoyingDialog f = new AnnoyingDialog();
@@ -42,10 +49,19 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mType = getArguments().getInt(AnnoyingDialog.CONFIG_TYPE,
-				Common.CONFIG_DEFAULT);
+		mCondition = getArguments().getInt(AnnoyingDialog.CONDITION,
+				Common.CONDITION_DEFAULT);
+		
+		mPositiveText = getArguments().getString(AnnoyingDialog.POSITIVE_TEXT,
+				Common.DEFAULT_POSITIVE);
+		
+		mNegativeText = getArguments().getString(AnnoyingDialog.NEGATIVE_TEXT,
+				Common.DEFAULT_NEGATIVE);
+		
+		mDialogText = getArguments().getString(AnnoyingDialog.DIALOG_TEXT,
+				Common.DEFAULT_DIALOG);
 
-		if(mType == Common.CONFIG_OTHER) {
+		if(mCondition == Common.CONDITION_OTHER) {
 			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
 		}
 	}
@@ -58,24 +74,27 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		
 		View v = inflater.inflate(R.layout.dialog_annoying_holo, container,
 				false);
+		
+		TextView tv = (TextView) v.findViewById(R.id.activity_annoying_content_text);
+		tv.setText(mDialogText);
 
-		if (mType == Common.CONFIG_DEFAULT || mType == Common.CONFIG_OTHER ) {
-			mPositive = (Button) v
+		if (mCondition == Common.CONDITION_DEFAULT || mCondition == Common.CONDITION_OTHER ) {
+			mPositiveBt = (Button) v
 					.findViewById(R.id.activity_annoying_right_button);
-			mNegative = (Button) v
+			mNegativeBt = (Button) v
 					.findViewById(R.id.activity_annoying_left_button);
-		} else if (mType == Common.CONFIG_ALT) {
-			mPositive = (Button) v
+		} else if (mCondition == Common.CONDITION_ALT) {
+			mPositiveBt = (Button) v
 					.findViewById(R.id.activity_annoying_left_button);
-			mNegative = (Button) v
+			mNegativeBt = (Button) v
 					.findViewById(R.id.activity_annoying_right_button);
 		}
 
-		mPositive.setText(android.R.string.ok);
-		mNegative.setText(android.R.string.cancel);
+		mPositiveBt.setText(mPositiveText);
+		mNegativeBt.setText(mNegativeText);
 
-		mPositive.setOnClickListener(this);
-		mNegative.setOnClickListener(this);
+		mPositiveBt.setOnClickListener(this);
+		mNegativeBt.setOnClickListener(this);
 		return v;
 	}
 
@@ -85,11 +104,11 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v == mPositive) {
+		if (v == mPositiveBt) {
 			if (mListener != null) {
 				mListener.onPositiveButtonClicked();
 			}
-		} else if (v == mNegative) {
+		} else if (v == mNegativeBt) {
 			if (mListener != null) {
 				mListener.onNegativeButtonClicked();
 			}

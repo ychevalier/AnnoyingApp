@@ -43,6 +43,8 @@ public class AnnoyingApplication extends Application {
 	}
 
 	public static void startService(Context context, int sec) {
+		stopService();
+		
 		Intent background = new Intent(context, AnnoyingService.class);
 
 		Calendar cal = Calendar.getInstance();

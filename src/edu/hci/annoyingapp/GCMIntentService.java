@@ -2,59 +2,125 @@ package edu.hci.annoyingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import com.google.android.gcm.GCMRegistrar;
 
+import edu.hci.annoyingapp.activities.SurveyActivity;
+import edu.hci.annoyingapp.network.ServerUtilities;
+import edu.hci.annoyingapp.protocol.PushMessages;
+import edu.hci.annoyingapp.protocol.Receivers;
 import edu.hci.annoyingapp.utils.Common;
 
+/**
+ * IntentService responsible for handling GCM messages.
+ */
 public class GCMIntentService extends GCMBaseIntentService {
-	
+
+	private static final String TAG = GCMIntentService.class.getSimpleName();
+	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
+
+	/**
+	 * Default and mandatory constructor.
+	 * SENDER_ID is the project ID defined when you create a new Google API project.
+	 */
 	public GCMIntentService() {
-	    super(Common.GCM_SENDER_ID);
+		super(Common.SENDER_ID);
 	}
 
 	/**
-	 * Called when the device tries to register or unregister, but GCM returned
-	 * an error. Typically, there is nothing to be done other than evaluating
-	 * the error (returned by errorId) and trying to fix the problem.
+	 * Called when GCM confirm registration.
+	 * This method sends the registration ID to 3th party server.
+	 * It also sends a broadcast message in the application, which
+	 * is used to refresh the UI.
 	 */
 	@Override
-	protected void onError(Context context, String errorId) {
-		// TODO Auto-generated method stub
+	protected void onRegistered(Context context, String registrationId) {
+		if (DEBUG_MODE) {
+			Log.d(TAG, "Device registered: regId = " + registrationId);
+		}
 
+		SharedPreferences settings = getSharedPreferences(
+				Common.PREFS_NAME, 0);
+		String uid = settings.getString(Common.PREF_UID, null);
+
+		boolean success = false;
+		if (uid != null) {
+			if(success = ServerUtilities.finishRegister(registrationId,
+					uid)) {
+				GCMRegistrar.setRegisteredOnServer(context, true);
+			}
+		}
+
+		Intent intent = new Intent(Receivers.REGISTERED);
+		intent.putExtra(Receivers.REGISTERED_SUCCESS, success);
+		this.sendBroadcast(intent);
 	}
 
 	/**
-	 * Called when your server sends a message to GCM, and GCM delivers it to
-	 * the device. If the message has a payload, its contents are available as
-	 * extras in the intent.
+	 * This Method is called when GCM confirms the unregistration.
+	 * If it is still registered on 3th party server, it unregisters there as well.
+	 * This app never fully unregisters to the 3th party server, it only erases its
+	 * GCM registration id.
+	 * It also sends a broadcast message to refresh the UI.
+	 */
+	@Override
+	protected void onUnregistered(Context context, String registrationId) {
+		if (DEBUG_MODE) {
+			Log.d(TAG, "Device unregistered");
+		}
+		if (GCMRegistrar.isRegisteredOnServer(context)) {
+
+			SharedPreferences settings = getSharedPreferences(
+					Common.PREFS_NAME, 0);
+			String uid = settings.getString(Common.PREF_UID, null);
+			
+			if(ServerUtilities.unregister(uid)) {
+				GCMRegistrar.setRegisteredOnServer(context, false);
+			}
+
+		} else {
+			// This callback results from the call to unregister made on
+			// ServerUtilities when the registration to the server failed.
+			if (DEBUG_MODE) {
+				Log.d(TAG, "Ignoring unregister callback");
+			}
+		}
+		
+		Intent intent = new Intent(Receivers.UNREGISTERED);
+		this.sendBroadcast(intent);
+	}
+
+	/**
+	 * This method is called whenever a GCM message is received.
+	 * It creates a broadcast intent with the bundle for the UI.
 	 */
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		// TODO Auto-generated method stub
 
+		if (DEBUG_MODE) {
+			Log.i(TAG, "Received message");
+		}
+		
+		String survey = PushMessages.saveParams(context, intent.getExtras());
+
+		if(survey != null) {
+			if (DEBUG_MODE) {
+				Log.i(TAG, "Received survey");
+			}
+			Intent i = new Intent(this, SurveyActivity.class);
+			i.putExtra(PushMessages.EXTRA_SURVEY, survey);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+		}
 	}
 
-	/**
-	 * Called after a registration intent is received, passes the registration
-	 * ID assigned by GCM to that device/application pair as parameter.
-	 * Typically, you should send the regid to your server so it can use it to
-	 * send messages to this device.
-	 */
 	@Override
-	protected void onRegistered(Context context, String regId) {
-		// TODO Auto-generated method stub
-
+	public void onError(Context context, String errorId) {
+		if (DEBUG_MODE) {
+			Log.i(TAG, "Received error: " + errorId);
+		}
 	}
-
-	/**
-	 * Called after the device has been unregistered from GCM. Typically, you
-	 * should send the regid to the server so it unregisters the device.
-	 */
-	@Override
-	protected void onUnregistered(Context context, String regId) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

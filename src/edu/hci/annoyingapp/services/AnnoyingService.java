@@ -7,6 +7,7 @@ import android.app.IntentService;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -22,11 +23,14 @@ public class AnnoyingService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 
+		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
+		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, Common.DEFAULT_LITTLE_INTERVAL);
+		
 		if(AnnoyingApplication.isDialogStarted()) {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Dialog is already running, aborting.");
 			}
-			AnnoyingApplication.startService(this, Common.DEFAULT_LITTLE_INTERVAL);
+			AnnoyingApplication.startService(this, littleInterval);
 			return;
 		}
 		
@@ -55,7 +59,7 @@ public class AnnoyingService extends IntentService {
 		} else {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Screen is off or locked...");
-				AnnoyingApplication.startService(this, Common.DEFAULT_LITTLE_INTERVAL);
+				AnnoyingApplication.startService(this, littleInterval);
 			}
 		}
 

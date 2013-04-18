@@ -3,7 +3,7 @@ package edu.hci.annoyingapp.model;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Stat {
+public class DialogInteraction {
 	
 	// Each time is in millis;
 	
@@ -13,11 +13,17 @@ public class Stat {
 	
 	private List<Long> mFailedTime;
 	
-	private int mConfig;
+	private int mCondition;
+	
+	private String mPositiveText;
+	
+	private String mNegativeText;
+	
+	private String mDialogText;
 	
 	private boolean mHasQuitProperly;
 	
-	public Stat() {
+	public DialogInteraction() {
 		mFailedTime = new LinkedList<Long>();
 	}
 	
@@ -33,8 +39,20 @@ public class Stat {
 		return mFailedTime.size();
 	}
 	
-	public int getConfig() {
-		return mConfig;
+	public int getCondition() {
+		return mCondition;
+	}
+	
+	public String getPositiveText() {
+		return mPositiveText;
+	}
+	
+	public String getNegativeText() {
+		return mNegativeText;
+	}
+	
+	public String getDialogText() {
+		return mDialogText;
 	}
 	
 	public boolean getHasQuitProperly() {
@@ -57,8 +75,20 @@ public class Stat {
 		mFailedTime.add(Long.valueOf(time));
 	}
 	
-	public void setConfig(int config) {
-		mConfig = config;
+	public void setCondition(int condition) {
+		mCondition = condition;
+	}
+	
+	public void setPositiveText(String text) {
+		mPositiveText = text;
+	}
+	
+	public void setNegativeText(String text) {
+		mNegativeText = text;
+	}
+	
+	public void setDialogText(String text) {
+		mDialogText = text;
 	}
 	
 	public void setHasQuitProperly(boolean hasQuit) {
