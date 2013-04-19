@@ -1,8 +1,15 @@
 package edu.hci.annoyingapp.utils;
 
-public class Common {
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import edu.hci.annoyingapp.R;
+import edu.hci.annoyingapp.activities.SurveyActivity;
 
-	public static final String WS_Server = "http://www.cs.bham.ac.uk/research/projects/hci/dialog_habits/WS.php";
+public class Common {
 
 	// ================== Server properties ====================
 
@@ -28,6 +35,7 @@ public class Common {
 	public static final String PREF_POSITIVE_BUTTON = "PositiveButton";
 	public static final String PREF_NEGATIVE_BUTTON = "NegativeButton";
 	public static final String PREF_DIALOG_TEXT = "DialogText";
+	public static final String PREF_LAST_SUCCESSFUL_SENDING = "LastSending";
 
 	// This is the distant database, maybe put it in local db later...
 	public static final int BUTTON_POSITIVE = 0;
@@ -48,4 +56,39 @@ public class Common {
 	public static final String DEFAULT_POSITIVE = "Yes";
 	public static final String DEFAULT_NEGATIVE = "No";
 	public static final String DEFAULT_DIALOG = "Would you like to close this dialog?";
+	
+	// Notification Id
+	public static final int NOTIF_ID = 42;
+	
+	public static void launchSurveyNotification(Context context, String survey) {
+		NotificationCompat.Builder mBuilder =
+		        new NotificationCompat.Builder(context)
+				.setAutoCancel(true)
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setContentTitle(context.getString(R.string.app_name))
+		        .setContentText(context.getString(R.string.notification_text));
+		// Creates an explicit intent for an Activity in your app
+		
+		Intent resultIntent = new Intent(context, SurveyActivity.class);
+		resultIntent.putExtra(SurveyActivity.EXTRA_SURVEY, survey);
+		// The stack builder object will contain an artificial back stack for the
+		// started Activity.
+		// This ensures that navigating backward from the Activity leads out of
+		// your application to the Home screen.
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(SurveyActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(resultIntent);
+		PendingIntent resultPendingIntent =
+		        stackBuilder.getPendingIntent(
+		            0,
+		            PendingIntent.FLAG_UPDATE_CURRENT
+		        );
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+		    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(Common.NOTIF_ID, mBuilder.build());
+	}
 }

@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.apache.http.HttpStatus;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.protocol.Queries;
 import edu.hci.annoyingapp.utils.Common;
@@ -203,7 +205,7 @@ public final class ServerUtilities {
 				content = new String(tmpContent);
 			}
 
-			if (status != 200) {
+			if (status != HttpStatus.SC_OK) {
 				throw new IOException("Post failed with error code " + status);
 			}
 

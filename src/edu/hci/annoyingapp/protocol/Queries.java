@@ -24,5 +24,11 @@ public class Queries {
 	// ================== Unregister ====================
 
 	public static final String UNREGISTER_PATH = "/unregister";
+	
+	// ================== Send Data =====================
+	
+	public static final String SEND_DATA_PATH = "/data_receiver";
+	
+	public static final String DATA_ATT = "input";
 
 }

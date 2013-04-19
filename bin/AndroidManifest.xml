@@ -9,6 +9,8 @@
         android:targetSdkVersion="17" />
 
     <supports-screens android:xlargeScreens="false" />
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- GCM connects to Google Services. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -93,6 +95,8 @@
         </receiver>
 
         <service android:name=".GCMIntentService" />
+        
+        <service android:name=".services.DataSenderService" />
     </application>
 
 </manifest>

@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.webkit.URLUtil;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
-import edu.hci.annoyingapp.activities.SurveyActivity;
 import edu.hci.annoyingapp.network.ServerUtilities;
 import edu.hci.annoyingapp.protocol.PushMessages;
 import edu.hci.annoyingapp.protocol.Receivers;
@@ -106,14 +106,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		String survey = PushMessages.saveParams(context, intent.getExtras());
 
-		if(survey != null) {
+		if(survey != null && URLUtil.isHttpUrl(survey)) {
 			if (DEBUG_MODE) {
 				Log.i(TAG, "Received survey");
 			}
-			Intent i = new Intent(this, SurveyActivity.class);
-			i.putExtra(PushMessages.EXTRA_SURVEY, survey);
-			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(i);
+			Common.launchSurveyNotification(this, survey);
 		}
 	}
 

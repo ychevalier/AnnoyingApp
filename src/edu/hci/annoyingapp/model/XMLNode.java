@@ -24,7 +24,7 @@ public class XMLNode {
 	}
 	
 	public void addAttribute(String key, String value) {
-		mAttributes.put(key, value);
+		mAttributes.put(key,  value);
 	}
 	
 	@Override
@@ -38,7 +38,9 @@ public class XMLNode {
 			res.append(' ');
 			res.append(e.getKey());
 			res.append('=');
+			res.append("\'");
 			res.append(e.getValue());
+			res.append("\'");
 		}
 		
 		res.append('>');

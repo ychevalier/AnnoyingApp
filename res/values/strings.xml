@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Annoying App</string>
+    <!-- Notification -->
+    <string name="notification_text">We have a new survey for you.</string>
 
     <!-- Dialog Activity -->
     <string name="dialog_text">I am just here to get you mad!</string>

@@ -17,6 +17,8 @@ import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
 import edu.hci.annoyingapp.fragments.StatsFragment;
 import edu.hci.annoyingapp.io.GlobalRegistration;
 import edu.hci.annoyingapp.protocol.Receivers;
+import edu.hci.annoyingapp.services.AnnoyingService;
+import edu.hci.annoyingapp.services.DataSenderService;
 import edu.hci.annoyingapp.utils.Common;
 
 public class MainActivity extends FragmentActivity implements
@@ -82,6 +84,9 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onViewStats() {
 
+		Intent background = new Intent(this, DataSenderService.class);
+		startService(background);
+		/*
 		StatsFragment statsFragment = StatsFragment.newInstance();
 
 		FragmentTransaction transaction = getSupportFragmentManager()
@@ -95,6 +100,7 @@ public class MainActivity extends FragmentActivity implements
 
 		// Commit the transaction
 		transaction.commit();
+		*/
 	}
 
 	@Override

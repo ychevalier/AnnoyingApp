@@ -202,8 +202,8 @@ public class AnnoyingAppProvider extends ContentProvider {
 			break;
 		case DIALOGS_ID_INTERACTIONS:
 			queryBuilder.setTables(Tables.INTERACTIONS);
-			queryBuilder.appendWhere(Interactions.INTERACTION_ID + "="
-					+ uri.getLastPathSegment());
+			queryBuilder.appendWhere(Interactions.INTERACTION_DIALOG_ID + "="
+					+ AnnoyingAppContract.Dialogs.getDialogIdFromDialogInteractions(uri));
 			break;
 		case DIALOGS_SPECIAL:
 			queryBuilder.setTables(Tables.INTERACTIONS + ',' + Tables.DIALOGS);

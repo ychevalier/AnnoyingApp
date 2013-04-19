@@ -59,31 +59,34 @@ public final class R {
         public static final int row_stat=0x7f030006;
     }
     public static final class string {
-        public static final int already_connected=0x7f050007;
+        public static final int already_connected=0x7f050008;
         public static final int app_name=0x7f050000;
-        public static final int config_alt=0x7f05000e;
-        public static final int config_default=0x7f05000d;
-        public static final int config_other=0x7f05000f;
-        public static final int connection_failure=0x7f050005;
-        public static final int connection_success=0x7f050006;
-        public static final int dialog_connecting=0x7f050004;
+        public static final int config_alt=0x7f05000f;
+        public static final int config_default=0x7f05000e;
+        public static final int config_other=0x7f050010;
+        public static final int connection_failure=0x7f050006;
+        public static final int connection_success=0x7f050007;
+        public static final int dialog_connecting=0x7f050005;
         /**  Dialog Activity 
          */
-        public static final int dialog_text=0x7f050001;
-        public static final int dialog_title=0x7f050002;
-        public static final int has_not_quit_properly=0x7f050011;
-        public static final int has_quit_properly=0x7f050010;
+        public static final int dialog_text=0x7f050002;
+        public static final int dialog_title=0x7f050003;
+        public static final int has_not_quit_properly=0x7f050012;
+        public static final int has_quit_properly=0x7f050011;
         /**  Login Activity 
          */
-        public static final int mail_error=0x7f050003;
-        public static final int set_interval=0x7f05000a;
+        public static final int mail_error=0x7f050004;
+        /**  Notification 
+         */
+        public static final int notification_text=0x7f050001;
+        public static final int set_interval=0x7f05000b;
         /**  Settings Activity 
          */
-        public static final int start_button=0x7f050008;
-        public static final int stop_button=0x7f050009;
-        public static final int time=0x7f050012;
-        public static final int unregister=0x7f05000c;
-        public static final int view_stats=0x7f05000b;
+        public static final int start_button=0x7f050009;
+        public static final int stop_button=0x7f05000a;
+        public static final int time=0x7f050013;
+        public static final int unregister=0x7f05000d;
+        public static final int view_stats=0x7f05000c;
     }
     public static final class style {
         /** 

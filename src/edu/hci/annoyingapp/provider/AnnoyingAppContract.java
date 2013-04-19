@@ -13,7 +13,6 @@ public class AnnoyingAppContract {
 
 	public static final String PATH_DIALOGS = "dialogs";
 	public static final String PATH_INTERACTIONS = "interactions";
-	
 
 	interface DialogsColumns {
 		String DIALOG_ID = "_id";
@@ -48,20 +47,23 @@ public class AnnoyingAppContract {
 			return CONTENT_URI.buildUpon().appendPath(dialogId)
 					.appendPath(PATH_INTERACTIONS).build();
 		}
-		
+
 		// Get all dialogs in a special layout
 		public static Uri buildDialogsSpecialUri() {
-			return CONTENT_URI.buildUpon().appendPath(AnnoyingAppProvider.SPECIAL).build();
+			return CONTENT_URI.buildUpon()
+					.appendPath(AnnoyingAppProvider.SPECIAL).build();
 		}
-		
+
 		public interface SpecialQuery {
-			
-			String[] PROJECTION = {Tables.DIALOGS +'.'+ Dialogs._ID, 
-					Tables.DIALOGS +'.'+ Dialogs.DIALOG_CONDITION, 
-					Tables.DIALOGS +'.'+ Dialogs.DIALOG_START,
-					Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DATETIME,
-					Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON,
-					"Count(*)"};
+
+			String[] PROJECTION = {
+					Tables.DIALOGS + '.' + Dialogs._ID,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_CONDITION,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_START,
+					Tables.INTERACTIONS + '.'
+							+ Interactions.INTERACTION_DATETIME,
+					Tables.INTERACTIONS + '.' + Interactions.INTERACTION_BUTTON,
+					"Count(*)" };
 
 			int _ID = 0;
 			int CONDITION = 1;
@@ -69,6 +71,10 @@ public class AnnoyingAppContract {
 			int STOP = 3;
 			int BUTTON = 4;
 			int NB_FAILURES = 5;
+		}
+		
+		public static String getDialogIdFromDialogInteractions(Uri uri) {
+		    return uri.getPathSegments().get(1);
 		}
 	}
 
