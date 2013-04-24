@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
+import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.DialogsLastQuery;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
 import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
@@ -25,10 +26,12 @@ public class AnnoyingAppProvider extends ContentProvider {
 	private static final int DIALOGS_ID = 11;
 	private static final int DIALOGS_ID_INTERACTIONS = 12;
 	private static final int DIALOGS_SPECIAL = 13;
+	private static final int DIALOGS_LAST = 14;
 
 	private static final int INTERACTIONS = 20;
 	private static final int INTERACTIONS_ID = 21;
 
+	static final String LAST = "last";
 	static final String SPECIAL = "special";
 	static final String UNDERSCORE = "_";
 	static final String SLASH = "/";
@@ -46,6 +49,9 @@ public class AnnoyingAppProvider extends ContentProvider {
 		// Order matters!
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
 				+ SPECIAL, DIALOGS_SPECIAL);
+		
+		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
+				+ LAST + SLASH + STAR, DIALOGS_LAST);
 		
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS, DIALOGS);
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
@@ -77,6 +83,8 @@ public class AnnoyingAppProvider extends ContentProvider {
 		case INTERACTIONS_ID:
 			return AnnoyingAppContract.Interactions.CONTENT_ITEM_TYPE;
 		case DIALOGS_SPECIAL:
+			return AnnoyingAppContract.Dialogs.CONTENT_TYPE;
+		case DIALOGS_LAST:
 			return AnnoyingAppContract.Dialogs.CONTENT_TYPE;
 		default:
 			throw new UnsupportedOperationException("Unknown uri: " + uri );
@@ -204,6 +212,15 @@ public class AnnoyingAppProvider extends ContentProvider {
 			queryBuilder.setTables(Tables.INTERACTIONS);
 			queryBuilder.appendWhere(Interactions.INTERACTION_DIALOG_ID + "="
 					+ AnnoyingAppContract.Dialogs.getDialogIdFromDialogInteractions(uri));
+			break;
+		case DIALOGS_LAST:
+			queryBuilder.setTables(Tables.INTERACTIONS + ',' + Tables.DIALOGS);
+			
+			projection = DialogsLastQuery.PROJECTION;
+			selection = Tables.DIALOGS +'.'+ Dialogs._ID +  '=' +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DIALOG_ID 
+					+ " AND "  +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DATETIME + " >= " + uri.getLastPathSegment();
+			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
+			
 			break;
 		case DIALOGS_SPECIAL:
 			queryBuilder.setTables(Tables.INTERACTIONS + ',' + Tables.DIALOGS);

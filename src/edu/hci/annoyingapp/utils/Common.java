@@ -16,7 +16,7 @@ public class Common {
 	/**
 	 * Base URL of the Server.
 	 */
-	public static final String SERVER_URL = "http://10.2.128.34:8080/annoying-server";
+	public static final String SERVER_URL = "http://10.2.137.94:8080/annoying-server";
 
 	/**
 	 * Google API project id registered to use GCM.
@@ -35,6 +35,8 @@ public class Common {
 	public static final String PREF_POSITIVE_BUTTON = "PositiveButton";
 	public static final String PREF_NEGATIVE_BUTTON = "NegativeButton";
 	public static final String PREF_DIALOG_TEXT = "DialogText";
+	public static final String PREF_DIALOG_TITLE = "DialogTitle";
+	public static final String PREF_DATA_INTERVAL = "DataInterval";
 	public static final String PREF_LAST_SUCCESSFUL_SENDING = "LastSending";
 
 	// This is the distant database, maybe put it in local db later...
@@ -56,6 +58,8 @@ public class Common {
 	public static final String DEFAULT_POSITIVE = "Yes";
 	public static final String DEFAULT_NEGATIVE = "No";
 	public static final String DEFAULT_DIALOG = "Would you like to close this dialog?";
+	public static final String DEFAULT_DIALOG_TITLE = "AnnoyingDialog2";
+	public static final int DEFAULT_DATA_INTERVAL = 30;
 	
 	// Notification Id
 	public static final int NOTIF_ID = 42;

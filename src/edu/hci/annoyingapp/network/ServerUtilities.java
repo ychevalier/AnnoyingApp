@@ -12,8 +12,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 
+import android.util.Log;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.protocol.Queries;
 import edu.hci.annoyingapp.utils.Common;
@@ -22,7 +30,7 @@ import edu.hci.annoyingapp.utils.Common;
  * Helper class used to communicate with the demo server.
  */
 public final class ServerUtilities {
-	
+
 	public static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 	public static final String TAG = ServerUtilities.class.getSimpleName();
 
@@ -30,7 +38,7 @@ public final class ServerUtilities {
 	 * When registering (first and last step), number of attemps when failures.
 	 */
 	private static final int MAX_ATTEMPTS = 5;
-	
+
 	/**
 	 * When registering (first and last step), number of time between trials.
 	 */
@@ -42,26 +50,29 @@ public final class ServerUtilities {
 	private static final Random random = new Random();
 
 	/**
-	 * Network operation that realises the registration first step to the 3th party server.
-	 * This method should only be called by the associated task.
+	 * Network operation that realises the registration first step to the 3th
+	 * party server. This method should only be called by the associated task.
 	 * 
-	 * @param deviceId Unique device id given by the system.
-	 * @param email Email entered by the user.
-	 * @param version Android API version id given by the system.
+	 * @param deviceId
+	 *            Unique device id given by the system.
+	 * @param email
+	 *            Email entered by the user.
+	 * @param version
+	 *            Android API version id given by the system.
 	 * 
 	 * @return UID if successful, null otherwise.
 	 */
-	public static String startRegister(String deviceId, String email, String version) {
-		
+	public static String startRegister(String deviceId, String email,
+			String version) {
+
 		// Creating the server PATH.
-		String serverUrl = Common.SERVER_URL
-				+ Queries.START_PATH;
+		String serverUrl = Common.SERVER_URL + Queries.START_PATH;
 		// Creating the query.
 		Map<String, String> atts = new HashMap<String, String>();
 		atts.put(Queries.DEVICE_ID_ATT, deviceId);
 		atts.put(Queries.EMAIL_ATT, email);
 		atts.put(Queries.VERSION_ATT, version);
-		
+
 		// Multiple trials if necessary.
 		long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
 		for (int i = 1; i <= MAX_ATTEMPTS; i++) {
@@ -85,18 +96,17 @@ public final class ServerUtilities {
 	}
 
 	/**
-	 * Method that realises that last step of the registration process which
-	 * is sending the registration id given by google.
+	 * Method that realises that last step of the registration process which is
+	 * sending the registration id given by google.
 	 * 
-	 * @param context Reference to the context.
+	 * @param context
+	 *            Reference to the context.
 	 * @param regId
 	 * @param uid
 	 * @return
 	 */
-	public static boolean finishRegister(String regId,
-			String uid) {
-		String serverUrl = Common.SERVER_URL
-				+ Queries.FINISH_PATH;
+	public static boolean finishRegister(String regId, String uid) {
+		String serverUrl = Common.SERVER_URL + Queries.FINISH_PATH;
 		Map<String, String> atts = new HashMap<String, String>();
 		atts.put(Queries.REG_ID_ATT, regId);
 		atts.put(Queries.UID_ATT, uid);
@@ -126,13 +136,12 @@ public final class ServerUtilities {
 	 * Unregister this account/device pair within the server.
 	 */
 	public static boolean unregister(String uid) {
-		
-		String serverUrl = Common.SERVER_URL
-				+ Queries.UNREGISTER_PATH;
-		
+
+		String serverUrl = Common.SERVER_URL + Queries.UNREGISTER_PATH;
+
 		Map<String, String> params = new HashMap<String, String>();
 		params.put(Queries.UID_ATT, uid);
-		
+
 		boolean isSuccess = false;
 		try {
 			post(serverUrl, params);
@@ -145,17 +154,21 @@ public final class ServerUtilities {
 			// if the server tries to send a message to the device, it will get
 			// a "NotRegistered" error message and should unregister the device.
 		}
-		
+
 		return isSuccess;
 	}
 
 	/**
-	 * Helper that connect to a server, sends argument in post, and possibly return a string.
+	 * Helper that connect to a server, sends argument in post, and possibly
+	 * return a string.
 	 * 
-	 * @param endpoint Server where to connect.
-	 * @param params Post parameters.
+	 * @param endpoint
+	 *            Server where to connect.
+	 * @param params
+	 *            Post parameters.
 	 * @return Content sent by the server.
-	 * @throws IOException If connection failed etc...
+	 * @throws IOException
+	 *             If connection failed etc...
 	 */
 	public static String post(String endpoint, Map<String, String> params)
 			throws IOException {
@@ -209,8 +222,8 @@ public final class ServerUtilities {
 				throw new IOException("Post failed with error code " + status);
 			}
 
-		} catch(Exception e) {
-			//e.printStackTrace();
+		} catch (Exception e) {
+			// e.printStackTrace();
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
@@ -218,5 +231,40 @@ public final class ServerUtilities {
 		}
 
 		return content;
+	}
+
+	public static boolean postXMLData(String content) {
+		HttpPost httpPost = new HttpPost(Common.SERVER_URL
+				+ Queries.SEND_DATA_PATH);
+		httpPost.setHeader("Content-Type", "application/xml;charset=UTF-8");
+
+		StringEntity entity;
+		boolean success = false;
+		try {
+
+			entity = new StringEntity(content, HTTP.UTF_8);
+
+			entity.setContentType("application/xml");
+			httpPost.setEntity(entity);
+
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpResponse httpResponse = (HttpResponse) httpclient
+					.execute(httpPost);
+
+			if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+
+				if (DEBUG_MODE) {
+					Log.d(TAG, strResult);
+				}
+				success = true;
+			}
+		} catch (Exception e) {
+			if (DEBUG_MODE) {
+				e.printStackTrace();
+			}
+		} 
+		return success;
 	}
 }

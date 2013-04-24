@@ -17,8 +17,6 @@ import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
 import edu.hci.annoyingapp.fragments.StatsFragment;
 import edu.hci.annoyingapp.io.GlobalRegistration;
 import edu.hci.annoyingapp.protocol.Receivers;
-import edu.hci.annoyingapp.services.AnnoyingService;
-import edu.hci.annoyingapp.services.DataSenderService;
 import edu.hci.annoyingapp.utils.Common;
 
 public class MainActivity extends FragmentActivity implements
@@ -47,6 +45,9 @@ public class MainActivity extends FragmentActivity implements
 				Common.PREF_IS_SERVICE_RUNNING,
 				Common.DEFAULT_IS_RUNNING);
 		
+		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
+				Common.DEFAULT_DATA_INTERVAL);
+		
 		FragmentManager fm = getSupportFragmentManager();
 		SettingsFragment setFragment = (SettingsFragment) fm
 				.findFragmentByTag(SettingsFragment.TAG);
@@ -62,6 +63,12 @@ public class MainActivity extends FragmentActivity implements
 					.add(R.id.content_activity_main, setFragment,
 							SettingsFragment.TAG).commit();
 		}
+		
+		if(isRunning) {
+			AnnoyingApplication.startService(this, bigInterval);
+		}
+		
+		AnnoyingApplication.startDataService(this, dataInterval);
 		
 		registerReceiver(mHandleUnregistrationReceiver,new IntentFilter(Receivers.UNREGISTERED));
 	}
@@ -83,10 +90,7 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onViewStats() {
-
-		Intent background = new Intent(this, DataSenderService.class);
-		startService(background);
-		/*
+		
 		StatsFragment statsFragment = StatsFragment.newInstance();
 
 		FragmentTransaction transaction = getSupportFragmentManager()
@@ -100,7 +104,7 @@ public class MainActivity extends FragmentActivity implements
 
 		// Commit the transaction
 		transaction.commit();
-		*/
+		
 	}
 
 	@Override
@@ -132,7 +136,7 @@ public class MainActivity extends FragmentActivity implements
 			editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, false);
 			editor.commit();
 			
-			AnnoyingApplication.stopService();
+			AnnoyingApplication.stopService(context);
 			
 			Intent i = new Intent(MainActivity.this, LoginActivity.class);
 			startActivity(i);

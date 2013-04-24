@@ -159,11 +159,13 @@ public class GlobalRegistration implements StartRegistrationListener,
 		boolean running = Common.DEFAULT_IS_RUNNING;
 		int littleInterval = Common.DEFAULT_LITTLE_INTERVAL;
 		int bigInterval = Common.DEFAULT_BIG_INTERVAL;
+		int dataInterval = Common.DEFAULT_DATA_INTERVAL;
 		int condition = Common.DEFAULT_CONDITION;
 		
 		String positive = Common.DEFAULT_POSITIVE;
 		String negative = Common.DEFAULT_NEGATIVE;
 		String text = Common.DEFAULT_DIALOG;
+		String title = Common.DEFAULT_DIALOG_TITLE;
 		
 		String tmp = result.get(Registration.RUNNING);
 		if(tmp != null) {
@@ -184,6 +186,15 @@ public class GlobalRegistration implements StartRegistrationListener,
 		if(tmp != null) {
 			try {
 				bigInterval = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
+		}
+		
+		tmp = result.get(Registration.DATA_INTERVAL);
+		if(tmp != null) {
+			try {
+				dataInterval = Integer.parseInt(tmp);
 			} catch(NumberFormatException e) {
 				// Nothing To do.
 			}
@@ -212,6 +223,11 @@ public class GlobalRegistration implements StartRegistrationListener,
 		if(tmp != null) {			
 			text = tmp;
 		}
+		
+		tmp = result.get(Registration.DIALOG_TITLE);
+		if(tmp != null) {			
+			title = tmp;
+		}
 
 		// Save the prefs.
 		SharedPreferences settings = mContext.getSharedPreferences(
@@ -221,10 +237,12 @@ public class GlobalRegistration implements StartRegistrationListener,
 		editor.putInt(Common.PREF_CONDITION, condition);
 		editor.putInt(Common.PREF_LITTLE_INTERVAL, littleInterval);
 		editor.putInt(Common.PREF_BIG_INTERVAL, bigInterval);
+		editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);
 		editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, running);
 		editor.putString(Common.PREF_POSITIVE_BUTTON, positive);
 		editor.putString(Common.PREF_NEGATIVE_BUTTON, negative);
 		editor.putString(Common.PREF_DIALOG_TEXT, text);
+		editor.putString(Common.PREF_DIALOG_TITLE, title);
 		editor.commit();
 
 		mRegisterGCM = new GCMRegistration(mContext, this);

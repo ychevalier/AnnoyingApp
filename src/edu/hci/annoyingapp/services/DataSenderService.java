@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.io.DataSender;
 import edu.hci.annoyingapp.utils.Common;
@@ -37,6 +38,10 @@ public class DataSenderService extends IntentService {
 				Common.PREFS_NAME, 0);
 		long last = settings.getLong(Common.PREF_LAST_SUCCESSFUL_SENDING, Long.valueOf(0));
 		String uid = settings.getString(Common.PREF_UID, null);
+		
+		if(DEBUG_MODE) {
+			Log.d(TAG, "This is the last time : " + last);
+		}
 		
 		if(uid != null) {
 			DataSender ds = new DataSender(this);

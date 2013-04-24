@@ -24,6 +24,10 @@ public class PushMessages {
 	
 	public static final String EXTRA_SURVEY = "EXTRA_SURVEY";
 	
+	public static final String EXTRA_TITLE = "EXTRA_TITLE";
+	
+	public static final String EXTRA_DATA_INTERVAL = "EXTRA_DATA_INTERVAL";
+	
 	/**
 	 * Save params in Shared Prefs and return a Survey URL if there is one.
 	 * @param context
@@ -37,7 +41,9 @@ public class PushMessages {
 		int littleInterval = -1;
 		int bigInterval = -1;
 		int condition = -1;
+		int dataInterval = -1;
 		
+		String title = b.getString(EXTRA_TITLE);
 		String positive = b.getString(EXTRA_POSITIVE);
 		String negative = b.getString(EXTRA_NEGATIVE);
 		String text = b.getString(EXTRA_DIALOG);
@@ -60,6 +66,15 @@ public class PushMessages {
 		if(tmp != null) {
 			try {
 				bigInterval = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
+		}
+		
+		tmp = b.getString(EXTRA_DATA_INTERVAL);
+		if(tmp != null) {
+			try {
+				dataInterval = Integer.parseInt(tmp);
 			} catch(NumberFormatException e) {
 				// Nothing To do.
 			}
@@ -90,6 +105,10 @@ public class PushMessages {
 		if(littleInterval != -1) {
 			editor.putInt(Common.PREF_LITTLE_INTERVAL, littleInterval);
 		}
+		if(dataInterval != -1) {
+			editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);
+			AnnoyingApplication.startDataService(context, dataInterval);
+		}
 		if(positive != null) {
 			editor.putString(Common.PREF_POSITIVE_BUTTON, positive);
 		}
@@ -99,13 +118,16 @@ public class PushMessages {
 		if(text != null) {
 			editor.putString(Common.PREF_DIALOG_TEXT, text);
 		}
+		if(title != null) {
+			editor.putString(Common.PREF_DIALOG_TITLE, title);
+		}
 		editor.commit();
 		
 		if(running) {
 			int inter = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_BIG_INTERVAL);
 			AnnoyingApplication.startService(context, inter);
 		} else {
-			AnnoyingApplication.stopService();
+			AnnoyingApplication.stopService(context);
 		}
 		
 		return b.getString(EXTRA_SURVEY);

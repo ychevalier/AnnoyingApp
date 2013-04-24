@@ -21,6 +21,7 @@ public class AnnoyingAppContract {
 		String DIALOG_POSITIVE_TEXT = "positive_text";
 		String DIALOG_NEGATIVE_TEXT = "negative_text";
 		String DIALOG_TEXT = "text";
+		String DIALOG_TITLE = "title";
 	}
 
 	interface InteractionsColumns {
@@ -71,6 +72,34 @@ public class AnnoyingAppContract {
 			int STOP = 3;
 			int BUTTON = 4;
 			int NB_FAILURES = 5;
+		}
+		
+		// Get all dialogs in a special layout
+		public static Uri buildDialogsLastUri(long time) {
+			return CONTENT_URI.buildUpon()
+					.appendPath(AnnoyingAppProvider.LAST).appendPath(String.valueOf(time)).build();
+		}
+
+		public interface DialogsLastQuery {
+			String[] PROJECTION = {
+					Tables.DIALOGS + '.' + Dialogs._ID,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_CONDITION,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_START,
+					"MAX(" + Tables.INTERACTIONS + '.'
+							+ Interactions.INTERACTION_DATETIME + ")",
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_POSITIVE_TEXT,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_NEGATIVE_TEXT,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_TEXT,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_TITLE};
+
+			int _ID = 0;
+			int CONDITION = 1;
+			int START = 2;
+			int STOP = 3;
+			int POSITIVE_TEXT = 4;
+			int NEGATIVE_TEXT = 5;
+			int TEXT = 6;
+			int TITLE = 7;
 		}
 		
 		public static String getDialogIdFromDialogInteractions(Uri uri) {

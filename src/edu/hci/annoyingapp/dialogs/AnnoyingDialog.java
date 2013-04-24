@@ -22,6 +22,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public static final String POSITIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.positive_text";
 	public static final String NEGATIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.negative_text";
 	public static final String DIALOG_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_text";	
+	public static final String DIALOG_TITLE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_title";	
 	
 	public interface AnnoyingListener {
 		public void onPositiveButtonClicked();
@@ -35,6 +36,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	private String mPositiveText;
 	private String mNegativeText;
 	private String mDialogText;
+	private String mDialogTitle;
 
 	private Button mPositiveBt;
 	private Button mNegativeBt;
@@ -60,6 +62,9 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		
 		mDialogText = getArguments().getString(AnnoyingDialog.DIALOG_TEXT,
 				Common.DEFAULT_DIALOG);
+		
+		mDialogTitle = getArguments().getString(AnnoyingDialog.DIALOG_TITLE,
+				Common.DEFAULT_DIALOG_TITLE);
 
 		if(mCondition == Common.CONDITION_OTHER) {
 			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
@@ -70,7 +75,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		getDialog().setTitle(R.string.dialog_title);
+		getDialog().setTitle(mDialogTitle);
 		
 		View v = inflater.inflate(R.layout.dialog_annoying_holo, container,
 				false);

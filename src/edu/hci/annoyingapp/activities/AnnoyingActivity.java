@@ -50,6 +50,9 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		mCurrentDialog.setCondition(settings.getInt(Common.PREF_CONDITION,
 				Common.DEFAULT_CONDITION));
+		
+		mCurrentDialog.setDialogTitle(settings.getString(
+				Common.PREF_DIALOG_TITLE, Common.DEFAULT_DIALOG_TITLE));
 
 		mCurrentDialog.setDialogText(settings.getString(
 				Common.PREF_DIALOG_TEXT, Common.DEFAULT_DIALOG));
@@ -80,6 +83,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		dialog.put(Dialogs.DIALOG_NEGATIVE_TEXT,
 				mCurrentDialog.getNegativeText());
 		dialog.put(Dialogs.DIALOG_TEXT, mCurrentDialog.getDialogText());
+		dialog.put(Dialogs.DIALOG_TITLE, mCurrentDialog.getDialogTitle());
 
 		Uri uri = getContentResolver().insert(Dialogs.CONTENT_URI, dialog);
 		String seg = uri.getLastPathSegment();
@@ -144,6 +148,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 					mCurrentDialog.getNegativeText());
 			args.putString(AnnoyingDialog.DIALOG_TEXT,
 					mCurrentDialog.getDialogText());
+			args.putString(AnnoyingDialog.DIALOG_TITLE,
+					mCurrentDialog.getDialogTitle());
 			ad = AnnoyingDialog.newInstance(args);
 			ad.setAnnoyingListener(this);
 			ad.setCancelable(false);

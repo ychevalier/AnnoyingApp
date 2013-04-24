@@ -21,6 +21,8 @@ public class DialogInteraction {
 	
 	private String mDialogText;
 	
+	private String mDialogTitle;
+	
 	private boolean mHasQuitProperly;
 	
 	public DialogInteraction() {
@@ -53,6 +55,10 @@ public class DialogInteraction {
 	
 	public String getDialogText() {
 		return mDialogText;
+	}
+	
+	public String getDialogTitle() {
+		return mDialogTitle;
 	}
 	
 	public boolean getHasQuitProperly() {
@@ -89,6 +95,10 @@ public class DialogInteraction {
 	
 	public void setDialogText(String text) {
 		mDialogText = text;
+	}
+	
+	public void setDialogTitle(String title) {
+		mDialogTitle = title;
 	}
 	
 	public void setHasQuitProperly(boolean hasQuit) {

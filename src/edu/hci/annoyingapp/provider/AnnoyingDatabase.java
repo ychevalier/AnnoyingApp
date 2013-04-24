@@ -38,6 +38,7 @@ public class AnnoyingDatabase extends SQLiteOpenHelper {
 				+ DialogsColumns.DIALOG_CONDITION + " INTEGER,"
 				+ DialogsColumns.DIALOG_POSITIVE_TEXT + " TEXT,"
 				+ DialogsColumns.DIALOG_NEGATIVE_TEXT + " TEXT,"
+				+ DialogsColumns.DIALOG_TITLE + " TEXT,"
 				+ DialogsColumns.DIALOG_TEXT + " TEXT)");
 		
 		db.execSQL("CREATE TABLE " + Tables.INTERACTIONS + " ("
