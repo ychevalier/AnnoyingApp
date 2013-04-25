@@ -1,5 +1,8 @@
 package edu.hci.annoyingapp.activities;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +13,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.fragments.SettingsFragment;
@@ -67,6 +72,8 @@ public class MainActivity extends FragmentActivity implements
 		if(isRunning) {
 			AnnoyingApplication.startService(this, bigInterval);
 		}
+		
+		launchStatusIcon();
 		
 		AnnoyingApplication.startDataService(this, dataInterval);
 		
@@ -144,4 +151,21 @@ public class MainActivity extends FragmentActivity implements
 			mDialog.dismiss();
 		}
 	};
+	
+	private void launchStatusIcon() {
+		NotificationCompat.Builder mBuilder =
+		        new NotificationCompat.Builder(this)
+				.setOngoing(true)
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setContentTitle(getString(R.string.app_name))
+		        .setContentText(getString(R.string.app_text))
+		        .setDefaults(Notification.DEFAULT_ALL);
+		// Creates an explicit intent for an Activity in your app
+		
+		
+		NotificationManager mNotificationManager =
+		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(Common.NOTIF_ID, mBuilder.build());
+	}
 }

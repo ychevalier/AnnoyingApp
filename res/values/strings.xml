@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Annoying App</string>
+    <string name="app_text">Annoying App is currently running.</string>
     <!-- Notification -->
     <string name="notification_text">We have a new survey for you.</string>
 

@@ -1,5 +1,6 @@
 package edu.hci.annoyingapp.utils;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,8 +17,10 @@ public class Common {
 	/**
 	 * Base URL of the Server.
 	 */
-	public static final String SERVER_URL = "http://10.2.137.94:8080/annoying-server";
-
+	//public static final String SERVER_URL = "http://10.2.137.94:8080/annoying-server";
+	public static final String SERVER_URL = "http://studentweb.cs.bham.ac.uk/yxc238/annoying-server";
+	
+	
 	/**
 	 * Google API project id registered to use GCM.
 	 */
@@ -70,7 +73,8 @@ public class Common {
 				.setAutoCancel(true)
 		        .setSmallIcon(R.drawable.ic_launcher)
 		        .setContentTitle(context.getString(R.string.app_name))
-		        .setContentText(context.getString(R.string.notification_text));
+		        .setContentText(context.getString(R.string.notification_text))
+		        .setDefaults(Notification.DEFAULT_ALL);
 		// Creates an explicit intent for an Activity in your app
 		
 		Intent resultIntent = new Intent(context, SurveyActivity.class);
