@@ -1,4 +1,0 @@
-INDEX VERSION 1.126+/Users/ychevalier/Code/Android/.metadata/.plugins/org.eclipse.jdt.core
-2120136113.index
-1170649215.index
-2355673834.index

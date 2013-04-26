@@ -1,8 +1,6 @@
 package edu.hci.annoyingapp.activities;
 
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,7 +12,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.fragments.SettingsFragment;
@@ -158,8 +155,7 @@ public class MainActivity extends FragmentActivity implements
 				.setOngoing(true)
 		        .setSmallIcon(R.drawable.ic_launcher)
 		        .setContentTitle(getString(R.string.app_name))
-		        .setContentText(getString(R.string.app_text))
-		        .setDefaults(Notification.DEFAULT_ALL);
+		        .setContentText(getString(R.string.app_text));
 		// Creates an explicit intent for an Activity in your app
 		
 		
