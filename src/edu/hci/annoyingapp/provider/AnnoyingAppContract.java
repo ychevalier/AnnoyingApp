@@ -49,12 +49,6 @@ public class AnnoyingAppContract {
 					.appendPath(PATH_INTERACTIONS).build();
 		}
 
-		// Get all dialogs in a special layout
-		public static Uri buildDialogsSpecialUri() {
-			return CONTENT_URI.buildUpon()
-					.appendPath(AnnoyingAppProvider.SPECIAL).build();
-		}
-
 		public interface SpecialQuery {
 
 			String[] PROJECTION = {

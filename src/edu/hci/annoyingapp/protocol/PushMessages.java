@@ -36,7 +36,7 @@ public class PushMessages {
 	 */
 	public static final String saveParams(Context context, Bundle b) {
 		
-		boolean running = Common.DEFAULT_IS_RUNNING;
+		boolean running = Common.DEFAULT_BOOL;
 		
 		int littleInterval = -1;
 		int bigInterval = -1;
@@ -109,12 +109,12 @@ public class PushMessages {
 			editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);
 			AnnoyingApplication.startDataService(context, dataInterval);
 		}
-		if(positive != null) {
-			editor.putString(Common.PREF_POSITIVE_BUTTON, positive);
-		}
-		if(negative != null) {
-			editor.putString(Common.PREF_NEGATIVE_BUTTON, negative);
-		}
+		//if(positive != null) {
+		//	editor.putString(Common.PREF_, positive);
+		//}
+		//if(negative != null) {
+		//	editor.putString(Common.PREF_NEGATIVE_BUTTON, negative);
+		//}
 		if(text != null) {
 			editor.putString(Common.PREF_DIALOG_TEXT, text);
 		}
@@ -124,7 +124,7 @@ public class PushMessages {
 		editor.commit();
 		
 		if(running) {
-			int inter = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_BIG_INTERVAL);
+			int inter = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_INT);
 			AnnoyingApplication.startService(context, inter);
 		} else {
 			AnnoyingApplication.stopService(context);

@@ -156,16 +156,16 @@ public class GlobalRegistration implements StartRegistrationListener,
 		
 		mUid = result.get(Registration.UID);
 		
-		boolean running = Common.DEFAULT_IS_RUNNING;
-		int littleInterval = Common.DEFAULT_LITTLE_INTERVAL;
-		int bigInterval = Common.DEFAULT_BIG_INTERVAL;
-		int dataInterval = Common.DEFAULT_DATA_INTERVAL;
-		int condition = Common.DEFAULT_CONDITION;
+		boolean running = Common.DEFAULT_BOOL;
+		int littleInterval = Common.DEFAULT_INT;
+		int bigInterval = Common.DEFAULT_INT;
+		int dataInterval = Common.DEFAULT_INT;
+		int condition = Common.DEFAULT_INT;
 		
-		String positive = Common.DEFAULT_POSITIVE;
-		String negative = Common.DEFAULT_NEGATIVE;
-		String text = Common.DEFAULT_DIALOG;
-		String title = Common.DEFAULT_DIALOG_TITLE;
+		String positive = Common.DEFAULT_STRING;
+		String negative = Common.DEFAULT_STRING;
+		String text = Common.DEFAULT_STRING;
+		String title = Common.DEFAULT_STRING;
 		
 		String tmp = result.get(Registration.RUNNING);
 		if(tmp != null) {
@@ -239,8 +239,6 @@ public class GlobalRegistration implements StartRegistrationListener,
 		editor.putInt(Common.PREF_BIG_INTERVAL, bigInterval);
 		editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);
 		editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, running);
-		editor.putString(Common.PREF_POSITIVE_BUTTON, positive);
-		editor.putString(Common.PREF_NEGATIVE_BUTTON, negative);
 		editor.putString(Common.PREF_DIALOG_TEXT, text);
 		editor.putString(Common.PREF_DIALOG_TITLE, title);
 		editor.commit();

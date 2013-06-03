@@ -119,7 +119,6 @@ public class LoginActivity extends Activity implements
 			mRegistration.register(mEmail.getText().toString());
 
 			mDialog = ProgressDialog.show(this, "",getString(R.string.dialog_connecting), true);
-
 		}
 	}
 

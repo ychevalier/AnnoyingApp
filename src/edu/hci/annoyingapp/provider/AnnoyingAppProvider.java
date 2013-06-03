@@ -25,14 +25,12 @@ public class AnnoyingAppProvider extends ContentProvider {
 	private static final int DIALOGS = 10;
 	private static final int DIALOGS_ID = 11;
 	private static final int DIALOGS_ID_INTERACTIONS = 12;
-	private static final int DIALOGS_SPECIAL = 13;
-	private static final int DIALOGS_LAST = 14;
+	private static final int DIALOGS_LAST = 13;
 
 	private static final int INTERACTIONS = 20;
 	private static final int INTERACTIONS_ID = 21;
 
 	static final String LAST = "last";
-	static final String SPECIAL = "special";
 	static final String UNDERSCORE = "_";
 	static final String SLASH = "/";
 	static final String STAR = "*";
@@ -47,8 +45,6 @@ public class AnnoyingAppProvider extends ContentProvider {
 		final String authority = AnnoyingAppContract.CONTENT_AUTHORITY;
 
 		// Order matters!
-		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
-				+ SPECIAL, DIALOGS_SPECIAL);
 		
 		matcher.addURI(authority, AnnoyingAppContract.PATH_DIALOGS + SLASH
 				+ LAST + SLASH + STAR, DIALOGS_LAST);
@@ -82,8 +78,6 @@ public class AnnoyingAppProvider extends ContentProvider {
 			return AnnoyingAppContract.Interactions.CONTENT_TYPE;
 		case INTERACTIONS_ID:
 			return AnnoyingAppContract.Interactions.CONTENT_ITEM_TYPE;
-		case DIALOGS_SPECIAL:
-			return AnnoyingAppContract.Dialogs.CONTENT_TYPE;
 		case DIALOGS_LAST:
 			return AnnoyingAppContract.Dialogs.CONTENT_TYPE;
 		default:
@@ -221,19 +215,6 @@ public class AnnoyingAppProvider extends ContentProvider {
 					+ " AND "  +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DATETIME + " >= " + uri.getLastPathSegment();
 			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
 			
-			break;
-		case DIALOGS_SPECIAL:
-			queryBuilder.setTables(Tables.INTERACTIONS + ',' + Tables.DIALOGS);
-
-			// TODO : Bad bad bad to overwrite the arguments....
-			
-			projection = SpecialQuery.PROJECTION;
-			selection = Tables.DIALOGS +'.'+ Dialogs._ID +  '=' +  Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_DIALOG_ID;
-			groupBy = Tables.DIALOGS +'.'+ Dialogs._ID;
-			having = Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_POSITIVE 
-					+ " OR " + Tables.INTERACTIONS +'.'+ Interactions.INTERACTION_BUTTON + '=' + Common.BUTTON_OTHER;
-			sortOrder = Tables.DIALOGS +'.'+ Dialogs.DIALOG_START;
-			//queryBuilder.buildQuery(SpecialQuery.PROJECTION, null, null, null, sort, null);//sel, groupBy, having, sort, null);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI : " + uri);

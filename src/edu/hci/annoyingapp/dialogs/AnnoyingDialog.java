@@ -18,28 +18,27 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public static final String TAG = AnnoyingActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
-	public static final String CONDITION = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.condition";
-	public static final String POSITIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.positive_text";
-	public static final String NEGATIVE_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.negative_text";
+	public static final String THEME = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.theme";
+	public static final String TOP_IMAGE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.top_image";
+	public static final String BOTTOM_IMAGE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.bottom_image";
 	public static final String DIALOG_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_text";	
 	public static final String DIALOG_TITLE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_title";	
 	
 	public interface AnnoyingListener {
-		public void onPositiveButtonClicked();
+		public void onTopButtonClicked();
 
-		public void onNegativeButtonClicked();
+		public void onBottomButtonClicked();
 	}
 
 	private AnnoyingListener mListener;
 
-	private int mCondition;
-	private String mPositiveText;
-	private String mNegativeText;
+	private String mTopImage;
+	private String mBottomImage;
 	private String mDialogText;
 	private String mDialogTitle;
 
-	private Button mPositiveBt;
-	private Button mNegativeBt;
+	private Button mTopBt;
+	private Button mBottomBt;
 
 	public static AnnoyingDialog newInstance(Bundle extras) {
 		AnnoyingDialog f = new AnnoyingDialog();
@@ -51,29 +50,39 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		mCondition = getArguments().getInt(AnnoyingDialog.CONDITION,
-				Common.CONDITION_DEFAULT);
+		mTopImage = getArguments().getString(AnnoyingDialog.TOP_IMAGE);
 		
-		mPositiveText = getArguments().getString(AnnoyingDialog.POSITIVE_TEXT,
-				Common.DEFAULT_POSITIVE);
+		mBottomImage = getArguments().getString(AnnoyingDialog.BOTTOM_IMAGE);
 		
-		mNegativeText = getArguments().getString(AnnoyingDialog.NEGATIVE_TEXT,
-				Common.DEFAULT_NEGATIVE);
+		mDialogText = getArguments().getString(AnnoyingDialog.DIALOG_TEXT);
 		
-		mDialogText = getArguments().getString(AnnoyingDialog.DIALOG_TEXT,
-				Common.DEFAULT_DIALOG);
+		mDialogTitle = getArguments().getString(AnnoyingDialog.DIALOG_TITLE);
 		
-		mDialogTitle = getArguments().getString(AnnoyingDialog.DIALOG_TITLE,
-				Common.DEFAULT_DIALOG_TITLE);
+		int theme = getArguments().getInt(AnnoyingDialog.THEME);
 
-		if(mCondition == Common.CONDITION_OTHER) {
+		switch(theme) {
+		case Common.THEME_DARK:
 			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
+			break;
+		case Common.THEME_LIGHT:
+			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
+			break;
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		int topId = getResources().getIdentifier(mTopImage, "drawable", getActivity().getBaseContext().getPackageName());
+		if (topId == 0){
+		   return null;
+		}
+		
+		int bottomId = getResources().getIdentifier(mBottomImage, "drawable", getActivity().getBaseContext().getPackageName());
+		if (bottomId != 0){
+		    return null;
+		}
 
 		getDialog().setTitle(mDialogTitle);
 		
@@ -83,23 +92,18 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		TextView tv = (TextView) v.findViewById(R.id.activity_annoying_content_text);
 		tv.setText(mDialogText);
 
-		if (mCondition == Common.CONDITION_DEFAULT || mCondition == Common.CONDITION_OTHER ) {
-			mPositiveBt = (Button) v
-					.findViewById(R.id.activity_annoying_right_button);
-			mNegativeBt = (Button) v
-					.findViewById(R.id.activity_annoying_left_button);
-		} else if (mCondition == Common.CONDITION_ALT) {
-			mPositiveBt = (Button) v
-					.findViewById(R.id.activity_annoying_left_button);
-			mNegativeBt = (Button) v
-					.findViewById(R.id.activity_annoying_right_button);
-		}
+		mTopBt = (Button) v
+				.findViewById(R.id.activity_annoying_top_button);
+		mBottomBt = (Button) v
+				.findViewById(R.id.activity_annoying_bottom_button);
+		
+	    mTopBt.setBackground(getActivity().getResources().getDrawable(topId));
+		
+	    mBottomBt.setBackground(getActivity().getResources().getDrawable(bottomId));
 
-		mPositiveBt.setText(mPositiveText);
-		mNegativeBt.setText(mNegativeText);
 
-		mPositiveBt.setOnClickListener(this);
-		mNegativeBt.setOnClickListener(this);
+		mTopBt.setOnClickListener(this);
+		mBottomBt.setOnClickListener(this);
 		return v;
 	}
 
@@ -109,13 +113,13 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if (v == mPositiveBt) {
+		if (v == mTopBt) {
 			if (mListener != null) {
-				mListener.onPositiveButtonClicked();
+				mListener.onTopButtonClicked();
 			}
-		} else if (v == mNegativeBt) {
+		} else if (v == mBottomBt) {
 			if (mListener != null) {
-				mListener.onNegativeButtonClicked();
+				mListener.onBottomButtonClicked();
 			}
 		}
 	}

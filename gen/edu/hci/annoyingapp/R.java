@@ -20,43 +20,38 @@ public final class R {
         public static final int activity_horizontal_margin=0x7f040000;
         public static final int activity_vertical_margin=0x7f040001;
         public static final int dialog_button_size=0x7f040002;
-        public static final int dialog_text_padding=0x7f040003;
+        public static final int dialog_margin=0x7f040003;
     }
     public static final class drawable {
-        public static final int holo_button=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int semi_transparent_blue=0x7f020002;
-        public static final int transparent=0x7f020003;
+        public static final int anchor=0x7f020000;
+        public static final int apple=0x7f020001;
+        public static final int arm=0x7f020002;
+        public static final int banana=0x7f020003;
+        public static final int bed=0x7f020004;
+        public static final int holo_button=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int semi_transparent_blue=0x7f020007;
+        public static final int transparent=0x7f020008;
     }
     public static final class id {
-        public static final int activity_annoying_content_text=0x7f070002;
-        public static final int activity_annoying_left_button=0x7f070004;
-        public static final int activity_annoying_right_button=0x7f070005;
-        public static final int center_divider=0x7f07000b;
-        public static final int content_activity_main=0x7f070000;
-        public static final int content_activity_survey=0x7f070001;
-        public static final int divider=0x7f070003;
-        public static final int email_bt=0x7f07000d;
-        public static final int email_et=0x7f07000c;
-        public static final int fragment_settings_condition=0x7f070008;
-        public static final int fragment_settings_interval=0x7f070007;
-        public static final int fragment_settings_run=0x7f070006;
-        public static final int fragment_settings_unregister=0x7f07000a;
-        public static final int fragment_settings_view_stats=0x7f070009;
-        public static final int row_data_config=0x7f070011;
-        public static final int row_data_duration=0x7f07000f;
-        public static final int row_data_failure=0x7f070010;
-        public static final int row_data_has_quit=0x7f070012;
-        public static final int row_data_time=0x7f07000e;
+        public static final int activity_annoying_bottom_button=0x7f070007;
+        public static final int activity_annoying_content_text=0x7f070005;
+        public static final int activity_annoying_top_button=0x7f070006;
+        public static final int activity_main_condition=0x7f070002;
+        public static final int activity_main_interval=0x7f070001;
+        public static final int activity_main_run=0x7f070000;
+        public static final int activity_main_unregister=0x7f070003;
+        public static final int center_divider=0x7f070008;
+        public static final int content_activity_survey=0x7f070004;
+        public static final int email_bt=0x7f07000a;
+        public static final int email_et=0x7f070009;
     }
     public static final class layout {
         public static final int activity_annoying=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_survey=0x7f030002;
         public static final int dialog_annoying_holo=0x7f030003;
-        public static final int fragment_settings=0x7f030004;
-        public static final int login_activity=0x7f030005;
-        public static final int row_stat=0x7f030006;
+        public static final int login_activity=0x7f030004;
     }
     public static final class string {
         public static final int already_connected=0x7f050009;

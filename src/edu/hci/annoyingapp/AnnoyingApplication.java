@@ -20,6 +20,8 @@ public class AnnoyingApplication extends Application {
 	private static PendingIntent mDataIntent;
 
 	private static boolean mIsDialogRunning;
+	
+	public static String[] IMAGES = {"anchor", "apple", "arm", "banana", "bed"};
 
 	@Override
 	public void onCreate() {
@@ -81,7 +83,6 @@ public class AnnoyingApplication extends Application {
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		
 		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time + secData * 1000, secData * 1000, mDataIntent);
-		
 	}
 	
 	public static boolean stopDataService(Context context) {
@@ -93,7 +94,5 @@ public class AnnoyingApplication extends Application {
 		} else {
 			return false;
 		}
-	}
-
-	
+	}	
 }

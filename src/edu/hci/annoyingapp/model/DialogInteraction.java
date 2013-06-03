@@ -5,7 +5,7 @@ import java.util.List;
 
 public class DialogInteraction {
 	
-	// Each time is in millis;
+	// Time is in millis;
 	
 	private long mStartTime;
 	
@@ -13,15 +13,23 @@ public class DialogInteraction {
 	
 	private List<Long> mFailedTime;
 	
+	private int mTheme;
+	
 	private int mCondition;
 	
-	private String mPositiveText;
+	// If condition is answer.
+	private String mImage;
+		
+	// If condition is positional.
+	private int mPosition;
 	
-	private String mNegativeText;
+	private String mTopImage;
 	
-	private String mDialogText;
+	private String mBottomImage;
 	
 	private String mDialogTitle;
+	
+	private String mDialogText;
 	
 	private boolean mHasQuitProperly;
 	
@@ -37,36 +45,48 @@ public class DialogInteraction {
 		return mStopTime;
 	}
 	
+	public List<Long> getFailures() {
+		return mFailedTime;
+	}
+	
 	public int getNbFailures() {
 		return mFailedTime.size();
+	}
+	
+	public int getTheme() {
+		return mTheme;
 	}
 	
 	public int getCondition() {
 		return mCondition;
 	}
 	
-	public String getPositiveText() {
-		return mPositiveText;
+	public String getImage() {
+		return mImage;
 	}
 	
-	public String getNegativeText() {
-		return mNegativeText;
+	public int getPosition() {
+		return mPosition;
 	}
 	
-	public String getDialogText() {
-		return mDialogText;
+	public String getTopImage() {
+		return mTopImage;
+	}
+	
+	public String getBottomImage() {
+		return mBottomImage;
 	}
 	
 	public String getDialogTitle() {
 		return mDialogTitle;
 	}
 	
-	public boolean getHasQuitProperly() {
-		return mHasQuitProperly;
+	public String getDialogText() {
+		return mDialogText;
 	}
 	
-	public List<Long> getFailures() {
-		return mFailedTime;
+	public boolean getHasQuitProperly() {
+		return mHasQuitProperly;
 	}
 	
 	public void setStartTime(long start) {
@@ -81,24 +101,36 @@ public class DialogInteraction {
 		mFailedTime.add(Long.valueOf(time));
 	}
 	
+	public void setTheme(int theme) {
+		mTheme = theme;
+	}
+	
 	public void setCondition(int condition) {
 		mCondition = condition;
 	}
 	
-	public void setPositiveText(String text) {
-		mPositiveText = text;
+	public void setImage(String newImage) {
+		mImage = newImage;
 	}
 	
-	public void setNegativeText(String text) {
-		mNegativeText = text;
+	public void setPosition(int newPosition) {
+		mPosition = newPosition;
 	}
 	
-	public void setDialogText(String text) {
-		mDialogText = text;
+	public void setTopImage(String topImage) {
+		mTopImage = topImage;
+	}
+	
+	public void setBottomImage(String bottomImage) {
+		mBottomImage = bottomImage;
 	}
 	
 	public void setDialogTitle(String title) {
 		mDialogTitle = title;
+	}
+	
+	public void setDialogText(String text) {
+		mDialogText = text;
 	}
 	
 	public void setHasQuitProperly(boolean hasQuit) {

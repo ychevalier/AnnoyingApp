@@ -24,7 +24,7 @@ public class AnnoyingService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, Common.DEFAULT_LITTLE_INTERVAL);
+		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, Common.DEFAULT_INT);
 		
 		if(AnnoyingApplication.isDialogStarted()) {
 			if(DEBUG_MODE) {

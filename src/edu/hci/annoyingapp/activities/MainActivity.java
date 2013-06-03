@@ -9,20 +9,18 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.fragments.SettingsFragment;
-import edu.hci.annoyingapp.fragments.SettingsFragment.OnSettingChoiceListener;
-import edu.hci.annoyingapp.fragments.StatsFragment;
 import edu.hci.annoyingapp.io.GlobalRegistration;
 import edu.hci.annoyingapp.protocol.Receivers;
 import edu.hci.annoyingapp.utils.Common;
 
-public class MainActivity extends FragmentActivity implements
-		OnSettingChoiceListener {
+public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
@@ -38,33 +36,34 @@ public class MainActivity extends FragmentActivity implements
 		SharedPreferences settings = getSharedPreferences(
 				Common.PREFS_NAME, 0);
 		int condition = settings.getInt(Common.PREF_CONDITION,
-				Common.DEFAULT_CONDITION);
+				Common.DEFAULT_INT);
 		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
-				Common.DEFAULT_BIG_INTERVAL);
+				Common.DEFAULT_INT);
 		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL,
-				Common.DEFAULT_LITTLE_INTERVAL);
+				Common.DEFAULT_INT);
 		boolean isRunning = settings.getBoolean(
 				Common.PREF_IS_SERVICE_RUNNING,
-				Common.DEFAULT_IS_RUNNING);
+				Common.DEFAULT_BOOL);
 		
 		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
-				Common.DEFAULT_DATA_INTERVAL);
+				Common.DEFAULT_INT);
 		
-		FragmentManager fm = getSupportFragmentManager();
-		SettingsFragment setFragment = (SettingsFragment) fm
-				.findFragmentByTag(SettingsFragment.TAG);
-		if (setFragment == null) {
-			Bundle args = new Bundle();
-			args.putInt(SettingsFragment.CONDITION, condition);
-			args.putInt(SettingsFragment.BIG_INTERVAL, bigInterval);
-			args.putInt(SettingsFragment.LITTLE_INTERVAL, littleInterval);
-			args.putBoolean(SettingsFragment.IS_RUNNING, isRunning);
-
-			setFragment = SettingsFragment.newInstance(args);
-			fm.beginTransaction()
-					.add(R.id.content_activity_main, setFragment,
-							SettingsFragment.TAG).commit();
+		TextView running = (TextView) findViewById(R.id.activity_main_run);
+		
+		if(isRunning) {
+			running.setText("Service is running.");
+		} else {
+			running.setText("Service is not running.");
 		}
+		
+		Button unreg = (Button) findViewById(R.id.activity_main_unregister);
+		unreg.setOnClickListener(this);
+
+		TextView time = (TextView) findViewById(R.id.activity_main_interval);
+		time.setText(String.format(getString(R.string.time), bigInterval, littleInterval));
+		
+		TextView condTv = (TextView) findViewById(R.id.activity_main_condition);
+		condTv.setText("Condition is " + condition);
 		
 		if(isRunning) {
 			AnnoyingApplication.startService(this, bigInterval);
@@ -92,45 +91,6 @@ public class MainActivity extends FragmentActivity implements
 		super.onDestroy();
 	}
 
-	@Override
-	public void onViewStats() {
-		
-		StatsFragment statsFragment = StatsFragment.newInstance();
-
-		FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-
-		// Replace whatever is in the fragment_container view with this
-		// fragment,
-		// and add the transaction to the back stack
-		transaction.replace(R.id.content_activity_main, statsFragment);
-		transaction.addToBackStack(null);
-
-		// Commit the transaction
-		transaction.commit();
-		
-	}
-
-	@Override
-	public void onBackPressed() {
-
-		FragmentManager fm = getSupportFragmentManager();
-		StatsFragment statsFragment = (StatsFragment) fm
-				.findFragmentByTag(StatsFragment.TAG);
-		if (statsFragment != null) {
-			fm.popBackStack();
-		} else {
-			super.onBackPressed();
-		}
-	}
-
-	@Override
-	public void onUnregister() {
-		GlobalRegistration.unregister(getApplicationContext());
-		mDialog = ProgressDialog.show(this, "",
-				"Disconnecting. Please wait...", true);
-	}
-	
 	private final BroadcastReceiver mHandleUnregistrationReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -163,5 +123,14 @@ public class MainActivity extends FragmentActivity implements
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(Common.NOTIF_ID, mBuilder.build());
+	}
+	
+	@Override
+	public void onClick(View v) {
+		if(v.getId() == R.id.activity_main_unregister) {
+			GlobalRegistration.unregister(getApplicationContext());
+			mDialog = ProgressDialog.show(this, "",
+					"Disconnecting. Please wait...", true);
+		}
 	}
 }
