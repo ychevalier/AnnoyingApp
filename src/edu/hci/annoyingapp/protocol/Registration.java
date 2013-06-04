@@ -3,8 +3,6 @@ package edu.hci.annoyingapp.protocol;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
-
 import edu.hci.annoyingapp.AnnoyingApplication;
 
 public class Registration {
@@ -19,15 +17,15 @@ public class Registration {
 	
 	public static final String CONDITION = "condition";
 	
+	public static final String THEME = "theme";
+	
+	public static final String POSITION = "position";
+	
 	public static final String LITTLE_INTERVAL = "little_interval";
 	
 	public static final String BIG_INTERVAL = "big_interval";
 	
 	public static final String DATA_INTERVAL = "data_interval";
-	
-	public static final String POSITIVE_TEXT = "positive_text";
-	
-	public static final String NEGATIVE_TEXT = "negative_text";
 	
 	public static final String DIALOG_TEXT = "dialog_text";
 	

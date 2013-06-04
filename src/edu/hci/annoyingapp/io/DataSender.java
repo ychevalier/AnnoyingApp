@@ -22,9 +22,12 @@ public class DataSender {
 	private static final String ATT_CONDITION = "condition";
 	private static final String ATT_TITLE = "title";
 	private static final String ATT_TEXT = "text";
-	private static final String ATT_POSITIVE = "positive";
-	private static final String ATT_NEGATIVE = "negative";
-
+	private static final String ATT_THEME = "theme";
+	private static final String ATT_POSITION = "position";
+	private static final String ATT_IMAGE = "image";
+	private static final String ATT_TOP_IMAGE = "top_image";
+	private static final String ATT_BOTTOM_IMAGE = "bottom_image";
+	
 	private static final String TAG_INTERACTION = "interaction";
 	private static final String ATT_BUTTON = "button";
 	private static final String ATT_DATETIME = "datetime";
@@ -53,10 +56,16 @@ public class DataSender {
 					.getString(Dialogs.DialogsLastQuery.TITLE));
 			dialog.addAttribute(ATT_TEXT, dialogs
 					.getString(Dialogs.DialogsLastQuery.TEXT));
-			dialog.addAttribute(ATT_POSITIVE, dialogs
-					.getString(Dialogs.DialogsLastQuery.POSITIVE_TEXT));
-			dialog.addAttribute(ATT_NEGATIVE, dialogs
-					.getString(Dialogs.DialogsLastQuery.NEGATIVE_TEXT));
+			dialog.addAttribute(ATT_THEME, dialogs
+					.getString(Dialogs.DialogsLastQuery.THEME));
+			dialog.addAttribute(ATT_POSITION, dialogs
+					.getString(Dialogs.DialogsLastQuery.POSITION));
+			dialog.addAttribute(ATT_IMAGE, dialogs
+					.getString(Dialogs.DialogsLastQuery.IMAGE));
+			dialog.addAttribute(ATT_TOP_IMAGE, dialogs
+					.getString(Dialogs.DialogsLastQuery.TOP_IMAGE));
+			dialog.addAttribute(ATT_BOTTOM_IMAGE, dialogs
+					.getString(Dialogs.DialogsLastQuery.BOTTOM_IMAGE));
 			root.addAttribute(ATT_UID, uid);
 
 			Cursor interactions = mContext.getContentResolver()

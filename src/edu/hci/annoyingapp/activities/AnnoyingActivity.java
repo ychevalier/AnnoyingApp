@@ -50,24 +50,22 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
 		
-		int theme = settings.getInt(Common.PREF_THEME, Common.DEFAULT_INT);
-		int condition = settings.getInt(Common.PREF_CONDITION, Common.DEFAULT_INT);
-		int image = settings.getInt(Common.PREF_IMAGE, Common.DEFAULT_INT);
-		int position = settings.getInt(Common.PREF_POSITION, Common.DEFAULT_INT);
-		String title = settings.getString(Common.PREF_DIALOG_TITLE, Common.DEFAULT_STRING);
+		int theme = settings.getInt(Common.PREF_THEME, -1);
+		int condition = settings.getInt(Common.PREF_CONDITION, -1);
+		int image = settings.getInt(Common.PREF_IMAGE, -1);
+		int position = settings.getInt(Common.PREF_POSITION, -1);
+		String title = settings.getString(Common.PREF_DIALOG_TITLE, null);
 		
-		if(theme == Common.DEFAULT_INT
-				|| condition == Common.DEFAULT_INT
-				|| image == Common.DEFAULT_INT
-				|| position == Common.DEFAULT_INT
-				|| title == Common.DEFAULT_STRING) {
+		if(theme == -1
+				|| condition == -1
+				|| title == null) {
 			// Do Something here?
 			return;
 		}
 		
-		int topImage = Common.DEFAULT_INT;
-		int bottomImage = Common.DEFAULT_INT;
-		String text = Common.DEFAULT_STRING;
+		int topImage = -1;
+		int bottomImage = -1;
+		String text = null;
 		
 		Random randomGenerator = new Random();
 		
@@ -125,23 +123,27 @@ public class AnnoyingActivity extends FragmentActivity implements
 				break;
 		}
 		
-		if(topImage == Common.DEFAULT_INT
-				|| bottomImage == Common.DEFAULT_INT
-				|| text == Common.DEFAULT_STRING) {
+		if(topImage == -1
+				|| bottomImage == -1
+				|| text == null) {
 			// Do Something here?
 			return;
 		}
 		
-		String imgStr = Common.getImageName(image);
+		// If we have no defined image (position or random).
+		String imgStr = null;
+		if(image != -1) {
+			imgStr = Common.getImageName(image);
+		}
 		String topStr = Common.getImageName(topImage);
 		String botStr = Common.getImageName(bottomImage);
 		
-		if(imgStr == Common.DEFAULT_STRING
-			|| topStr == Common.DEFAULT_STRING
-			|| botStr == Common.DEFAULT_STRING) {
+		if(topStr == null
+			|| botStr == null) {
 			return;
 		}
 		
+		mCurrentDialog.setTheme(theme);
 		mCurrentDialog.setDialogText(text);
 		mCurrentDialog.setTopImage(topStr);
 		mCurrentDialog.setBottomImage(botStr);		
@@ -163,11 +165,14 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		ContentValues dialog = new ContentValues();
 		dialog.put(Dialogs.DIALOG_START, mCurrentDialog.getStartTime());
+		dialog.put(Dialogs.DIALOG_THEME, mCurrentDialog.getTheme());
 		dialog.put(Dialogs.DIALOG_CONDITION, mCurrentDialog.getCondition());
-		dialog.put(Dialogs.DIALOG_POSITIVE_TEXT,
+		dialog.put(Dialogs.DIALOG_TOP_IMAGE,
 				mCurrentDialog.getTopImage());
-		dialog.put(Dialogs.DIALOG_NEGATIVE_TEXT,
+		dialog.put(Dialogs.DIALOG_BOTTOM_IMAGE,
 				mCurrentDialog.getBottomImage());
+		dialog.put(Dialogs.DIALOG_IMAGE, mCurrentDialog.getImage());
+		dialog.put(Dialogs.DIALOG_POSITION, mCurrentDialog.getPosition());
 		dialog.put(Dialogs.DIALOG_TEXT, mCurrentDialog.getDialogText());
 		dialog.put(Dialogs.DIALOG_TITLE, mCurrentDialog.getDialogTitle());
 
@@ -203,7 +208,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 			ContentValues interaction = new ContentValues();
 			interaction.put(Interactions.INTERACTION_BUTTON,
-					!mIsTopPositive? Common.POSITION_BOTTOM : Common.POSITION_TOP);
+					mIsTopPositive? Common.POSITION_TOP : Common.POSITION_BOTTOM);
 			interaction.put(Interactions.INTERACTION_DATETIME,
 					mCurrentDialog.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
@@ -214,8 +219,9 @@ public class AnnoyingActivity extends FragmentActivity implements
 		}
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		int interval = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_INT);
-		if(settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, Common.DEFAULT_BOOL)) {
+		int interval = settings.getInt(Common.PREF_BIG_INTERVAL, -1);
+		if(interval != -1 
+				&& settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, false)) {
 			AnnoyingApplication.startService(this, interval);
 		}
 	}
@@ -254,12 +260,12 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 	@Override
 	public void onBottomButtonClicked() {
-		if(!mIsTopPositive) {
-			mHasStoppedProperly = true;
-			finish();
-		} else {
+		if(mIsTopPositive) {
 			Calendar cal = Calendar.getInstance();
 			mCurrentDialog.addFailure(cal.getTimeInMillis());
+		} else {
+			mHasStoppedProperly = true;
+			finish();
 		}
 	}
 }

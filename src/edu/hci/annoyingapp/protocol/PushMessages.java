@@ -12,9 +12,11 @@ public class PushMessages {
 	
 	public static final String EXTRA_CONDITION = "EXTRA_CONDITION";
 	
-	public static final String EXTRA_POSITIVE = "EXTRA_POSITIVE";
+	public static final String EXTRA_THEME = "EXTRA_THEME";
 	
-	public static final String EXTRA_NEGATIVE = "EXTRA_NEGATIVE";
+	public static final String EXTRA_NEW_IMAGE = "EXTRA_NEW_IMAGE";
+	
+	public static final String EXTRA_NEW_POSITION = "EXTRA_NEW_POSITION";
 	
 	public static final String EXTRA_DIALOG = "EXTRA_DIALOG";
 	
@@ -36,16 +38,18 @@ public class PushMessages {
 	 */
 	public static final String saveParams(Context context, Bundle b) {
 		
-		boolean running = Common.DEFAULT_BOOL;
+		boolean running = false;
 		
 		int littleInterval = -1;
 		int bigInterval = -1;
 		int condition = -1;
 		int dataInterval = -1;
+		int theme = -1;
+		int position = -1;
+		
+		boolean newImage = false;
 		
 		String title = b.getString(EXTRA_TITLE);
-		String positive = b.getString(EXTRA_POSITIVE);
-		String negative = b.getString(EXTRA_NEGATIVE);
 		String text = b.getString(EXTRA_DIALOG);
 		
 		String tmp = b.getString(EXTRA_RUN);
@@ -88,6 +92,29 @@ public class PushMessages {
 				// Nothing To do.
 			}
 		}
+		
+		tmp = b.getString(EXTRA_THEME);
+		if(tmp != null) {
+			try {
+				theme = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
+		}
+		
+		tmp = b.getString(EXTRA_NEW_POSITION);
+		if(tmp != null) {
+			try {
+				position = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
+		}
+		
+		tmp = b.getString(EXTRA_NEW_IMAGE);
+		if(tmp != null) {
+			newImage = Boolean.parseBoolean(tmp);
+		}
 
 		// Save the prefs.
 		SharedPreferences settings = context.getSharedPreferences(
@@ -109,12 +136,16 @@ public class PushMessages {
 			editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);
 			AnnoyingApplication.startDataService(context, dataInterval);
 		}
-		//if(positive != null) {
-		//	editor.putString(Common.PREF_, positive);
-		//}
-		//if(negative != null) {
-		//	editor.putString(Common.PREF_NEGATIVE_BUTTON, negative);
-		//}
+		if(theme != -1) {
+			editor.putInt(Common.PREF_THEME, theme);
+		}
+		if(position != -1) {
+			editor.putInt(Common.PREF_POSITION, position);
+		}
+		if(newImage) {
+			int current = settings.getInt(Common.PREF_IMAGE, -1);
+			editor.putInt(Common.PREF_IMAGE, Common.getRandomImage(current));
+		}
 		if(text != null) {
 			editor.putString(Common.PREF_DIALOG_TEXT, text);
 		}
@@ -123,8 +154,8 @@ public class PushMessages {
 		}
 		editor.commit();
 		
-		if(running) {
-			int inter = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_INT);
+		int inter = settings.getInt(Common.PREF_BIG_INTERVAL, -1);
+		if(running && inter != -1) {
 			AnnoyingApplication.startService(context, inter);
 		} else {
 			AnnoyingApplication.stopService(context);

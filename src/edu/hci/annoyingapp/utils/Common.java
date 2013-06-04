@@ -60,10 +60,6 @@ public class Common {
 	public static final int CONDITION_ANSWER = 2;
 	public static final int CONDITION_BOTH = 3;
 
-	public static final int DEFAULT_INT = -1;
-	public static final String DEFAULT_STRING = null;
-	public static final boolean DEFAULT_BOOL = false;
-
 	// Default are not relevant anymore since those value are given
 	// at registration.
 	// public static final boolean DEFAULT_IS_RUNNING = false;
@@ -81,7 +77,7 @@ public class Common {
 	public static final int NOTIF_ID = 42;
 	
 	public static int getRandomImage() {
-		return getRandomImage(DEFAULT_INT);
+		return getRandomImage(-1);
 	}
 
 	public static int getRandomImage(int notThisImage) {
@@ -89,7 +85,7 @@ public class Common {
 		int randomInt;
 		do {
 			randomInt = randomGenerator.nextInt(AnnoyingApplication.IMAGES.length);
-		} while(notThisImage != DEFAULT_INT && randomInt == notThisImage);
+		} while(notThisImage != -1 && randomInt == notThisImage);
 		
 		return randomInt;
 	}
@@ -104,9 +100,14 @@ public class Common {
 	public static int getResId(Context c, int image) {
 		String imageName = getImageName(image);
 		if(imageName != null) {
-			return c.getResources().getIdentifier(imageName, "drawable", c.getPackageName());
+			int res = c.getResources().getIdentifier(imageName, "drawable", c.getPackageName());
+			if(res != 0) {
+				return res;
+			} else {
+				return -1;
+			}
 		}
-		return DEFAULT_INT;
+		return -1;
 	}
 
 	public static void launchSurveyNotification(Context context, String survey) {

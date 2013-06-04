@@ -24,13 +24,13 @@ public class AnnoyingService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, Common.DEFAULT_INT);
+		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, -1);
 		
 		if(AnnoyingApplication.isDialogStarted()) {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Dialog is already running, aborting.");
 			}
-			AnnoyingApplication.startService(this, littleInterval);
+			//AnnoyingApplication.startService(this, littleInterval);
 			return;
 		}
 		
@@ -56,11 +56,11 @@ public class AnnoyingService extends IntentService {
 			// This works always.
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
-		} else {
+		} else if(littleInterval != -1) {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Screen is off or locked...");
-				AnnoyingApplication.startService(this, littleInterval);
 			}
+			AnnoyingApplication.startService(this, littleInterval);
 		}
 
 	}

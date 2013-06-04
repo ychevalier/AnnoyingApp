@@ -11,10 +11,8 @@ import android.net.Uri;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.DialogsLastQuery;
-import edu.hci.annoyingapp.provider.AnnoyingAppContract.Dialogs.SpecialQuery;
 import edu.hci.annoyingapp.provider.AnnoyingAppContract.Interactions;
 import edu.hci.annoyingapp.provider.AnnoyingDatabase.Tables;
-import edu.hci.annoyingapp.utils.Common;
 
 public class AnnoyingAppProvider extends ContentProvider {
 

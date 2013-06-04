@@ -156,22 +156,21 @@ public class GlobalRegistration implements StartRegistrationListener,
 		
 		mUid = result.get(Registration.UID);
 		
-		boolean running = Common.DEFAULT_BOOL;
-		int littleInterval = Common.DEFAULT_INT;
-		int bigInterval = Common.DEFAULT_INT;
-		int dataInterval = Common.DEFAULT_INT;
-		int condition = Common.DEFAULT_INT;
-		
-		String positive = Common.DEFAULT_STRING;
-		String negative = Common.DEFAULT_STRING;
-		String text = Common.DEFAULT_STRING;
-		String title = Common.DEFAULT_STRING;
+		boolean running = false;
+		int littleInterval = -1;
+		int bigInterval = -1;
+		int dataInterval = -1;
+		int condition = -1;
+		int theme = -1;
+		int position = -1;
+		int image = -1;
+		String text = null;
+		String title = null;
 		
 		String tmp = result.get(Registration.RUNNING);
 		if(tmp != null) {
 			running = Boolean.parseBoolean(tmp);
 		}
-		
 		
 		tmp = result.get(Registration.LITTLE_INTERVAL);
 		if(tmp != null) {
@@ -209,14 +208,22 @@ public class GlobalRegistration implements StartRegistrationListener,
 			}
 		}
 		
-		tmp = result.get(Registration.POSITIVE_TEXT);
-		if(tmp != null) {			
-			positive = tmp;
+		tmp = result.get(Registration.THEME);
+		if(tmp != null) {
+			try {
+				theme = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
 		}
 		
-		tmp = result.get(Registration.NEGATIVE_TEXT);
-		if(tmp != null) {			
-			negative = tmp;
+		tmp = result.get(Registration.POSITION);
+		if(tmp != null) {
+			try {
+				position = Integer.parseInt(tmp);
+			} catch(NumberFormatException e) {
+				// Nothing To do.
+			}
 		}
 		
 		tmp = result.get(Registration.DIALOG_TEXT);
@@ -228,6 +235,11 @@ public class GlobalRegistration implements StartRegistrationListener,
 		if(tmp != null) {			
 			title = tmp;
 		}
+		
+		if(condition == Common.CONDITION_ANSWER
+				|| condition == Common.CONDITION_BOTH) {
+			image = Common.getRandomImage();
+		}
 
 		// Save the prefs.
 		SharedPreferences settings = mContext.getSharedPreferences(
@@ -235,6 +247,9 @@ public class GlobalRegistration implements StartRegistrationListener,
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString(Common.PREF_UID, mUid);
 		editor.putInt(Common.PREF_CONDITION, condition);
+		editor.putInt(Common.PREF_THEME, theme);
+		editor.putInt(Common.PREF_POSITION, position);
+		editor.putInt(Common.PREF_IMAGE, image);
 		editor.putInt(Common.PREF_LITTLE_INTERVAL, littleInterval);
 		editor.putInt(Common.PREF_BIG_INTERVAL, bigInterval);
 		editor.putInt(Common.PREF_DATA_INTERVAL, dataInterval);

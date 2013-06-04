@@ -36,17 +36,17 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		SharedPreferences settings = getSharedPreferences(
 				Common.PREFS_NAME, 0);
 		int condition = settings.getInt(Common.PREF_CONDITION,
-				Common.DEFAULT_INT);
+				-1);
 		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
-				Common.DEFAULT_INT);
+				-1);
 		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL,
-				Common.DEFAULT_INT);
+				-1);
 		boolean isRunning = settings.getBoolean(
 				Common.PREF_IS_SERVICE_RUNNING,
-				Common.DEFAULT_BOOL);
+				false);
 		
 		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
-				Common.DEFAULT_INT);
+				-1);
 		
 		TextView running = (TextView) findViewById(R.id.activity_main_run);
 		

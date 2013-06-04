@@ -17,9 +17,12 @@ public class AnnoyingAppContract {
 	interface DialogsColumns {
 		String DIALOG_ID = "_id";
 		String DIALOG_START = "start";
+		String DIALOG_THEME = "theme";
 		String DIALOG_CONDITION = "condition";
-		String DIALOG_POSITIVE_TEXT = "positive_text";
-		String DIALOG_NEGATIVE_TEXT = "negative_text";
+		String DIALOG_TOP_IMAGE = "top_image";
+		String DIALOG_BOTTOM_IMAGE = "bottom_image";
+		String DIALOG_IMAGE = "image";
+		String DIALOG_POSITION = "position";
 		String DIALOG_TEXT = "text";
 		String DIALOG_TITLE = "title";
 	}
@@ -48,25 +51,6 @@ public class AnnoyingAppContract {
 			return CONTENT_URI.buildUpon().appendPath(dialogId)
 					.appendPath(PATH_INTERACTIONS).build();
 		}
-
-		public interface SpecialQuery {
-
-			String[] PROJECTION = {
-					Tables.DIALOGS + '.' + Dialogs._ID,
-					Tables.DIALOGS + '.' + Dialogs.DIALOG_CONDITION,
-					Tables.DIALOGS + '.' + Dialogs.DIALOG_START,
-					Tables.INTERACTIONS + '.'
-							+ Interactions.INTERACTION_DATETIME,
-					Tables.INTERACTIONS + '.' + Interactions.INTERACTION_BUTTON,
-					"Count(*)" };
-
-			int _ID = 0;
-			int CONDITION = 1;
-			int START = 2;
-			int STOP = 3;
-			int BUTTON = 4;
-			int NB_FAILURES = 5;
-		}
 		
 		// Get all dialogs in a special layout
 		public static Uri buildDialogsLastUri(long time) {
@@ -77,23 +61,29 @@ public class AnnoyingAppContract {
 		public interface DialogsLastQuery {
 			String[] PROJECTION = {
 					Tables.DIALOGS + '.' + Dialogs._ID,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_THEME,
 					Tables.DIALOGS + '.' + Dialogs.DIALOG_CONDITION,
 					Tables.DIALOGS + '.' + Dialogs.DIALOG_START,
 					"MAX(" + Tables.INTERACTIONS + '.'
 							+ Interactions.INTERACTION_DATETIME + ")",
-					Tables.DIALOGS + '.' + Dialogs.DIALOG_POSITIVE_TEXT,
-					Tables.DIALOGS + '.' + Dialogs.DIALOG_NEGATIVE_TEXT,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_TOP_IMAGE,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_BOTTOM_IMAGE,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_IMAGE,
+					Tables.DIALOGS + '.' + Dialogs.DIALOG_POSITION,
 					Tables.DIALOGS + '.' + Dialogs.DIALOG_TEXT,
 					Tables.DIALOGS + '.' + Dialogs.DIALOG_TITLE};
 
 			int _ID = 0;
-			int CONDITION = 1;
-			int START = 2;
-			int STOP = 3;
-			int POSITIVE_TEXT = 4;
-			int NEGATIVE_TEXT = 5;
-			int TEXT = 6;
-			int TITLE = 7;
+			int THEME = 1;
+			int CONDITION = 2;
+			int START = 3;
+			int STOP = 4;
+			int TOP_IMAGE = 5;
+			int BOTTOM_IMAGE = 6;
+			int IMAGE = 7;
+			int POSITION = 8;
+			int TEXT = 9;
+			int TITLE = 10;
 		}
 		
 		public static String getDialogIdFromDialogInteractions(Uri uri) {
