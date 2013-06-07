@@ -1,12 +1,16 @@
 package edu.hci.annoyingapp.protocol;
 
-import edu.hci.annoyingapp.AnnoyingApplication;
-import edu.hci.annoyingapp.utils.Common;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import edu.hci.annoyingapp.AnnoyingApplication;
+import edu.hci.annoyingapp.utils.Common;
 
 public class PushMessages {
+	
+	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
+	private static final String TAG = PushMessages.class.getSimpleName();
 	
 	public static final String EXTRA_RUN = "EXTRA_RUN";
 	
@@ -16,7 +20,7 @@ public class PushMessages {
 	
 	public static final String EXTRA_NEW_IMAGE = "EXTRA_NEW_IMAGE";
 	
-	public static final String EXTRA_NEW_POSITION = "EXTRA_NEW_POSITION";
+	public static final String EXTRA_POSITION = "EXTRA_POSITION";
 	
 	public static final String EXTRA_DIALOG = "EXTRA_DIALOG";
 	
@@ -93,6 +97,10 @@ public class PushMessages {
 			}
 		}
 		
+		if(DEBUG_MODE) {
+			Log.d(TAG, "Bundle " + b.toString());
+		}
+		
 		tmp = b.getString(EXTRA_THEME);
 		if(tmp != null) {
 			try {
@@ -102,7 +110,7 @@ public class PushMessages {
 			}
 		}
 		
-		tmp = b.getString(EXTRA_NEW_POSITION);
+		tmp = b.getString(EXTRA_POSITION);
 		if(tmp != null) {
 			try {
 				position = Integer.parseInt(tmp);

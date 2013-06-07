@@ -2,6 +2,7 @@ package edu.hci.annoyingapp.dialogs;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,9 +22,9 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	public static final String THEME = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.theme";
 	public static final String TOP_IMAGE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.top_image";
 	public static final String BOTTOM_IMAGE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.bottom_image";
-	public static final String DIALOG_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_text";	
-	public static final String DIALOG_TITLE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_title";	
-	
+	public static final String DIALOG_TEXT = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_text";
+	public static final String DIALOG_TITLE = "edu.hci.annoyingapp.dialogs.AnnoyingDialog.dialog_title";
+
 	public interface AnnoyingListener {
 		public void onTopButtonClicked();
 
@@ -45,22 +46,22 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		f.setArguments(extras);
 		return f;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		mTopImage = getArguments().getString(AnnoyingDialog.TOP_IMAGE);
-		
+
 		mBottomImage = getArguments().getString(AnnoyingDialog.BOTTOM_IMAGE);
-		
+
 		mDialogText = getArguments().getString(AnnoyingDialog.DIALOG_TEXT);
-		
+
 		mDialogTitle = getArguments().getString(AnnoyingDialog.DIALOG_TITLE);
-		
+
 		int theme = getArguments().getInt(AnnoyingDialog.THEME);
 
-		switch(theme) {
+		switch (theme) {
 		case Common.THEME_DARK:
 			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
 			break;
@@ -73,34 +74,36 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
-		int topId = getResources().getIdentifier(mTopImage, "drawable", getActivity().getBaseContext().getPackageName());
-		if (topId == 0){
-		   return null;
+
+		int topId = getResources().getIdentifier(mTopImage, "drawable",
+				getActivity().getBaseContext().getPackageName());
+		if (topId == 0) {
+			return null;
 		}
-		
-		int bottomId = getResources().getIdentifier(mBottomImage, "drawable", getActivity().getBaseContext().getPackageName());
-		if (bottomId != 0){
-		    return null;
+
+		int bottomId = getResources().getIdentifier(mBottomImage, "drawable",
+				getActivity().getBaseContext().getPackageName());
+		if (bottomId == 0) {
+			return null;
 		}
 
 		getDialog().setTitle(mDialogTitle);
-		
+
 		View v = inflater.inflate(R.layout.dialog_annoying_holo, container,
 				false);
-		
-		TextView tv = (TextView) v.findViewById(R.id.activity_annoying_content_text);
+
+		TextView tv = (TextView) v
+				.findViewById(R.id.activity_annoying_content_text);
 		tv.setText(mDialogText);
 
-		mTopBt = (Button) v
-				.findViewById(R.id.activity_annoying_top_button);
+		mTopBt = (Button) v.findViewById(R.id.activity_annoying_top_button);
 		mBottomBt = (Button) v
 				.findViewById(R.id.activity_annoying_bottom_button);
-		
-	    mTopBt.setBackground(getActivity().getResources().getDrawable(topId));
-		
-	    mBottomBt.setBackground(getActivity().getResources().getDrawable(bottomId));
 
+		mTopBt.setBackground(getActivity().getResources().getDrawable(topId));
+
+		mBottomBt.setBackground(getActivity().getResources().getDrawable(
+				bottomId));
 
 		mTopBt.setOnClickListener(this);
 		mBottomBt.setOnClickListener(this);

@@ -55,6 +55,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		int image = settings.getInt(Common.PREF_IMAGE, -1);
 		int position = settings.getInt(Common.PREF_POSITION, -1);
 		String title = settings.getString(Common.PREF_DIALOG_TITLE, null);
+		String text = settings.getString(Common.PREF_DIALOG_TEXT, null);
 		
 		if(theme == -1
 				|| condition == -1
@@ -65,7 +66,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		
 		int topImage = -1;
 		int bottomImage = -1;
-		String text = null;
+		String textComp = null;
 		
 		Random randomGenerator = new Random();
 		
@@ -75,10 +76,14 @@ public class AnnoyingActivity extends FragmentActivity implements
 			bottomImage = Common.getRandomImage(topImage);
 			
 			if(randomGenerator.nextBoolean()) {
-				text = Common.getImageName(topImage);
+				image = topImage;
+				position = Common.POSITION_TOP;
+				textComp = Common.getImageName(topImage);
 				mIsTopPositive = true;
 			} else {
-				text = Common.getImageName(bottomImage);
+				image = bottomImage;
+				position = Common.POSITION_BOTTOM;
+				textComp = Common.getImageName(bottomImage);
 				mIsTopPositive = false;
 			}
 			break;
@@ -87,24 +92,28 @@ public class AnnoyingActivity extends FragmentActivity implements
 			bottomImage = Common.getRandomImage(topImage);
 			
 			if(position == Common.POSITION_TOP) {
-				text = Common.getImageName(topImage);
+				image = topImage;
+				textComp = Common.getImageName(topImage);
 				mIsTopPositive = true;
 			} else if(position == Common.POSITION_BOTTOM) {
-				text = Common.getImageName(bottomImage);
+				image = bottomImage;
+				textComp = Common.getImageName(bottomImage);
 				mIsTopPositive = false;
 			}
 			break;
 		case Common.CONDITION_ANSWER:
 			if(randomGenerator.nextBoolean()) {
+				position = Common.POSITION_TOP;
 				topImage = image;
 				bottomImage = Common.getRandomImage(topImage);
 				mIsTopPositive = true;
 			} else {
+				position = Common.POSITION_BOTTOM;
 				bottomImage = image;
 				topImage = Common.getRandomImage(bottomImage);
 				mIsTopPositive = false;
 			}
-			text = Common.getImageName(image);
+			textComp = Common.getImageName(image);
 			break;
 		case Common.CONDITION_BOTH:
 			if(position == Common.POSITION_TOP) {
@@ -116,7 +125,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 				topImage = Common.getRandomImage(bottomImage);
 				mIsTopPositive = false;
 			}
-			text = Common.getImageName(image);
+			textComp = Common.getImageName(image);
 			break;
 		default:
 				// Do nothing
@@ -125,7 +134,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		
 		if(topImage == -1
 				|| bottomImage == -1
-				|| text == null) {
+				|| textComp == null) {
 			// Do Something here?
 			return;
 		}
@@ -144,7 +153,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		}
 		
 		mCurrentDialog.setTheme(theme);
-		mCurrentDialog.setDialogText(text);
+		mCurrentDialog.setDialogText(text + ' ' + textComp);
 		mCurrentDialog.setTopImage(topStr);
 		mCurrentDialog.setBottomImage(botStr);		
 		mCurrentDialog.setDialogTitle(title);
