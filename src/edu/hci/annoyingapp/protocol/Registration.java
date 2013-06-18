@@ -33,6 +33,8 @@ public class Registration {
 	
 	public static final String RUNNING = "running";
 	
+	public static final String FIRST_SURVEY = "first_survey";
+	
 	public static Map<String, String> getParams(String params) {
 		
 		Map<String, String> aMap = new HashMap<String, String>();
@@ -47,6 +49,15 @@ public class Registration {
 				
 				if(line.length == 2) {
 					aMap.put(line[0], line[1]);
+				} else {
+					// Little hack if there is multiple separator (case of an url...)
+					String key = line[0];
+					int j = key.length();
+					while(lines[i].charAt(j) == SEPARATOR 
+							|| lines[i].charAt(j) == ' ') {
+						j++;
+					}
+					aMap.put(key, lines[i].substring(j));
 				}
 			}
 		}

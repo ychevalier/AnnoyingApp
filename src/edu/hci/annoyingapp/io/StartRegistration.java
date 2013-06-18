@@ -78,10 +78,9 @@ public class StartRegistration extends AsyncTask<Void, Void, Map<String, String>
 	 * Send the result to the interface at the end.
 	 */
 	@Override
-	protected void onPostExecute(Map<String, String> result) {		
+	protected void onPostExecute(Map<String, String> result) {
 		if(mListener != null) {
 			mListener.onStartRegistrationCompleted(result);
 		}
 	}
-
 }

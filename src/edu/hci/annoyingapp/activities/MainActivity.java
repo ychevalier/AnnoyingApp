@@ -13,10 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.io.GlobalRegistration;
 import edu.hci.annoyingapp.protocol.Receivers;
 import edu.hci.annoyingapp.utils.Common;
 
@@ -26,6 +24,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 	
 	private ProgressDialog mDialog;
+	private String mSurveyUrl;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +34,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 		SharedPreferences settings = getSharedPreferences(
 				Common.PREFS_NAME, 0);
-		int condition = settings.getInt(Common.PREF_CONDITION,
-				-1);
+		
 		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
 				-1);
-		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL,
-				-1);
+
 		boolean isRunning = settings.getBoolean(
 				Common.PREF_IS_SERVICE_RUNNING,
 				false);
@@ -48,23 +45,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
 				-1);
 		
-		TextView running = (TextView) findViewById(R.id.activity_main_run);
+		mSurveyUrl = settings.getString(Common.PREF_FIRST_SURVEY, null);
 		
-		if(isRunning) {
-			running.setText("Service is running.");
-		} else {
-			running.setText("Service is not running.");
+		boolean firstTime = settings.getBoolean(Common.PREF_FIRST_TIME, true);
+		
+		if(mSurveyUrl != null && firstTime) {
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putBoolean(Common.PREF_FIRST_TIME, false);
+			editor.commit();
+			launchDemoSurvey();
 		}
 		
-		Button unreg = (Button) findViewById(R.id.activity_main_unregister);
-		unreg.setOnClickListener(this);
-
-		TextView time = (TextView) findViewById(R.id.activity_main_interval);
-		time.setText(String.format(getString(R.string.time), bigInterval, littleInterval));
-		
-		TextView condTv = (TextView) findViewById(R.id.activity_main_condition);
-		condTv.setText("Condition is " + condition);
-		
+		Button survey = (Button) findViewById(R.id.activity_main_demo_survey);
+		survey.setOnClickListener(this);
+	
 		if(isRunning) {
 			AnnoyingApplication.startService(this, bigInterval);
 		}
@@ -127,10 +121,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		if(v.getId() == R.id.activity_main_unregister) {
-			GlobalRegistration.unregister(getApplicationContext());
-			mDialog = ProgressDialog.show(this, "",
-					"Disconnecting. Please wait...", true);
+		if(v.getId() == R.id.activity_main_demo_survey) {
+			launchDemoSurvey();
 		}
+	}
+	
+	private void launchDemoSurvey() {
+		Intent i = new Intent(this, SurveyActivity.class);
+		i.putExtra(SurveyActivity.EXTRA_SURVEY, mSurveyUrl);
+		startActivity(i);
 	}
 }

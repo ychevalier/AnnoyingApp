@@ -1,35 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/activity_main_run"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center" />
-
-     <TextView
-        android:id="@+id/activity_main_interval"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center" />
-     
-      <TextView
-        android:id="@+id/activity_main_condition"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center" />
-    
     <Button
-        android:id="@+id/activity_main_unregister"
+        android:id="@+id/activity_main_demo_survey"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="@string/unregister" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/demo_survey" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -5,9 +5,11 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
+import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 
+import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.io.FinishRegistration.FinishRegistrationListener;
 import edu.hci.annoyingapp.io.GCMRegistration.GCMRegistrationListener;
 import edu.hci.annoyingapp.io.StartRegistration.StartRegistrationListener;
@@ -36,6 +38,9 @@ import edu.hci.annoyingapp.utils.Common;
  */
 public class GlobalRegistration implements StartRegistrationListener,
 		GCMRegistrationListener, FinishRegistrationListener {
+	
+	public static final String TAG = GlobalRegistration.class.getSimpleName();
+	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
 	/**
 	 * The caller of a GlobalRegistration should implement this interface.
@@ -166,6 +171,7 @@ public class GlobalRegistration implements StartRegistrationListener,
 		int image = -1;
 		String text = null;
 		String title = null;
+		String first = null;
 		
 		String tmp = result.get(Registration.RUNNING);
 		if(tmp != null) {
@@ -236,6 +242,15 @@ public class GlobalRegistration implements StartRegistrationListener,
 			title = tmp;
 		}
 		
+		tmp = result.get(Registration.FIRST_SURVEY);
+		if(tmp != null) {			
+			first = tmp;
+		}
+		
+		if(DEBUG_MODE) {
+			Log.d(TAG, "This is what I received : " + result.toString());
+		}
+		
 		if(condition == Common.CONDITION_ANSWER
 				|| condition == Common.CONDITION_BOTH) {
 			image = Common.getRandomImage();
@@ -256,6 +271,7 @@ public class GlobalRegistration implements StartRegistrationListener,
 		editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, running);
 		editor.putString(Common.PREF_DIALOG_TEXT, text);
 		editor.putString(Common.PREF_DIALOG_TITLE, title);
+		editor.putString(Common.PREF_FIRST_SURVEY, first);
 		editor.commit();
 
 		mRegisterGCM = new GCMRegistration(mContext, this);

@@ -20,7 +20,7 @@ public class Common {
 	/**
 	 * Base URL of the Server.
 	 */
-	public static final String SERVER_URL = "http://10.2.55.200:8080/annoying-server";
+	public static final String SERVER_URL = "http://10.2.56.53:8080/annoying-server";
 	// public static final String SERVER_URL =
 	// "http://studentweb.cs.bham.ac.uk/yxc238/annoying-server";
 
@@ -45,6 +45,8 @@ public class Common {
 	public static final String PREF_DIALOG_TITLE = "DialogTitle";
 	public static final String PREF_DATA_INTERVAL = "DataInterval";
 	public static final String PREF_LAST_SUCCESSFUL_SENDING = "LastSending";
+	public static final String PREF_FIRST_SURVEY = "FirstSurvey";
+	public static final String PREF_FIRST_TIME = "FirstTime";
 
 	public static final int THEME_DARK = 0;
 	public static final int THEME_LIGHT = 1;
@@ -59,19 +61,6 @@ public class Common {
 	public static final int CONDITION_POSITION = 1;
 	public static final int CONDITION_ANSWER = 2;
 	public static final int CONDITION_BOTH = 3;
-
-	// Default are not relevant anymore since those value are given
-	// at registration.
-	// public static final boolean DEFAULT_IS_RUNNING = false;
-	// public static final int DEFAULT_BIG_INTERVAL = 20;
-	// public static final int DEFAULT_LITTLE_INTERVAL = 20;
-	// public static final int DEFAULT_CONDITION = CONDITION_DEFAULT;
-	// public static final String DEFAULT_POSITIVE = "Yes";
-	// public static final String DEFAULT_NEGATIVE = "No";
-	// public static final String DEFAULT_DIALOG =
-	// "Would you like to close this dialog?";
-	// public static final String DEFAULT_DIALOG_TITLE = "AnnoyingDialog2";
-	// public static final int DEFAULT_DATA_INTERVAL = 30;
 
 	// Notification Id
 	public static final int NOTIF_ID = 42;

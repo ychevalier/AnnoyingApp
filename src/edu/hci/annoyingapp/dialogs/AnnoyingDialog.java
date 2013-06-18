@@ -2,12 +2,11 @@ package edu.hci.annoyingapp.dialogs;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
@@ -38,8 +37,8 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	private String mDialogText;
 	private String mDialogTitle;
 
-	private Button mTopBt;
-	private Button mBottomBt;
+	private ImageButton mTopBt;
+	private ImageButton mBottomBt;
 
 	public static AnnoyingDialog newInstance(Bundle extras) {
 		AnnoyingDialog f = new AnnoyingDialog();
@@ -96,13 +95,13 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 				.findViewById(R.id.activity_annoying_content_text);
 		tv.setText(mDialogText);
 
-		mTopBt = (Button) v.findViewById(R.id.activity_annoying_top_button);
-		mBottomBt = (Button) v
+		mTopBt = (ImageButton) v.findViewById(R.id.activity_annoying_top_button);
+		mBottomBt = (ImageButton) v
 				.findViewById(R.id.activity_annoying_bottom_button);
 
-		mTopBt.setBackground(getActivity().getResources().getDrawable(topId));
+		mTopBt.setImageDrawable(getActivity().getResources().getDrawable(topId));
 
-		mBottomBt.setBackground(getActivity().getResources().getDrawable(
+		mBottomBt.setImageDrawable(getActivity().getResources().getDrawable(
 				bottomId));
 
 		mTopBt.setOnClickListener(this);

@@ -22,7 +22,7 @@
     <string name="stop_button">Stop</string>
     <string name="set_interval">Set Interval</string>
     <string name="view_stats">View Statistics</string>
-    <string name="unregister">Unregister</string>
+    <string name="demo_survey">Take the initial Survey</string>
     <string name="config_default">Default</string>
     <string name="config_alt">Alternative</string>
     <string name="config_other">Other</string>
