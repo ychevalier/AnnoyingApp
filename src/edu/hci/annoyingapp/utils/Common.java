@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import edu.hci.annoyingapp.AnnoyingApplication;
@@ -110,8 +111,12 @@ public class Common {
 				.setDefaults(Notification.DEFAULT_ALL);
 		// Creates an explicit intent for an Activity in your app
 
-		Intent resultIntent = new Intent(context, SurveyActivity.class);
-		resultIntent.putExtra(SurveyActivity.EXTRA_SURVEY, survey);
+		//Intent resultIntent = new Intent(context, SurveyActivity.class);
+		//resultIntent.putExtra(SurveyActivity.EXTRA_SURVEY, survey);
+		
+		Intent resultIntent = new Intent(Intent.ACTION_VIEW);
+		resultIntent.setData(Uri.parse(survey));
+		
 		// The stack builder object will contain an artificial back stack for
 		// the
 		// started Activity.

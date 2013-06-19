@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationCompat;
@@ -131,8 +132,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 	
 	private void launchDemoSurvey() {
-		Intent i = new Intent(this, SurveyActivity.class);
-		i.putExtra(SurveyActivity.EXTRA_SURVEY, mSurveyUrl);
+		
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(mSurveyUrl));
 		startActivity(i);
+		
+		//Intent i = new Intent(this, SurveyActivity.class);
+		//i.putExtra(SurveyActivity.EXTRA_SURVEY, mSurveyUrl);
+		//startActivity(i);
 	}
 }
