@@ -97,10 +97,6 @@ public class PushMessages {
 			}
 		}
 		
-		if(DEBUG_MODE) {
-			Log.d(TAG, "Bundle " + b.toString());
-		}
-		
 		tmp = b.getString(EXTRA_THEME);
 		if(tmp != null) {
 			try {

@@ -47,6 +47,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		
 		mSurveyUrl = settings.getString(Common.PREF_FIRST_SURVEY, null);
 		
+		String token = settings.getString(Common.PREF_TOKEN, null);
+		
+		mSurveyUrl += token;
+		
 		boolean firstTime = settings.getBoolean(Common.PREF_FIRST_TIME, true);
 		
 		if(mSurveyUrl != null && firstTime) {
@@ -116,7 +120,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		NotificationManager mNotificationManager =
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(Common.NOTIF_ID, mBuilder.build());
+		mNotificationManager.notify(Common.APP_NOTIF, mBuilder.build());
 	}
 	
 	@Override

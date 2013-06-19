@@ -172,6 +172,7 @@ public class GlobalRegistration implements StartRegistrationListener,
 		String text = null;
 		String title = null;
 		String first = null;
+		String token = null;
 		
 		String tmp = result.get(Registration.RUNNING);
 		if(tmp != null) {
@@ -247,8 +248,9 @@ public class GlobalRegistration implements StartRegistrationListener,
 			first = tmp;
 		}
 		
-		if(DEBUG_MODE) {
-			Log.d(TAG, "This is what I received : " + result.toString());
+		tmp = result.get(Registration.TOKEN);
+		if(tmp != null) {			
+			token = tmp;
 		}
 		
 		if(condition == Common.CONDITION_ANSWER
@@ -272,6 +274,7 @@ public class GlobalRegistration implements StartRegistrationListener,
 		editor.putString(Common.PREF_DIALOG_TEXT, text);
 		editor.putString(Common.PREF_DIALOG_TITLE, title);
 		editor.putString(Common.PREF_FIRST_SURVEY, first);
+		editor.putString(Common.PREF_TOKEN, token);
 		editor.commit();
 
 		mRegisterGCM = new GCMRegistration(mContext, this);

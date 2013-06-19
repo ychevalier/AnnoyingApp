@@ -105,9 +105,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		if (survey != null && URLUtil.isHttpUrl(survey)) {
 			if (DEBUG_MODE) {
-				Log.i(TAG, "Received survey");
+				Log.i(TAG, "Received survey : " + survey);
 			}
-			Common.launchSurveyNotification(this, survey);
+			SharedPreferences settings = getSharedPreferences(
+					Common.PREFS_NAME, 0);
+			String token = settings.getString(Common.PREF_TOKEN, null);
+
+			Common.launchSurveyNotification(this, survey + token);
 		}
 	}
 

@@ -10,6 +10,10 @@ package edu.hci.annoyingapp;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int transparent=0x7f040001;
+        public static final int transparent_blue=0x7f040000;
+    }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
 
@@ -17,10 +21,10 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
-        public static final int dialog_button_size=0x7f040002;
-        public static final int dialog_margin=0x7f040003;
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
+        public static final int dialog_button_size=0x7f050002;
+        public static final int dialog_margin=0x7f050003;
     }
     public static final class drawable {
         public static final int anchor=0x7f020000;
@@ -164,14 +168,14 @@ public final class R {
         public static final int zebra=0x7f02008a;
     }
     public static final class id {
-        public static final int activity_annoying_bottom_button=0x7f070004;
-        public static final int activity_annoying_content_text=0x7f070002;
-        public static final int activity_annoying_top_button=0x7f070003;
-        public static final int activity_main_demo_survey=0x7f070000;
-        public static final int center_divider=0x7f070005;
-        public static final int content_activity_survey=0x7f070001;
-        public static final int email_bt=0x7f070007;
-        public static final int email_et=0x7f070006;
+        public static final int activity_annoying_bottom_button=0x7f080004;
+        public static final int activity_annoying_content_text=0x7f080002;
+        public static final int activity_annoying_top_button=0x7f080003;
+        public static final int activity_main_demo_survey=0x7f080000;
+        public static final int center_divider=0x7f080005;
+        public static final int content_activity_survey=0x7f080001;
+        public static final int email_bt=0x7f080007;
+        public static final int email_et=0x7f080006;
     }
     public static final class layout {
         public static final int activity_annoying=0x7f030000;
@@ -181,35 +185,35 @@ public final class R {
         public static final int login_activity=0x7f030004;
     }
     public static final class string {
-        public static final int already_connected=0x7f050009;
-        public static final int app_name=0x7f050000;
-        public static final int app_text=0x7f050001;
-        public static final int config_alt=0x7f050010;
-        public static final int config_default=0x7f05000f;
-        public static final int config_other=0x7f050011;
-        public static final int connection_failure=0x7f050007;
-        public static final int connection_success=0x7f050008;
-        public static final int demo_survey=0x7f05000e;
-        public static final int dialog_connecting=0x7f050006;
+        public static final int already_connected=0x7f060009;
+        public static final int app_name=0x7f060000;
+        public static final int app_text=0x7f060001;
+        public static final int config_alt=0x7f060010;
+        public static final int config_default=0x7f06000f;
+        public static final int config_other=0x7f060011;
+        public static final int connection_failure=0x7f060007;
+        public static final int connection_success=0x7f060008;
+        public static final int demo_survey=0x7f06000e;
+        public static final int dialog_connecting=0x7f060006;
         /**  Dialog Activity 
          */
-        public static final int dialog_text=0x7f050003;
-        public static final int dialog_title=0x7f050004;
-        public static final int has_not_quit_properly=0x7f050013;
-        public static final int has_quit_properly=0x7f050012;
+        public static final int dialog_text=0x7f060003;
+        public static final int dialog_title=0x7f060004;
+        public static final int has_not_quit_properly=0x7f060013;
+        public static final int has_quit_properly=0x7f060012;
         /**  Login Activity 
          */
-        public static final int mail_error=0x7f050005;
+        public static final int mail_error=0x7f060005;
         /**  Notification 
          */
-        public static final int notification_text=0x7f050002;
-        public static final int set_interval=0x7f05000c;
+        public static final int notification_text=0x7f060002;
+        public static final int set_interval=0x7f06000c;
         /**  Settings Activity 
          */
-        public static final int start_button=0x7f05000a;
-        public static final int stop_button=0x7f05000b;
-        public static final int time=0x7f050014;
-        public static final int view_stats=0x7f05000d;
+        public static final int start_button=0x7f06000a;
+        public static final int stop_button=0x7f06000b;
+        public static final int time=0x7f060014;
+        public static final int view_stats=0x7f06000d;
     }
     public static final class style {
         /** 
@@ -233,22 +237,22 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f070000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f070001;
         /**  Default theme for translucent activities, that is windows that allow you
          to see through them to the windows behind.  This sets up the translucent
          flag and appropriate animations for your windows.  
          */
-        public static final int CustomTranslucent=0x7f060002;
+        public static final int CustomTranslucent=0x7f070002;
         /**  Variant of the translucent theme with no title bar 
          */
-        public static final int CustomTranslucent_NoTitleBar=0x7f060003;
+        public static final int CustomTranslucent_NoTitleBar=0x7f070003;
         /**  Variant of the translucent theme that has no title bar and
          fills the entire screen 
          */
-        public static final int CustomTranslucent_NoTitleBar_Fullscreen=0x7f060004;
+        public static final int CustomTranslucent_NoTitleBar_Fullscreen=0x7f070004;
     }
 }

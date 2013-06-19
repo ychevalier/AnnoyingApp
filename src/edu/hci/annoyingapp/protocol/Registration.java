@@ -33,6 +33,8 @@ public class Registration {
 	
 	public static final String RUNNING = "running";
 	
+	public static final String TOKEN = "token";
+	
 	public static final String FIRST_SURVEY = "first_survey";
 	
 	public static Map<String, String> getParams(String params) {

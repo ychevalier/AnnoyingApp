@@ -12,7 +12,7 @@
         android:padding="@dimen/dialog_margin"
         android:text="@string/dialog_text" />
 
-    <ImageButton
+    <edu.hci.annoyingapp.views.CustomImageButton
         android:id="@+id/activity_annoying_top_button"
         android:layout_marginTop="@dimen/dialog_margin"
         android:layout_width="@dimen/dialog_button_size"
@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/holo_button" />
 
-    <ImageButton
+    <edu.hci.annoyingapp.views.CustomImageButton
         android:id="@+id/activity_annoying_bottom_button"
         android:layout_marginTop="@dimen/dialog_margin"
         android:layout_marginBottom="@dimen/dialog_margin"

@@ -45,6 +45,7 @@ public class Common {
 	public static final String PREF_DIALOG_TITLE = "DialogTitle";
 	public static final String PREF_DATA_INTERVAL = "DataInterval";
 	public static final String PREF_LAST_SUCCESSFUL_SENDING = "LastSending";
+	public static final String PREF_TOKEN = "Token";
 	public static final String PREF_FIRST_SURVEY = "FirstSurvey";
 	public static final String PREF_FIRST_TIME = "FirstTime";
 
@@ -64,6 +65,7 @@ public class Common {
 
 	// Notification Id
 	public static final int NOTIF_ID = 42;
+	public static final int APP_NOTIF = 43;
 	
 	public static int getRandomImage() {
 		return getRandomImage(-1);
