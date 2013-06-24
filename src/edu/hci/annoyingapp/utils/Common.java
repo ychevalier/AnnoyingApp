@@ -21,9 +21,8 @@ public class Common {
 	/**
 	 * Base URL of the Server.
 	 */
-	public static final String SERVER_URL = "http://10.2.56.53:8080/annoying-server";
-	// public static final String SERVER_URL =
-	// "http://studentweb.cs.bham.ac.uk/yxc238/annoying-server";
+	//public static final String SERVER_URL = "http://10.2.56.53:8080/annoying-server";
+	public static final String SERVER_URL = "http://studentweb.cs.bham.ac.uk/yxc238/annoying-server";
 
 	/**
 	 * Google API project id registered to use GCM.

@@ -9,8 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/dialog_margin"
-        android:text="@string/dialog_text" />
+        android:padding="@dimen/dialog_margin" />
 
     <edu.hci.annoyingapp.views.CustomImageButton
         android:id="@+id/activity_annoying_top_button"
@@ -18,7 +17,8 @@
         android:layout_width="@dimen/dialog_button_size"
         android:layout_height="@dimen/dialog_button_size"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/holo_button" />
+        android:scaleType="fitXY"
+        android:background="@null"/>
 
     <edu.hci.annoyingapp.views.CustomImageButton
         android:id="@+id/activity_annoying_bottom_button"
@@ -27,6 +27,7 @@
         android:layout_width="@dimen/dialog_button_size"
         android:layout_height="@dimen/dialog_button_size"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/holo_button" />
+        android:scaleType="fitXY"
+        android:background="@null"/>
 
 </LinearLayout>

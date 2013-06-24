@@ -185,35 +185,21 @@ public final class R {
         public static final int login_activity=0x7f030004;
     }
     public static final class string {
-        public static final int already_connected=0x7f060009;
+        public static final int already_connected=0x7f060007;
         public static final int app_name=0x7f060000;
         public static final int app_text=0x7f060001;
-        public static final int config_alt=0x7f060010;
-        public static final int config_default=0x7f06000f;
-        public static final int config_other=0x7f060011;
-        public static final int connection_failure=0x7f060007;
-        public static final int connection_success=0x7f060008;
-        public static final int demo_survey=0x7f06000e;
-        public static final int dialog_connecting=0x7f060006;
-        /**  Dialog Activity 
+        public static final int connection_failure=0x7f060005;
+        public static final int connection_success=0x7f060006;
+        /**  Main Activity 
          */
-        public static final int dialog_text=0x7f060003;
-        public static final int dialog_title=0x7f060004;
-        public static final int has_not_quit_properly=0x7f060013;
-        public static final int has_quit_properly=0x7f060012;
+        public static final int demo_survey=0x7f060008;
+        public static final int dialog_connecting=0x7f060004;
         /**  Login Activity 
          */
-        public static final int mail_error=0x7f060005;
+        public static final int mail_error=0x7f060003;
         /**  Notification 
          */
         public static final int notification_text=0x7f060002;
-        public static final int set_interval=0x7f06000c;
-        /**  Settings Activity 
-         */
-        public static final int start_button=0x7f06000a;
-        public static final int stop_button=0x7f06000b;
-        public static final int time=0x7f060014;
-        public static final int view_stats=0x7f06000d;
     }
     public static final class style {
         /** 

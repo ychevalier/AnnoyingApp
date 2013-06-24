@@ -73,7 +73,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
 		int topId = getResources().getIdentifier(mTopImage, "drawable",
 				getActivity().getBaseContext().getPackageName());
 		if (topId == 0) {
@@ -107,6 +107,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		mTopBt.setOnClickListener(this);
 		mBottomBt.setOnClickListener(this);
 		return v;
+		
 	}
 
 	public void setAnnoyingListener(AnnoyingListener listener) {

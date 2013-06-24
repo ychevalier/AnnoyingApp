@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Annoying App</string>
-    <string name="app_text">Annoying App is currently running.</string>
+    <string name="app_name">Image Selector</string>
+    <string name="app_text">Image Selector is currently running.</string>
     <!-- Notification -->
     <string name="notification_text">We have a new survey for you.</string>
-
-    <!-- Dialog Activity -->
-    <string name="dialog_text">I am just here to get you mad!</string>
-    <string name="dialog_title">This is my annoying Dialog</string>
 
     <!-- Login Activity -->
     <string name="mail_error">Please enter your email.</string>
@@ -16,18 +12,8 @@
     <string name="connection_failure">Registration Failed</string>
     <string name="connection_success">Registration Successful</string>
     <string name="already_connected">Known user</string>
-
-    <!-- Settings Activity -->
-    <string name="start_button">Start</string>
-    <string name="stop_button">Stop</string>
-    <string name="set_interval">Set Interval</string>
-    <string name="view_stats">View Statistics</string>
-    <string name="demo_survey">Take the initial Survey</string>
-    <string name="config_default">Default</string>
-    <string name="config_alt">Alternative</string>
-    <string name="config_other">Other</string>
-    <string name="has_quit_properly">Good</string>
-    <string name="has_not_quit_properly">Bad</string>
-    <string name="time">Big Interval is %1$s seconds and Little Interval is %2$s seconds.</string>
+    
+    <!-- Main Activity -->
+     <string name="demo_survey">Take the initial Survey</string>
 
 </resources>

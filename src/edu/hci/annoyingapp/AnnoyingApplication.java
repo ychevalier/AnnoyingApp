@@ -64,7 +64,6 @@ public class AnnoyingApplication extends Application {
 		"envelope",
 		"eye",
 		"fence",
-		"files",
 		"finger",
 		"fish",
 		"flag",

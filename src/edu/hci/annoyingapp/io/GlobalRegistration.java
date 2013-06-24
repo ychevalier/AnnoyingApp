@@ -5,7 +5,6 @@ import java.util.Map;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
-import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 
