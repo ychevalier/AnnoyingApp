@@ -1,8 +1,5 @@
 package edu.hci.annoyingapp.activities;
 
-import java.util.Calendar;
-import java.util.Random;
-
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -10,6 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
+
+import java.util.Calendar;
+import java.util.Random;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.dialogs.AnnoyingDialog;
@@ -50,20 +51,29 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
 		
-		int theme = settings.getInt(Common.PREF_THEME, -1);
-		int condition = settings.getInt(Common.PREF_CONDITION, -1);
+		int theme = settings.getInt(Common.PREF_THEME, Common.THEME_LIGHT);
+		int condition = settings.getInt(Common.PREF_CONDITION, Common.CONDITION_RANDOM);
 		int image = settings.getInt(Common.PREF_IMAGE, -1);
 		int position = settings.getInt(Common.PREF_POSITION, -1);
-		String title = settings.getString(Common.PREF_DIALOG_TITLE, null);
-		String text = settings.getString(Common.PREF_DIALOG_TEXT, null);
-		
-		if(theme == -1
-				|| condition == -1
-				|| title == null) {
-			// Do Something here?
-			return;
+		String title = settings.getString(Common.PREF_DIALOG_TITLE, Common.DEFAULT_TITLE);
+		String text = settings.getString(Common.PREF_DIALOG_TEXT, Common.DEFAULT_MESSAGE);
+
+		if((condition == Common.CONDITION_POSITION
+				|| condition == Common.CONDITION_BOTH)
+				&& position == -1) {
+			// We are in trouble, put default position.
+			position = Common.POSITION_TOP;
 		}
-		
+		if((condition == Common.CONDITION_ANSWER
+				|| condition == Common.CONDITION_BOTH)
+				&& image == -1) {
+			// We are in trouble, get new image!
+			SharedPreferences.Editor editor = settings.edit();
+			int current = settings.getInt(Common.PREF_IMAGE, -1);
+			editor.putInt(Common.PREF_IMAGE, Common.getRandomImage(current));
+			editor.commit();
+		}
+
 		int topImage = -1;
 		int bottomImage = -1;
 		String textComp = null;
@@ -127,15 +137,13 @@ public class AnnoyingActivity extends FragmentActivity implements
 			}
 			textComp = Common.getImageName(image);
 			break;
-		default:
-				// Do nothing
-				break;
 		}
 		
 		if(topImage == -1
 				|| bottomImage == -1
 				|| textComp == null) {
-			// Do Something here?
+			// Big big big trouble.
+			finish();
 			return;
 		}
 		
@@ -149,6 +157,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 		
 		if(topStr == null
 			|| botStr == null) {
+			// Big big big trouble.
+			finish();
 			return;
 		}
 		

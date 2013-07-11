@@ -1,7 +1,5 @@
 package edu.hci.annoyingapp.utils;
 
-import java.util.Random;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+
+import java.util.Random;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.activities.SurveyActivity;
@@ -62,6 +63,9 @@ public class Common {
 	public static final int CONDITION_POSITION = 1;
 	public static final int CONDITION_ANSWER = 2;
 	public static final int CONDITION_BOTH = 3;
+
+	public static final String DEFAULT_TITLE = "ImageSelector";
+	public static final String DEFAULT_MESSAGE = "Please click on ";
 
 	// Notification Id
 	public static final int NOTIF_ID = 42;

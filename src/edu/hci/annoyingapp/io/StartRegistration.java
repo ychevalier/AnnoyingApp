@@ -1,10 +1,11 @@
 package edu.hci.annoyingapp.io;
 
+import android.os.AsyncTask;
+
 import java.util.Map;
 
 import edu.hci.annoyingapp.network.ServerUtilities;
 import edu.hci.annoyingapp.protocol.Registration;
-import android.os.AsyncTask;
 
 
 /**
@@ -23,8 +24,6 @@ public class StartRegistration extends AsyncTask<Void, Void, Map<String, String>
 		
 		/**
 		 * This method is called when the registration is completed.
-		 * 
-		 * @param uid Return of the webservice, null if failure.
 		 */
 		void onStartRegistrationCompleted(Map<String, String> result);
 	}
