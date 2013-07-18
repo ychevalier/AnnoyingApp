@@ -1,9 +1,14 @@
-*.class
+*.iml
+*.iws
+*.ipr
+.idea/
+.gradle/
+local.properties
 
-# Package Files #
-*.jar
-*.war
-*.ear
-*gradle*
-out/
-bin/
+*/build/
+build/
+
+*~
+*.swp
+
+oldAmarino/
