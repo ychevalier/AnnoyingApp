@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/activity_annoying_content_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dialog_margin" />
+
+    <edu.hci.annoyingapp.views.CustomImageButton
+        android:id="@+id/activity_annoying_top_button"
+        android:layout_marginTop="@dimen/dialog_margin"
+        android:layout_width="@dimen/dialog_button_size"
+        android:layout_height="@dimen/dialog_button_size"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+    <edu.hci.annoyingapp.views.CustomImageButton
+        android:id="@+id/activity_annoying_bottom_button"
+        android:layout_marginTop="@dimen/dialog_margin"
+        android:layout_marginBottom="@dimen/dialog_margin"
+        android:layout_width="@dimen/dialog_button_size"
+        android:layout_height="@dimen/dialog_button_size"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:background="@null"/>
+
+</LinearLayout>

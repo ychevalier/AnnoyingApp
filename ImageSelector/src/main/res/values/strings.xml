@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Image Selector</string>
+    <string name="app_text">Image Selector is currently running.</string>
+    <!-- Notification -->
+    <string name="notification_text">We have a new survey for you.</string>
+
+    <!-- Login Activity -->
+    <string name="mail_error">Please enter your email.</string>
+    <string name="dialog_connecting">Connecting. Please wait...</string>
+    <string name="connection_failure">Registration Failed</string>
+    <string name="connection_success">Registration Successful</string>
+    <string name="already_connected">Known user</string>
+    
+    <!-- Main Activity -->
+     <string name="demo_survey">Take the initial Survey</string>
+
+</resources>
