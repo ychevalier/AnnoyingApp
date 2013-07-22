@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -16,7 +17,8 @@ import edu.hci.annoyingapp.utils.Common;
 
 public class AnnoyingApplication extends Application {
 
-    public static final boolean DEBUG_MODE = true;
+	private static final String TAG = AnnoyingApplication.class.getSimpleName();
+	public static final boolean DEBUG_MODE = true;
 
     // Little trick so that every instance
     // of SettingsActivity can access the alarm...
@@ -176,21 +178,27 @@ public class AnnoyingApplication extends Application {
 		mNbDisplay = 0;
     }
 
+	public static void oneMoreDialog() {
+		mNbDisplay++;
+	}
+
 	public static boolean canIDisplayMoreDialogs(int dayOfMonth) {
+		if (DEBUG_MODE) {
+			Log.d(TAG, "Want to display on Day : " + dayOfMonth + ", Last day is : " + mDayOfMonth);
+		}
 		if(mDayOfMonth != dayOfMonth) {
 			mDayOfMonth = dayOfMonth;
 			mNbDisplay = 0;
 			return true;
-		} else if(mNbDisplay < Common.MAX_DISPLAY_PER_DAY) {
-			return true;
-		} else {
-			return false;
 		}
+		if (mNbDisplay < Common.MAX_DISPLAY_PER_DAY) {
+			return true;
+		}
+		return false;
 	}
 
     public static void startDialog() {
         mIsDialogRunning = true;
-		mNbDisplay++;
     }
 
     public static void stopDialog() {

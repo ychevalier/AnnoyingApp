@@ -40,8 +40,9 @@ public class AnnoyingService extends IntentService {
 		Calendar cal = Calendar.getInstance();
 		if(!AnnoyingApplication.canIDisplayMoreDialogs(cal.get(Calendar.DAY_OF_MONTH))) {
 			if(DEBUG_MODE) {
-				Log.d(TAG, "No more dialogs today, aborting.");
+				Log.d(TAG, "No more dialogs today, aborting");
 			}
+			//AnnoyingApplication.startService(this, littleInterval);
 			return;
 		}
 		
@@ -55,7 +56,7 @@ public class AnnoyingService extends IntentService {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Launching dialog!");
 			}
-			
+
 			Intent i = new Intent(this, AnnoyingActivity.class);
 			
 			// This is highly deprectated...
@@ -67,6 +68,7 @@ public class AnnoyingService extends IntentService {
 			// This works always.
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(i);
+			AnnoyingApplication.oneMoreDialog();
 		} else if(littleInterval != -1) {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Screen is off or locked...");
