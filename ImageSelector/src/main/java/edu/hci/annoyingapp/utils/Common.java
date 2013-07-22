@@ -13,7 +13,7 @@ import java.util.Random;
 
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.activities.SurveyActivity;
+import edu.hci.annoyingapp.ui.activities.SurveyActivity;
 
 public class Common {
 
@@ -72,10 +72,14 @@ public class Common {
 	public static final String DEFAULT_TITLE = "ImageSelector";
 	public static final String DEFAULT_MESSAGE = "Please click on ";
 
+	public static final int DEFAULT_BIG_INTERVAL = 3600;
+	public static final int DEFAULT_LITTLE_INTERVAL = 60;
+	public static final int DEFAULT_DATA_INTERVAL = 3600;
+
 	// Notification Id
 	public static final int NOTIF_ID = 42;
 	public static final int APP_NOTIF = 43;
-	
+
 	public static int getRandomImage() {
 		return getRandomImage(-1);
 	}
@@ -85,23 +89,23 @@ public class Common {
 		int randomInt;
 		do {
 			randomInt = randomGenerator.nextInt(AnnoyingApplication.IMAGES.length);
-		} while(notThisImage != -1 && randomInt == notThisImage);
-		
+		} while (notThisImage != -1 && randomInt == notThisImage);
+
 		return randomInt;
 	}
-	
+
 	public static String getImageName(int image) {
-		if(image >= 0 && image < AnnoyingApplication.IMAGES.length) {
+		if (image >= 0 && image < AnnoyingApplication.IMAGES.length) {
 			return AnnoyingApplication.IMAGES[image];
 		}
 		return null;
 	}
-	
+
 	public static int getResId(Context c, int image) {
 		String imageName = getImageName(image);
-		if(imageName != null) {
+		if (imageName != null) {
 			int res = c.getResources().getIdentifier(imageName, "drawable", c.getPackageName());
-			if(res != 0) {
+			if (res != 0) {
 				return res;
 			} else {
 				return -1;
@@ -121,10 +125,10 @@ public class Common {
 
 		//Intent resultIntent = new Intent(context, SurveyActivity.class);
 		//resultIntent.putExtra(SurveyActivity.EXTRA_SURVEY, survey);
-		
+
 		Intent resultIntent = new Intent(Intent.ACTION_VIEW);
 		resultIntent.setData(Uri.parse(survey));
-		
+
 		// The stack builder object will contain an artificial back stack for
 		// the
 		// started Activity.

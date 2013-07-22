@@ -11,7 +11,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 import edu.hci.annoyingapp.AnnoyingApplication;
-import edu.hci.annoyingapp.activities.AnnoyingActivity;
+import edu.hci.annoyingapp.ui.activities.AnnoyingActivity;
 import edu.hci.annoyingapp.utils.Common;
 
 public class AnnoyingService extends IntentService {
@@ -27,8 +27,10 @@ public class AnnoyingService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, -1);
-		
+		int littleInterval = settings.getInt(Common.PREF_LITTLE_INTERVAL, Common.DEFAULT_LITTLE_INTERVAL);
+		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_BIG_INTERVAL);
+
+
 		if(AnnoyingApplication.isDialogStarted()) {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "Dialog is already running, aborting.");
@@ -42,7 +44,7 @@ public class AnnoyingService extends IntentService {
 			if(DEBUG_MODE) {
 				Log.d(TAG, "No more dialogs today, aborting");
 			}
-			//AnnoyingApplication.startService(this, littleInterval);
+			AnnoyingApplication.startService(this, bigInterval);
 			return;
 		}
 		

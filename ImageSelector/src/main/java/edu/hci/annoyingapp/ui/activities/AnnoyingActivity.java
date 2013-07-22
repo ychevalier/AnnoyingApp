@@ -1,4 +1,4 @@
-package edu.hci.annoyingapp.activities;
+package edu.hci.annoyingapp.ui.activities;
 
 import android.content.ContentValues;
 import android.content.SharedPreferences;
@@ -240,9 +240,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 		}
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		int interval = settings.getInt(Common.PREF_BIG_INTERVAL, -1);
-		if(interval != -1 
-				&& settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, false)) {
+		int interval = settings.getInt(Common.PREF_BIG_INTERVAL, Common.DEFAULT_BIG_INTERVAL);
+		if (settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, true)) {
 			AnnoyingApplication.startService(this, interval);
 		}
 	}

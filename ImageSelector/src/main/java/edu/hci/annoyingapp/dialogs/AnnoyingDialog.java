@@ -8,9 +8,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
-import edu.hci.annoyingapp.activities.AnnoyingActivity;
+import edu.hci.annoyingapp.ui.activities.AnnoyingActivity;
 import edu.hci.annoyingapp.utils.Common;
 
 public class AnnoyingDialog extends DialogFragment implements OnClickListener {
@@ -61,19 +62,19 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		int theme = getArguments().getInt(AnnoyingDialog.THEME);
 
 		switch (theme) {
-		case Common.THEME_DARK:
-			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
-			break;
-		case Common.THEME_LIGHT:
-			setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
-			break;
+			case Common.THEME_DARK:
+				setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Dialog);
+				break;
+			case Common.THEME_LIGHT:
+				setStyle(STYLE_NORMAL, android.R.style.Theme_Holo_Light_Dialog);
+				break;
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
+							 Bundle savedInstanceState) {
+
 		int topId = getResources().getIdentifier(mTopImage, "drawable",
 				getActivity().getBaseContext().getPackageName());
 		if (topId == 0) {
@@ -107,7 +108,7 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		mTopBt.setOnClickListener(this);
 		mBottomBt.setOnClickListener(this);
 		return v;
-		
+
 	}
 
 	public void setAnnoyingListener(AnnoyingListener listener) {

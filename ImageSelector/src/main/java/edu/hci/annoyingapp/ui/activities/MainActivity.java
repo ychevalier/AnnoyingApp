@@ -1,10 +1,6 @@
-package edu.hci.annoyingapp.activities;
+package edu.hci.annoyingapp.ui.activities;
 
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +12,6 @@ import android.widget.Button;
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.io.ExportDatabaseFileTask;
-import edu.hci.annoyingapp.protocol.Receivers;
 import edu.hci.annoyingapp.utils.Common;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
@@ -24,15 +19,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
-    private ProgressDialog mDialog;
-    private String mSurveyUrl;
+	private String mSurveyUrl;
 
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
+		// == UI == //
+
+		Button survey = (Button) findViewById(R.id.activity_main_demo_survey);
+		survey.setOnClickListener(this);
+
+		// TODO: Remove for deployment.
 		Button export = (Button) findViewById(R.id.activity_main_export_db);
 		if(DEBUG_MODE) {
 			export.setVisibility(View.VISIBLE);
@@ -41,21 +41,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			export.setVisibility(View.GONE);
 		}
 
+		// == Services == //
 
-        SharedPreferences settings = getSharedPreferences(
+		SharedPreferences settings = getSharedPreferences(
                 Common.PREFS_NAME, 0);
 
         int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
-                -1);
+				Common.DEFAULT_BIG_INTERVAL);
 
-        boolean isRunning = settings.getBoolean(
+		boolean isRunning = settings.getBoolean(
                 Common.PREF_IS_SERVICE_RUNNING,
-                false);
+				true);
 
-        int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
-                -1);
+		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
+				Common.DEFAULT_DATA_INTERVAL);
 
-        mSurveyUrl = settings.getString(Common.PREF_FIRST_SURVEY, null);
+		mSurveyUrl = settings.getString(Common.PREF_FIRST_SURVEY, null);
 
         String token = settings.getString(Common.PREF_TOKEN, null);
 
@@ -70,9 +71,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             launchDemoSurvey();
         }
 
-        Button survey = (Button) findViewById(R.id.activity_main_demo_survey);
-        survey.setOnClickListener(this);
-
         if (isRunning) {
             AnnoyingApplication.startService(this, bigInterval);
         }
@@ -80,42 +78,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         AnnoyingApplication.launchStatusIcon(this);
 
         AnnoyingApplication.startDataService(this, dataInterval);
-
-        registerReceiver(mHandleUnregistrationReceiver, new IntentFilter(Receivers.UNREGISTERED));
     }
 
     @Override
     protected void onStop() {
-
         super.onStop();
         // Little trick so that activity is not on background when dialog
         // shows up.
         finish();
     }
 
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(mHandleUnregistrationReceiver);
-        super.onDestroy();
-    }
-
-    private final BroadcastReceiver mHandleUnregistrationReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            SharedPreferences settings = context.getSharedPreferences(
-                    Common.PREFS_NAME, 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean(Common.PREF_IS_SERVICE_RUNNING, false);
-            editor.commit();
-
-            AnnoyingApplication.stopService(context);
-
-            Intent i = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(i);
-            finish();
-            mDialog.dismiss();
-        }
-    };
 
     @Override
     public void onClick(View v) {
@@ -128,13 +100,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     }
 
     private void launchDemoSurvey() {
-
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(mSurveyUrl));
         startActivity(i);
-
-        //Intent i = new Intent(this, SurveyActivity.class);
-        //i.putExtra(SurveyActivity.EXTRA_SURVEY, mSurveyUrl);
-        //startActivity(i);
     }
 }

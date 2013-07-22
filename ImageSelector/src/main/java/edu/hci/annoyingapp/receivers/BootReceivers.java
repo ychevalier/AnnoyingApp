@@ -10,28 +10,28 @@ import edu.hci.annoyingapp.utils.Common;
 
 public class BootReceivers extends BroadcastReceiver {
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+	@Override
+	public void onReceive(Context context, Intent intent) {
 
-        SharedPreferences settings = context.getSharedPreferences(
-                Common.PREFS_NAME, 0);
+		SharedPreferences settings = context.getSharedPreferences(
+				Common.PREFS_NAME, 0);
 
-        int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
-                -1);
+		int bigInterval = settings.getInt(Common.PREF_BIG_INTERVAL,
+				Common.DEFAULT_BIG_INTERVAL);
 
-        boolean isRunning = settings.getBoolean(
-                Common.PREF_IS_SERVICE_RUNNING,
-                false);
+		boolean isRunning = settings.getBoolean(
+				Common.PREF_IS_SERVICE_RUNNING,
+				true);
 
-        int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
-                -1);
+		int dataInterval = settings.getInt(Common.PREF_DATA_INTERVAL,
+				Common.DEFAULT_DATA_INTERVAL);
 
-        if (isRunning) {
-            AnnoyingApplication.startService(context, bigInterval);
-        }
+		if (isRunning) {
+			AnnoyingApplication.startService(context, bigInterval);
+		}
 
-        AnnoyingApplication.launchStatusIcon(context);
+		AnnoyingApplication.launchStatusIcon(context);
 
-        AnnoyingApplication.startDataService(context, dataInterval);
-    }
+		AnnoyingApplication.startDataService(context, dataInterval);
+	}
 }

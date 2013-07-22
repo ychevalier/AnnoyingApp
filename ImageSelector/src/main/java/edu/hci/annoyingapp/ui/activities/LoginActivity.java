@@ -1,4 +1,4 @@
-package edu.hci.annoyingapp.activities;
+package edu.hci.annoyingapp.ui.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,7 +29,7 @@ import edu.hci.annoyingapp.protocol.Receivers;
 public class LoginActivity extends Activity implements
 		OnRegistrationOverListener, OnClickListener {
 
-	public static final boolean DEBUG_MODE = true;	
+	public static final boolean DEBUG_MODE = true;
 
 	private GlobalRegistration mRegistration;
 
@@ -57,7 +57,7 @@ public class LoginActivity extends Activity implements
 
 		if (GCMRegistrar.isRegisteredOnServer(getApplicationContext())) {
 			startMainActivity();
-			Toast.makeText(this, R.string.already_connected, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, R.string.already_connected, Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -99,7 +99,7 @@ public class LoginActivity extends Activity implements
 			}
 		}
 	};
-	
+
 	public void startMainActivity() {
 		Intent i = new Intent(this, MainActivity.class);
 		startActivity(i);
@@ -118,7 +118,7 @@ public class LoginActivity extends Activity implements
 			mRegistration = new GlobalRegistration(getApplicationContext(), this);
 			mRegistration.register(mEmail.getText().toString());
 
-			mDialog = ProgressDialog.show(this, "",getString(R.string.dialog_connecting), true);
+			mDialog = ProgressDialog.show(this, "", getString(R.string.dialog_connecting), true);
 		}
 	}
 
