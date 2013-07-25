@@ -147,6 +147,7 @@ public class PushMessages {
 		if (position != -1) {
 			editor.putInt(Common.PREF_POSITION, position);
 		}
+
 		if (newImage || condition == Common.CONDITION_ANSWER || condition == Common.CONDITION_BOTH) {
 			int current = settings.getInt(Common.PREF_IMAGE, -1);
 			editor.putInt(Common.PREF_IMAGE, Common.getRandomImage(current));
