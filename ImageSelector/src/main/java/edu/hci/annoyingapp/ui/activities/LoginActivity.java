@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gcm.GCMRegistrar;
 
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.io.GlobalRegistration;
 import edu.hci.annoyingapp.io.GlobalRegistration.OnRegistrationOverListener;
 import edu.hci.annoyingapp.protocol.Receivers;
+import edu.hci.annoyingapp.utils.Common;
 
 /**
  * Login UI for the Demo App.
@@ -39,6 +41,8 @@ public class LoginActivity extends Activity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		BugSenseHandler.initAndStartSession(this, Common.BUGSENSE_KEY);
 
 		setContentView(R.layout.login_activity);
 
@@ -68,6 +72,8 @@ public class LoginActivity extends Activity implements
 		}
 		unregisterReceiver(mHandleRegistrationReceiver);
 		GCMRegistrar.onDestroy(getApplicationContext());
+
+		BugSenseHandler.closeSession(this);
 		super.onDestroy();
 	}
 

@@ -5,7 +5,10 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
+import edu.hci.annoyingapp.utils.Common;
 
 public class SurveyActivity extends FragmentActivity {
 
@@ -17,6 +20,8 @@ public class SurveyActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		BugSenseHandler.initAndStartSession(this, Common.BUGSENSE_KEY);
 
 		WebView webview = new WebView(this);
 		setContentView(webview);
@@ -34,5 +39,11 @@ public class SurveyActivity extends FragmentActivity {
 	protected void onStop() {
 		super.onStop();
 		finish();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		BugSenseHandler.closeSession(this);
 	}
 }

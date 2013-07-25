@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.R;
 import edu.hci.annoyingapp.ui.activities.AnnoyingActivity;
@@ -78,12 +80,14 @@ public class AnnoyingDialog extends DialogFragment implements OnClickListener {
 		int topId = getResources().getIdentifier(mTopImage, "drawable",
 				getActivity().getBaseContext().getPackageName());
 		if (topId == 0) {
+			BugSenseHandler.sendEvent(TAG + ": Not able to get top image");
 			return null;
 		}
 
 		int bottomId = getResources().getIdentifier(mBottomImage, "drawable",
 				getActivity().getBaseContext().getPackageName());
 		if (bottomId == 0) {
+			BugSenseHandler.sendEvent(TAG + ": Not able to get bottom image");
 			return null;
 		}
 

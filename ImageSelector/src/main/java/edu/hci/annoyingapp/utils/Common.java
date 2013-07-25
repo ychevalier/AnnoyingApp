@@ -33,7 +33,15 @@ public class Common {
 	/**
 	 * Google API project id registered to use GCM.
 	 */
-	public static final String SENDER_ID = "454161920705";
+	// Old one on Yann's account
+	//public static final String SENDER_ID = "454161920705";
+	public static final String SENDER_ID = "686376472928";
+
+
+	/**
+	 * Bug sense api key
+	 */
+	public static final String BUGSENSE_KEY = "e950d554";
 
 	// ================== Shared Preferences ====================
 

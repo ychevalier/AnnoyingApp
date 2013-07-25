@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Window;
 
+import com.bugsense.trace.BugSenseHandler;
+
 import java.util.Calendar;
 import java.util.Random;
 
@@ -35,6 +37,8 @@ public class AnnoyingActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		BugSenseHandler.initAndStartSession(this, Common.BUGSENSE_KEY);
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_annoying);
 	}
@@ -50,7 +54,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		mCurrentDialog.setStartTime(cal.getTimeInMillis());
 
 		SharedPreferences settings = getSharedPreferences(Common.PREFS_NAME, 0);
-		
+
 		int theme = settings.getInt(Common.PREF_THEME, Common.THEME_LIGHT);
 		int condition = settings.getInt(Common.PREF_CONDITION, Common.CONDITION_RANDOM);
 		int image = settings.getInt(Common.PREF_IMAGE, -1);
@@ -59,115 +63,121 @@ public class AnnoyingActivity extends FragmentActivity implements
 		String text = settings.getString(Common.PREF_DIALOG_TEXT, Common.DEFAULT_MESSAGE);
 
 		SharedPreferences.Editor editor = settings.edit();
-		if((condition == Common.CONDITION_POSITION
+		if ((condition == Common.CONDITION_POSITION
 				|| condition == Common.CONDITION_BOTH)
 				&& position == -1) {
 			// We are in trouble, put default position.
 			position = Common.POSITION_TOP;
 			editor.putInt(Common.PREF_POSITION, position);
 			editor.commit();
+
+			BugSenseHandler.sendEvent(TAG + " : We had no position, we created a new one.");
 		}
-		if((condition == Common.CONDITION_ANSWER
+		if ((condition == Common.CONDITION_ANSWER
 				|| condition == Common.CONDITION_BOTH)
 				&& image == -1) {
 			// We are in trouble, get new image!
 			int current = settings.getInt(Common.PREF_IMAGE, -1);
 			editor.putInt(Common.PREF_IMAGE, Common.getRandomImage(current));
 			editor.commit();
+
+			BugSenseHandler.sendEvent(TAG + " : We had no image, we created a new one.");
 		}
 
 		int topImage = -1;
 		int bottomImage = -1;
 		String textComp = null;
-		
+
 		Random randomGenerator = new Random();
-		
-		switch(condition) {
-		case Common.CONDITION_RANDOM:
-			topImage = Common.getRandomImage();
-			bottomImage = Common.getRandomImage(topImage);
-			
-			if(randomGenerator.nextBoolean()) {
-				image = topImage;
-				position = Common.POSITION_TOP;
-				textComp = Common.getImageName(topImage);
-				mIsTopPositive = true;
-			} else {
-				image = bottomImage;
-				position = Common.POSITION_BOTTOM;
-				textComp = Common.getImageName(bottomImage);
-				mIsTopPositive = false;
-			}
-			break;
-		case Common.CONDITION_POSITION:
-			topImage = Common.getRandomImage();
-			bottomImage = Common.getRandomImage(topImage);
-			
-			if(position == Common.POSITION_TOP) {
-				image = topImage;
-				textComp = Common.getImageName(topImage);
-				mIsTopPositive = true;
-			} else if(position == Common.POSITION_BOTTOM) {
-				image = bottomImage;
-				textComp = Common.getImageName(bottomImage);
-				mIsTopPositive = false;
-			}
-			break;
-		case Common.CONDITION_ANSWER:
-			if(randomGenerator.nextBoolean()) {
-				position = Common.POSITION_TOP;
-				topImage = image;
+
+		switch (condition) {
+			case Common.CONDITION_RANDOM:
+				topImage = Common.getRandomImage();
 				bottomImage = Common.getRandomImage(topImage);
-				mIsTopPositive = true;
-			} else {
-				position = Common.POSITION_BOTTOM;
-				bottomImage = image;
-				topImage = Common.getRandomImage(bottomImage);
-				mIsTopPositive = false;
-			}
-			textComp = Common.getImageName(image);
-			break;
-		case Common.CONDITION_BOTH:
-			if(position == Common.POSITION_TOP) {
-				topImage = image;
+
+				if (randomGenerator.nextBoolean()) {
+					image = topImage;
+					position = Common.POSITION_TOP;
+					textComp = Common.getImageName(topImage);
+					mIsTopPositive = true;
+				} else {
+					image = bottomImage;
+					position = Common.POSITION_BOTTOM;
+					textComp = Common.getImageName(bottomImage);
+					mIsTopPositive = false;
+				}
+				break;
+			case Common.CONDITION_POSITION:
+				topImage = Common.getRandomImage();
 				bottomImage = Common.getRandomImage(topImage);
-				mIsTopPositive = true;
-			} else if(position == Common.POSITION_BOTTOM) {
-				bottomImage = image;
-				topImage = Common.getRandomImage(bottomImage);
-				mIsTopPositive = false;
-			}
-			textComp = Common.getImageName(image);
-			break;
+
+				if (position == Common.POSITION_TOP) {
+					image = topImage;
+					textComp = Common.getImageName(topImage);
+					mIsTopPositive = true;
+				} else if (position == Common.POSITION_BOTTOM) {
+					image = bottomImage;
+					textComp = Common.getImageName(bottomImage);
+					mIsTopPositive = false;
+				}
+				break;
+			case Common.CONDITION_ANSWER:
+				if (randomGenerator.nextBoolean()) {
+					position = Common.POSITION_TOP;
+					topImage = image;
+					bottomImage = Common.getRandomImage(topImage);
+					mIsTopPositive = true;
+				} else {
+					position = Common.POSITION_BOTTOM;
+					bottomImage = image;
+					topImage = Common.getRandomImage(bottomImage);
+					mIsTopPositive = false;
+				}
+				textComp = Common.getImageName(image);
+				break;
+			case Common.CONDITION_BOTH:
+				if (position == Common.POSITION_TOP) {
+					topImage = image;
+					bottomImage = Common.getRandomImage(topImage);
+					mIsTopPositive = true;
+				} else if (position == Common.POSITION_BOTTOM) {
+					bottomImage = image;
+					topImage = Common.getRandomImage(bottomImage);
+					mIsTopPositive = false;
+				}
+				textComp = Common.getImageName(image);
+				break;
 		}
-		
-		if(topImage == -1
+
+		if (topImage == -1
 				|| bottomImage == -1
 				|| textComp == null) {
-			// Big big big trouble.
+			// We are in big trouble
+			BugSenseHandler.sendEvent(TAG + " : We couldn't fetch images, aborting.");
 			finish();
 			return;
 		}
-		
+
 		// If we have no defined image (position or random).
 		String imgStr = null;
-		if(image != -1) {
+		if (image != -1) {
 			imgStr = Common.getImageName(image);
 		}
 		String topStr = Common.getImageName(topImage);
 		String botStr = Common.getImageName(bottomImage);
-		
-		if(topStr == null
-			|| botStr == null) {
+
+		if (topStr == null
+				|| botStr == null) {
 			// Big big big trouble.
+			BugSenseHandler.sendEvent(TAG + " : We couldn't fetch image names, aborting.");
 			finish();
 			return;
 		}
-		
+
 		mCurrentDialog.setTheme(theme);
 		mCurrentDialog.setDialogText(text + ' ' + textComp);
 		mCurrentDialog.setTopImage(topStr);
-		mCurrentDialog.setBottomImage(botStr);		
+		mCurrentDialog.setBottomImage(botStr);
 		mCurrentDialog.setDialogTitle(title);
 		mCurrentDialog.setCondition(condition);
 		mCurrentDialog.setImage(imgStr);
@@ -204,7 +214,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 		for (Long fail : mCurrentDialog.getFailures()) {
 			ContentValues interaction = new ContentValues();
 			interaction.put(Interactions.INTERACTION_BUTTON,
-					mIsTopPositive? Common.POSITION_BOTTOM : Common.POSITION_TOP);
+					mIsTopPositive ? Common.POSITION_BOTTOM : Common.POSITION_TOP);
 			interaction.put(Interactions.INTERACTION_DATETIME, fail);
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
 			getContentResolver().insert(Interactions.CONTENT_URI, interaction);
@@ -229,7 +239,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 			ContentValues interaction = new ContentValues();
 			interaction.put(Interactions.INTERACTION_BUTTON,
-					mIsTopPositive? Common.POSITION_TOP : Common.POSITION_BOTTOM);
+					mIsTopPositive ? Common.POSITION_TOP : Common.POSITION_BOTTOM);
 			interaction.put(Interactions.INTERACTION_DATETIME,
 					mCurrentDialog.getStopTime());
 			interaction.put(Interactions.INTERACTION_DIALOG_ID, id);
@@ -244,6 +254,12 @@ public class AnnoyingActivity extends FragmentActivity implements
 		if (settings.getBoolean(Common.PREF_IS_SERVICE_RUNNING, true)) {
 			AnnoyingApplication.startService(this, interval);
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		BugSenseHandler.closeSession(this);
 	}
 
 	private void showDialog() {
@@ -269,7 +285,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 	@Override
 	public void onTopButtonClicked() {
-		if(mIsTopPositive) {
+		if (mIsTopPositive) {
 			mHasStoppedProperly = true;
 			finish();
 		} else {
@@ -280,7 +296,7 @@ public class AnnoyingActivity extends FragmentActivity implements
 
 	@Override
 	public void onBottomButtonClicked() {
-		if(mIsTopPositive) {
+		if (mIsTopPositive) {
 			Calendar cal = Calendar.getInstance();
 			mCurrentDialog.addFailure(cal.getTimeInMillis());
 		} else {

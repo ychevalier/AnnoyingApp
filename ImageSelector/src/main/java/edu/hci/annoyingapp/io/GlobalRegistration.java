@@ -1,12 +1,13 @@
 package edu.hci.annoyingapp.io;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings.Secure;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.google.android.gcm.GCMRegistrar;
+
+import java.util.Map;
 
 import edu.hci.annoyingapp.AnnoyingApplication;
 import edu.hci.annoyingapp.io.FinishRegistration.FinishRegistrationListener;
@@ -18,26 +19,26 @@ import edu.hci.annoyingapp.utils.Common;
 /**
  * This is a helper class for the activities to register to both Google and 3th
  * party servers for GCM Push Messaging.
- * 
- * The registration is in 3 parts: 
- *    1/ Ask for User ID to 3th party server. 
- *    2/ Ask for Registration ID to Google.
- *    3/ Give Registration ID to 3th party server.
- * 
+ * <p/>
+ * The registration is in 3 parts:
+ * 1/ Ask for User ID to 3th party server.
+ * 2/ Ask for Registration ID to Google.
+ * 3/ Give Registration ID to 3th party server.
+ * <p/>
  * The first part has been added to default GCM process to give more control
  * over devices who wants to register.
  * Usual registration is also per-app whereas this one is per-device, but we could
  * easily adapt it per-user (identified by his email).
- * 
+ * <p/>
  * The unregistration is only two parts:
- *    1/ Unregister to Google
- *    2/ Tell the 3th party server.
- * 
+ * 1/ Unregister to Google
+ * 2/ Tell the 3th party server.
+ * <p/>
  * You never fully unregister to the 3th party server, you only reset your google registration id.
  */
 public class GlobalRegistration implements StartRegistrationListener,
 		GCMRegistrationListener, FinishRegistrationListener {
-	
+
 	public static final String TAG = GlobalRegistration.class.getSimpleName();
 	private static final boolean DEBUG_MODE = AnnoyingApplication.DEBUG_MODE;
 
@@ -90,23 +91,20 @@ public class GlobalRegistration implements StartRegistrationListener,
 
 	/**
 	 * Default constructor.
-	 * 
-	 * @param context
-	 *            Application context.
-	 * @param listener
-	 *            The caller should also listen for success or failure.
+	 *
+	 * @param context  Application context.
+	 * @param listener The caller should also listen for success or failure.
 	 */
 	public GlobalRegistration(Context context,
-			OnRegistrationOverListener listener) {
+							  OnRegistrationOverListener listener) {
 		mContext = context;
 		mListener = listener;
 	}
 
 	/**
 	 * This method is called to start the registration process.
-	 * 
-	 * @param email
-	 *            Email entered by the user.
+	 *
+	 * @param email Email entered by the user.
 	 */
 	public void register(String email) {
 
@@ -125,7 +123,7 @@ public class GlobalRegistration implements StartRegistrationListener,
 
 	/**
 	 * Helper so that anyone can unregister... (this is why it is static).
-	 * 
+	 *
 	 * @param c You can register from everywhere so that method needs a static context.
 	 */
 	public static void unregister(Context c) {
@@ -149,17 +147,17 @@ public class GlobalRegistration implements StartRegistrationListener,
 	@Override
 	public void onStartRegistrationCompleted(Map<String, String> result) {
 		mRegisterStartTask = null;
-		
-		
-		if(result == null || result.get(Registration.UID) == null) {
+
+
+		if (result == null || result.get(Registration.UID) == null) {
 			if (mListener != null) {
 				mListener.onRegistrationFailure();
 			}
 			return;
 		}
-		
+
 		mUid = result.get(Registration.UID);
-		
+
 		boolean running = false;
 		int littleInterval = -1;
 		int bigInterval = -1;
@@ -172,87 +170,103 @@ public class GlobalRegistration implements StartRegistrationListener,
 		String title = null;
 		String first = null;
 		String token = null;
-		
+
 		String tmp = result.get(Registration.RUNNING);
-		if(tmp != null) {
+		if (tmp != null) {
 			running = Boolean.parseBoolean(tmp);
 		}
-		
+
 		tmp = result.get(Registration.LITTLE_INTERVAL);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				littleInterval = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Little Interval.");
 		}
-		
+
 		tmp = result.get(Registration.BIG_INTERVAL);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				bigInterval = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Big Interval.");
 		}
-		
+
 		tmp = result.get(Registration.DATA_INTERVAL);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				dataInterval = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Data Interval.");
 		}
-		
+
 		tmp = result.get(Registration.CONDITION);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				condition = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Condition.");
 		}
-		
+
 		tmp = result.get(Registration.THEME);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				theme = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Theme.");
 		}
-		
+
 		tmp = result.get(Registration.POSITION);
-		if(tmp != null) {
+		if (tmp != null) {
 			try {
 				position = Integer.parseInt(tmp);
-			} catch(NumberFormatException e) {
-				// Nothing To do.
+			} catch (NumberFormatException e) {
+				BugSenseHandler.sendException(e);
 			}
 		}
-		
+
 		tmp = result.get(Registration.DIALOG_TEXT);
-		if(tmp != null) {			
+		if (tmp != null) {
 			text = tmp;
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Text.");
 		}
-		
+
 		tmp = result.get(Registration.DIALOG_TITLE);
-		if(tmp != null) {			
+		if (tmp != null) {
 			title = tmp;
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Title.");
 		}
-		
+
 		tmp = result.get(Registration.FIRST_SURVEY);
-		if(tmp != null) {			
+		if (tmp != null) {
 			first = tmp;
 		}
-		
+
 		tmp = result.get(Registration.TOKEN);
-		if(tmp != null) {			
+		if (tmp != null) {
 			token = tmp;
+		} else {
+			BugSenseHandler.sendEvent(TAG + " : No Token.");
 		}
-		
-		if(condition == Common.CONDITION_ANSWER
+
+		if (condition == Common.CONDITION_ANSWER
 				|| condition == Common.CONDITION_BOTH) {
 			image = Common.getRandomImage();
 		}
